@@ -6,7 +6,7 @@ Public Class Database
     Private Shared filename As String = "main.db"
     Private Shared fullpath As String = System.IO.Path.Combine(location, filename)
     Private Shared connectionString As String = String.Format("Data Source = {0}", fullpath)
-    Public Sub New()
+    Public Sub Init()
         If Not DuplicateDatabase(fullpath) Then
             Dim createTable As String =
                 "CREATE TABLE ""Users"" (
@@ -15,8 +15,7 @@ Public Class Database
 	                ""Lastname""	TEXT,
 	                ""Password""	TEXT,
 	                ""Email""	    TEXT,
-	                ""userGroup""	INTEGER,
-	                ""isSuperUser""	INTEGER
+	                ""userGroup""	INTEGER
                 );"
             System.IO.Directory.CreateDirectory(location)
             Using SqlConn As New SQLiteConnection(connectionString)
@@ -25,7 +24,82 @@ Public Class Database
                 SqlCmd.ExecuteNonQuery()
                 SqlConn.Close()
             End Using
+            DummyData()
         End If
+    End Sub
+    Private Sub DummyData()
+        Using conn As New SQLiteConnection(connectionString)
+            conn.Open()
+            Dim dummyDataQuery As String =
+                "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) VALUES (@Firstname, @Lastname, @Password, @Email, @userGroup)"
+            Dim cmd As New SQLiteCommand(dummyDataQuery, conn)
+
+            Dim x As New List(Of String)
+            x.AddRange({"Queece Boringman",
+                        "Gremlin T.Squarfish",
+                        "Mynas Opposite",
+                        "Jannider Snoutlick",
+                        "Dirt Stick",
+                        "Buckrain Politosh",
+                        "Fresident Freepaw-Flitzen",
+                        "Azimuth Starcrack-II",
+                        "Greek Baby",
+                        "Danny Sassoon",
+                        "Vodorok Pagina",
+                        "Biquinn Thunderhands-Elfson",
+                        "Dunkrod Gluck",
+                        "Brockwyn 1000-Babies",
+                        "Exquizardus Sunset-Mitchellham",
+                        "Ping Pong-Leg",
+                        "Tootee Frootee",
+                        "Logan Hymen-Valencia",
+                        "Ronce Lafontaine",
+                        "Jeneric Tounguetaste",
+                        "Frizzy Totay",
+                        "Goblin! -",
+                        "Rustrap D'Pencil",
+                        "Nacho Thigh-Juice",
+                        "Lemmicus D'Seuss",
+                        "Rorschach Tok-Tok",
+                        "Brick-Spunck Badgerballs",
+                        "Laporte Dipthong",
+                        "Boner P'TiffyJr.",
+                        "Horris Sophistofable",
+                        "BarkBark HooHaw",
+                        "Lucifan Y.Sassafras",
+                        "Simon Asterisk",
+                        "Carlton TheSeeker",
+                        "Shiprecc -",
+                        "???? -",
+                        "Pete Crapletters",
+                        "7th-Hope Skelligan",
+                        "Bouncy House",
+                        "Snip-Snip Testafuente",
+                        "Herpsichord -",
+                        "Tri-pecker Floam",
+                        "Party Machine",
+                        "Oracle Vidunatru",
+                        "Nogbone Danky",
+                        "Lavalamp Sequeltank",
+                        "SirAmblin Flecator",
+                        "Hockbew Egress",
+                        "Gumbo Le Troutstain",
+                        "I1D1G53 -",
+                        "Busted-Lip Catharsises",
+                        "Steelgrippe D'Forte"})
+
+            For Each name As String In x
+                Dim y = name.Split(" ")
+                cmd.Parameters.AddWithValue("@Firstname", y(0))
+                cmd.Parameters.AddWithValue("@Lastname", y(1))
+                cmd.Parameters.AddWithValue("@Password", CInt((99999 * Rnd()) + 10000))
+                cmd.Parameters.AddWithValue("@Email", y(0) + "@mail.com")
+                cmd.Parameters.AddWithValue("@userGroup", Math.Floor(3 * Rnd()))
+                cmd.ExecuteNonQuery()
+            Next
+
+            conn.Close()
+        End Using
     End Sub
     Private Function DuplicateDatabase(fullpath As String) As Boolean
         Return System.IO.File.Exists(fullpath)
@@ -55,7 +129,6 @@ Public Class Database
                     Case User.UserGroupEnum.StaffNurse
                         i = 2
                     Case Else
-
                 End Select
             End While
             conn.Close()
@@ -72,15 +145,14 @@ Public Class Database
         Public Function InsertNewUser(user As User) As Integer
             Using conn As New SQLiteConnection(connectionString)
                 Dim insertNewUserQuery As String =
-                        "INSERT INTO Users(Firstname,Lastname,Password,Email,userGroup,isSuperUser) 
-                        VALUES(@Firstname,@Lastname,@Password,@Email,@userGroup,@isSuperUser)"
+                        "INSERT INTO Users(Firstname,Lastname,Password,Email,userGroup) 
+                        VALUES(@Firstname,@Lastname,@Password,@Email,@userGroup)"
                 Dim cmd As New SQLiteCommand(insertNewUserQuery, conn)
                 cmd.Parameters.AddWithValue("@Firstname", user.Firstname)
                 cmd.Parameters.AddWithValue("@Lastname", user.Lastname)
                 cmd.Parameters.AddWithValue("@Password", user.Password)
                 cmd.Parameters.AddWithValue("@Email", user.Email)
                 cmd.Parameters.AddWithValue("@userGroup", CInt(user.UserGroup))
-                cmd.Parameters.AddWithValue("@isSuperUser", user.IsSuperUser)
                 conn.Open()
                 Dim i As Integer = cmd.ExecuteNonQuery()
                 conn.Close()
@@ -115,14 +187,13 @@ Public Class Database
         ''' <returns>Returns number of rows affected</returns>
         Public Function UpdateUser(user As User) As Integer
             Using conn As New SQLiteConnection(connectionString)
-                Dim updateUserQuery As String = "UPDATE Users SET Firstname = @Firstname, Lastname = @Lastname, Password = @Password, Email = @Email, userGroup = @userGroup, isSuperUser = @isSuperUser WHERE userId = @userId"
+                Dim updateUserQuery As String = "UPDATE Users SET Firstname = @Firstname, Lastname = @Lastname, Password = @Password, Email = @Email, userGroup = @userGroup WHERE userId = @userId"
                 Dim cmd As New SQLiteCommand(updateUserQuery, conn)
                 cmd.Parameters.AddWithValue("@Firstname", user.Firstname)
                 cmd.Parameters.AddWithValue("@Lastname", user.Lastname)
                 cmd.Parameters.AddWithValue("@Password", user.Password)
                 cmd.Parameters.AddWithValue("@Email", user.Email)
                 cmd.Parameters.AddWithValue("@userGroup", CInt(user.UserGroup))
-                cmd.Parameters.AddWithValue("@isSuperUser", user.IsSuperUser)
                 cmd.Parameters.AddWithValue("@userId", user.UserID)
                 conn.Open()
                 Dim i As Integer = cmd.ExecuteNonQuery()
@@ -144,7 +215,7 @@ Public Class Database
                 Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
                 Dim selectedUser As User = Nothing
                 While reader.Read()
-                    selectedUser = New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum), CInt(reader("isSuperUser")))
+                    selectedUser = New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum))
                 End While
                 Return selectedUser
             End Using
@@ -161,7 +232,7 @@ Public Class Database
                 SqlConn.Open()
                 Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
                 While reader.Read()
-                    users.Add(New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum), CInt(reader("isSuperUser"))))
+                    users.Add(New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum)))
                 End While
                 Return users
             End Using

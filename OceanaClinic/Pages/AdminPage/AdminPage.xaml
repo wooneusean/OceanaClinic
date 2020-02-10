@@ -159,12 +159,6 @@
                         Binding="{Binding UserGroup}"
                         Header="User Group"
                         MaxLength="255"/>
-                    <DataGridCheckBoxColumn
-                        Binding="{Binding IsSuperUser}"
-                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
-                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
-                        Header="Is Admin">
-                    </DataGridCheckBoxColumn>
                 </DataGrid.Columns>
             </DataGrid>
 

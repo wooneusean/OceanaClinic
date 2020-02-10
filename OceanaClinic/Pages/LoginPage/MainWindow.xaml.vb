@@ -1,15 +1,14 @@
 ﻿Imports MaterialDesignThemes.Wpf
-
 ' Material Design Toolkit: https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit
 Class MainWindow
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
     Sub New()
-
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
         MySnackbar.MessageQueue = msgQ
+        gVars.db.Init()
     End Sub
     Private Sub btnLogin_Click(sender As Object, e As RoutedEventArgs) Handles btnLogin.Click
         If txtEmail.Text = "" Or txtPassword.Password = "" Then

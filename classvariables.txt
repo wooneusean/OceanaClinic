@@ -13,8 +13,7 @@ Database Class:
 
 Patient Table:
 Full name
-ID No.
-Passport No.
+ID No. / Passport No.
 Current Address
 Contact Details(House, email)
 Weight, Height, Blood type
@@ -25,7 +24,7 @@ CREATE TABLE "Users" (
 	"Firstname"	TEXT,
 	"Lastname"	TEXT,
 	"Password"	TEXT,
-	"Email"	TEXT,
+	"Email"		TEXT,
 	"userGroup"	INTEGER,
 	"isSuperUser"	INTEGER
 );

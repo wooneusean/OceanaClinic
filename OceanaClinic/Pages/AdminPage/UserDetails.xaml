@@ -40,9 +40,7 @@
             <TextBox Text="{Binding User.Email}" Margin="25,5" x:Name="txtEmail"></TextBox>
             <Label Margin="25,5" Content="UserGroup"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource UserGroupEnum}}" SelectedItem="{Binding User.UserGroup}" Margin="25,5" x:Name="cbbUserGroup"></ComboBox>
-            <Label Margin="25,5" Content="Is Admin"/>
-            <CheckBox Padding="0,15" IsChecked="{Binding User.IsSuperUser}" Margin="25,5" x:Name="cbIsSuperUser" FontSize="16"></CheckBox>
-            <StackPanel Margin="12,0,15,10"  Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Margin="0,5,0,10"  Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button CommandParameter="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"  Width="80" Height="40" Margin="25,5" Content="Save"/>
                 <Button CommandParameter="False" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="40" Margin="25,5" Content="Discard"/>
             </StackPanel>

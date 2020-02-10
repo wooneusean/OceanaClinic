@@ -1,6 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Globalization
-Imports MaterialDesignThemes.Wpf
+﻿Imports MaterialDesignThemes.Wpf
 
 Public Class AdminPage
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))

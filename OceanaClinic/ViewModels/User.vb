@@ -13,15 +13,13 @@ Public Class User
     Private _Password As String
     Private _Email As String
     Private _userGroup As UserGroupEnum
-    Private _isSuperUser As Integer
-    Public Sub New(ByVal __userId As Integer, ByVal __Firstname As String, ByVal __Lastname As String, ByVal __Password As String, ByVal __Email As String, ByVal __userGroup As UserGroupEnum, ByVal __isSuperUser As Integer)
+    Public Sub New(ByVal __userId As Integer, ByVal __Firstname As String, ByVal __Lastname As String, ByVal __Password As String, ByVal __Email As String, ByVal __userGroup As UserGroupEnum)
         _Firstname = __Firstname.Trim()
         _Lastname = __Lastname.Trim()
         _Password = __Password.Trim()
         _Email = __Email.Trim()
         _userId = __userId
         _userGroup = __userGroup
-        _isSuperUser = __isSuperUser
     End Sub
     Public Sub New(ByVal _userObject As Object)
         Dim x As User = _userObject
@@ -31,7 +29,6 @@ Public Class User
         _Email = x.Email.Trim()
         _userId = x.UserID
         _userGroup = x.UserGroup
-        _isSuperUser = x.IsSuperUser
     End Sub
     Public Sub New()
         _userId = 0
@@ -40,7 +37,6 @@ Public Class User
         _Password = ""
         _Email = ""
         _userGroup = UserGroupEnum.Doctor
-        _isSuperUser = 0
     End Sub
     Public Property UserID() As Integer
         Get
@@ -94,15 +90,6 @@ Public Class User
         Set(ByVal value As UserGroupEnum)
             _userGroup = value
             OnPropertyChanged(NameOf(UserGroup))
-        End Set
-    End Property
-    Public Property IsSuperUser() As Integer
-        Get
-            Return _isSuperUser
-        End Get
-        Set(ByVal value As Integer)
-            _isSuperUser = value
-            OnPropertyChanged(NameOf(IsSuperUser))
         End Set
     End Property
 End Class
