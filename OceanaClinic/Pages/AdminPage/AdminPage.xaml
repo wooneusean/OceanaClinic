@@ -1,0 +1,174 @@
+﻿<Window x:Class="AdminPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:OceanaClinic"
+        mc:Ignorable="d"
+        Title="Oceana Admin Page" Height="720" Width="1280"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontSize="20"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" Loaded="Window_Loaded">
+    <Window.Resources>
+        <sys:Double x:Key="iconSize">25</sys:Double>
+        <sys:Double x:Key="iconButtonSize">50</sys:Double>
+        <local:PasswordTextConverter x:Key="PasswordTextConverter" />
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <materialDesign:DialogHost.DialogContent>
+            <!-- put your dialog content here-->
+            <Grid Width="800" Background="White" Name="MultiDeleteDialogBox">
+                <StackPanel>
+                    <TextBlock TextAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" 
+                   Text="Are you sure you want to delete&#x0a;the users listed below?" Margin="10" VerticalAlignment="Top"/>
+                    <DataGrid MaxHeight="600" ColumnWidth="*" x:Name="dgDialogBoxUsers"
+                          CanUserSortColumns="True"
+                          SelectionMode="Single"
+                          CanUserAddRows="False"
+                          AutoGenerateColumns="False"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                          FontSize="14" IsReadOnly="True"
+                          ItemsSource="{Binding SelectedItems, ElementName=dgUsers}" Margin="10,0" MinHeight="80" VerticalAlignment="Center">
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="16"/>
+                                <Setter Property="Background" Value="#E8E8E8"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <materialDesign:DataGridTextColumn Binding="{Binding UserID}" Header="UserID" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Firstname}" Header="Firstname" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Lastname}" Header="Lastname" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Email}" Header="Email" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding UserGroup}" Header="User Group" MaxLength="255"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10">
+                        <Button Margin="5,0" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Content="Yes" Width="75" Height="35">
+                            <Button.CommandParameter>
+                                <sys:Boolean>
+                                    True
+                                </sys:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                        <Button Margin="5,0" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Content="No" Width="75" Height="35">
+                            <Button.CommandParameter>
+                                <sys:Boolean>
+                                    False
+                                </sys:Boolean>
+                            </Button.CommandParameter>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="12">
+                <Grid>
+                    <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Admin Page</TextBlock>
+                    <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right">
+                        <Button.Content>
+                            <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="30" Foreground="White" />
+                        </Button.Content>
+                    </Button>
+                    <Button x:Name="btnEdit" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" HorizontalAlignment="Left" Height="55" Width="auto" Margin="312,0,0,0" ToolTip="Edit Selected User" VerticalAlignment="Top" TabIndex="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit Selected User"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btnRemoveUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="476,0,0,0" ToolTip="Remove Selected User" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" TabIndex="1" >
+                        <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Selected User"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btnAddUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="171,0,0,0" ToolTip="Remove Selected User" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" TabIndex="1" >
+                        <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add New User"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </materialDesign:ColorZone>
+            <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="10,84,9.6,10.4" 
+                  CanUserSortColumns="True"
+                  SelectionMode="Extended"
+                  CanUserAddRows="False"
+                  AutoGenerateColumns="False"
+                  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                  FontSize="18" IsReadOnly="True">
+                <!--ItemsSource="{Binding Users}"-->
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="Background" Value="#E8E8E8"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <materialDesign:DataGridTextColumn
+                        Binding="{Binding UserID}"
+                        Header="UserID"
+                        MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn
+                        Binding="{Binding Firstname}"
+                        Header="Firstname"
+                        MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn
+                        Binding="{Binding Lastname}"
+                        Header="Lastname"
+                        MaxLength="255"/>
+                    <DataGridTemplateColumn Header="Password">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Password, Converter={StaticResource PasswordTextConverter}}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!--<materialDesign:DataGridTextColumn
+                    Binding="{Binding Password}"
+                    Header="Password"
+                    MaxLength="255"/>-->
+                    <materialDesign:DataGridTextColumn
+                        Binding="{Binding Email}"
+                        Header="Email"
+                        MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn
+                        Binding="{Binding UserGroup}"
+                        Header="User Group"
+                        MaxLength="255"/>
+                    <DataGridCheckBoxColumn
+                        Binding="{Binding IsSuperUser}"
+                        ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
+                        Header="Is Admin">
+                    </DataGridCheckBoxColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
+        </Grid>
+    </materialDesign:DialogHost>
+</Window>

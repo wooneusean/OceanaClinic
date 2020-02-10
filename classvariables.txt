@@ -1,0 +1,31 @@
+User Class:
+id
+Name
+Password
+Email
+userGroup{admin,doctor,staff nurse, patient}
+isSuperUser
+
+Admin inherits user class
+
+Database Class:
+
+
+Patient Table:
+Full name
+ID No.
+Passport No.
+Current Address
+Contact Details(House, email)
+Weight, Height, Blood type
+Allergies
+
+CREATE TABLE "Users" (
+	"userId"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"Firstname"	TEXT,
+	"Lastname"	TEXT,
+	"Password"	TEXT,
+	"Email"	TEXT,
+	"userGroup"	INTEGER,
+	"isSuperUser"	INTEGER
+);

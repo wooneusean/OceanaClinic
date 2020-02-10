@@ -1,0 +1,64 @@
+﻿<Window x:Class="MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OceanaClinic"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Login" Height="600" Width="400"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontSize="14"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" ResizeMode="NoResize">
+
+    <!--<materialDesign:DialogHost>
+        <materialDesign:DialogHost.DialogContent>
+
+            -->
+    <!--put your dialog content here-->
+    <!--
+
+            <Grid Background="White" Name="DialogBox" Margin="10" Width="85" Height="85">
+                <ProgressBar Name="LoadingSpinner" Style="{DynamicResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="40" Height="40" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="5"/>
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+
+        -->
+    <!--put the content over which the dialog is shown here (e.g. your main window grid)-->
+    <!--
+
+        
+    </materialDesign:DialogHost>-->
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".05*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width=".05*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="21*"/>
+        </Grid.RowDefinitions>
+
+
+        <materialDesign:Card Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" Height="370" VerticalAlignment="Top">
+            <Grid>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label Margin="25,10,25,5" VerticalContentAlignment="Center" Content="Email" FontSize="20" MinWidth="272" MinHeight="32"/>
+                    <TextBox Margin="28,5,28,10" x:Name="txtEmail" Style="{DynamicResource MaterialDesignFloatingHintTextBox}" TabIndex="0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="20" MinWidth="272" MinHeight="45"/>
+                    <Label Margin="25,5" VerticalContentAlignment="Center" Content="Password" FontSize="20" MinHeight="32" MinWidth="272"/>
+                    <PasswordBox Margin="28,5" x:Name="txtPassword" Style="{DynamicResource MaterialDesignFloatingHintPasswordBox}" FontSize="20" MinWidth="272" MinHeight="45" TabIndex="1" />
+                    <!--<Label x:Name="lblErrorText" Visibility="Hidden" Margin="25,5" FontSize="12" Foreground="Red" Content="Wrong Email or Password!"/>-->
+                    <Button x:Name="btnLogin" Margin="25,15" Content="Login" FontSize="20" Height="45" TabIndex="3"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:Card>
+
+        <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Grid.Column="1" Margin="25,0,25,0" Grid.Row="1" />
+        <Image Source="/oceana.png" Margin="10.4,10,10.2,10.2" Grid.Column="1"/>
+    </Grid>
+</Window>

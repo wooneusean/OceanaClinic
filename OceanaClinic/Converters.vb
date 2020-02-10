@@ -1,0 +1,35 @@
+﻿Imports System.Globalization
+Class PasswordTextConverter
+    Implements IValueConverter
+    Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
+        Dim passwordString As String = value.ToString()
+        Dim returnString As String = ""
+        For i = 1 To passwordString.Length
+            returnString += "*"
+        Next
+        Return returnString
+    End Function
+
+    Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
+        Throw New NotImplementedException()
+    End Function
+End Class
+Class UserDetailsConverter
+    Implements IMultiValueConverter
+    Public Function Convert(values() As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IMultiValueConverter.Convert
+        Return values.Clone()
+    End Function
+
+    Public Function ConvertBack(value As Object, targetTypes() As Type, parameter As Object, culture As CultureInfo) As Object() Implements IMultiValueConverter.ConvertBack
+        Throw New NotImplementedException()
+    End Function
+End Class
+Class UtilityConverter
+    Public Shared Function SelectedItemsToListOfUsers(selectedItems As IList) As List(Of User)
+        Dim users As New List(Of User)
+        For Each user As User In selectedItems
+            users.Add(New User(user.UserID, user.Firstname, user.Lastname, user.Password, user.Email, user.UserGroup, user.IsSuperUser))
+        Next
+        Return users
+    End Function
+End Class
