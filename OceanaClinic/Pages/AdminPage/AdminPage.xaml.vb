@@ -35,6 +35,9 @@ Public Class AdminPage
     End Sub
 
     Private Async Sub btnEdit_Click(sender As Object, e As RoutedEventArgs) Handles btnEdit.Click
+        If dgUsers.SelectedIndex = -1 Then
+            Return
+        End If
         Dim selectedUser As User = New User(dgUsers.SelectedValue)
         Dim result As Boolean = Await DialogHost.Show(New UserDetails(selectedUser), "RootDialog")
         If result = True Then

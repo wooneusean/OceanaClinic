@@ -5,7 +5,6 @@ Public Class User
         Admin
         Doctor
         StaffNurse
-        Patient
     End Enum
     Private _userId As Integer
     Private _Firstname As String
