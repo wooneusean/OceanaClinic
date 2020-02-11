@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:OceanaClinic"
         mc:Ignorable="d"
-        Title="ReceptionistPage" Height="1280" Width="720"
+        Title="ReceptionistPage" Height="720" Width="1280"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Medium"
@@ -14,11 +15,58 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized">
+    <Window.Resources>
+        <sys:Double x:Key="iconSize">25</sys:Double>
+        <sys:Double x:Key="iconButtonSize">50</sys:Double>
+    </Window.Resources>
 
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
-            <Grid></Grid>
+            <Grid x:Name="ReceptionistDialog"></Grid>
         </materialDesign:DialogHost.DialogContent>
-        <Grid></Grid>
+        <Grid>
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="12">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Receptionist Page</TextBlock>
+                        <Button x:Name="btnAddUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="25,0,0,0" ToolTip="Add New Patient" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
+                            <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Patient"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="btnEdit" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" HorizontalAlignment="Left" Height="55" Width="Auto" Margin="0" ToolTip="Edit Selected Patient" VerticalAlignment="Top" TabIndex="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit Patient"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="btnRemoveUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="0" ToolTip="Remove Selected Patient" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
+                            <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Patient"/>
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
+                        <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="30" Foreground="White" />
+                    </Button>
+                </Grid>
+            </materialDesign:ColorZone>
+        </Grid>
     </materialDesign:DialogHost>
 </Window>

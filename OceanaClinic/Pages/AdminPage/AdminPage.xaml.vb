@@ -1,4 +1,5 @@
-﻿Imports MaterialDesignThemes.Wpf
+﻿Imports System.Runtime.InteropServices
+Imports MaterialDesignThemes.Wpf
 
 Public Class AdminPage
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
@@ -54,6 +55,16 @@ Public Class AdminPage
             gVars.dbAdmin.InsertNewUser(inUser)
             dgUsers.ItemsSource = gVars.dbAdmin.GetAllUsers()
             msgQ.Enqueue("New user (" + inUser.Email + ") successfully updated!")
+        End If
+    End Sub
+
+    Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgUsers.MouseDoubleClick
+        btnEdit_Click(sender, Nothing)
+    End Sub
+
+    Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
+        If e.Key = Key.Delete Then
+            btnRemoveUser_Click(sender, Nothing)
         End If
     End Sub
 End Class

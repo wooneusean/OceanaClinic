@@ -14,7 +14,7 @@ Public Class Database
 	                ""Firstname""	TEXT,
 	                ""Lastname""	TEXT,
 	                ""Password""	TEXT,
-	                ""Email""	    TEXT,
+	                ""Email""	    TEXT UNIQUE,
 	                ""userGroup""	INTEGER
                 );"
             System.IO.Directory.CreateDirectory(location)
@@ -31,8 +31,7 @@ Public Class Database
         Using conn As New SQLiteConnection(connectionString)
             conn.Open()
             Dim dummyDataQuery As String =
-                "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) VALUES (@Firstname, @Lastname, @Password, @Email, @userGroup)"
-            Dim cmd As New SQLiteCommand(dummyDataQuery, conn)
+                "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) VALUES(""Admin"",""Man"",""123"",""asd"",""0"")," + Environment.NewLine
 
             Dim x As New List(Of String)
             x.AddRange({"Queece Boringman",
@@ -83,20 +82,24 @@ Public Class Database
                         "Lavalamp Sequeltank",
                         "SirAmblin Flecator",
                         "Hockbew Egress",
-                        "Gumbo Le Troutstain",
+                        "Gumbo LeTroutstain",
                         "I1D1G53 -",
                         "Busted-Lip Catharsises",
                         "Steelgrippe D'Forte"})
 
             For Each name As String In x
                 Dim y = name.Split(" ")
-                cmd.Parameters.AddWithValue("@Firstname", y(0))
-                cmd.Parameters.AddWithValue("@Lastname", y(1))
-                cmd.Parameters.AddWithValue("@Password", CInt((99999 * Rnd()) + 10000))
-                cmd.Parameters.AddWithValue("@Email", y(0) + "@mail.com")
-                cmd.Parameters.AddWithValue("@userGroup", Math.Floor(3 * Rnd()))
-                cmd.ExecuteNonQuery()
+                If name = x.Last() Then
+                    Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"");", y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
+                    dummyDataQuery += z
+                Else
+                    Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")," + Environment.NewLine, y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
+                    dummyDataQuery += z
+                End If
             Next
+
+            Dim cmd As New SQLiteCommand(dummyDataQuery, conn)
+            cmd.ExecuteNonQuery()
 
             conn.Close()
         End Using
@@ -206,12 +209,28 @@ Public Class Database
         ''' </summary>
         ''' <param name="userId">userId to find</param>
         ''' <returns>A user associated with the given userId</returns>
-        Public Function GetUser(userId As Integer) As User
+        Public Function GetUserById(userId As Integer) As User
             Using SqlConn As New SQLiteConnection(connectionString)
                 Dim getUserQuery As String = "SELECT * FROM Users WHERE userId = @userId"
                 Dim SqlCmd As New SQLiteCommand(getUserQuery, SqlConn)
                 SqlCmd.Parameters.AddWithValue("@userId", userId)
                 SqlConn.Open()
+                Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
+                Dim selectedUser As User = Nothing
+                While reader.Read()
+                    selectedUser = New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum))
+                End While
+                Return selectedUser
+            End Using
+        End Function
+
+        Public Function GetUserByEmail(email As String) As User
+            Using SqlConn As New SQLiteConnection(connectionString)
+                Dim getUserQuery As String = "SELECT * FROM Users WHERE Email = @email"
+                Dim SqlCmd As New SQLiteCommand(getUserQuery, SqlConn)
+                SqlCmd.Parameters.AddWithValue("@email", email)
+                SqlConn.Open()
+
                 Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
                 Dim selectedUser As User = Nothing
                 While reader.Read()

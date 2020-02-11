@@ -14,7 +14,7 @@
         TextElement.FontSize="20"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" Loaded="Window_Loaded">
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" Loaded="Window_Loaded" MinWidth="750" MinHeight="430" PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <sys:Double x:Key="iconSize">25</sys:Double>
         <sys:Double x:Key="iconButtonSize">50</sys:Double>
@@ -72,34 +72,9 @@
         <Grid>
             <materialDesign:ColorZone Mode="PrimaryMid" Padding="12">
                 <Grid>
+                    <StackPanel Orientation="Horizontal" >
                     <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Admin Page</TextBlock>
-                    <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right">
-                        <Button.Content>
-                            <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="30" Foreground="White" />
-                        </Button.Content>
-                    </Button>
-                    <Button x:Name="btnEdit" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" HorizontalAlignment="Left" Height="55" Width="auto" Margin="312,0,0,0" ToolTip="Edit Selected User" VerticalAlignment="Top" TabIndex="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="4*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit Selected User"/>
-                        </Grid>
-                    </Button>
-                    <Button x:Name="btnRemoveUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="476,0,0,0" ToolTip="Remove Selected User" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" TabIndex="1" >
-                        <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="4*"/>
-                            </Grid.ColumnDefinitions>
-                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Selected User"/>
-                        </Grid>
-                    </Button>
-                    <Button x:Name="btnAddUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="171,0,0,0" ToolTip="Remove Selected User" VerticalAlignment="Top" HorizontalAlignment="Left" Width="auto" TabIndex="1" >
+                    <Button x:Name="btnAddUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="25,0,0,0" ToolTip="Add New User" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
                         <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -107,8 +82,33 @@
                                 <ColumnDefinition Width="4*"/>
                             </Grid.ColumnDefinitions>
                             <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add New User"/>
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add User"/>
                         </Grid>
+                    </Button>
+                    <Button x:Name="btnEdit" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" HorizontalAlignment="Left" Height="55" Width="Auto" Margin="0" ToolTip="Edit Selected User" VerticalAlignment="Top" TabIndex="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit User"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btnRemoveUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="55" Margin="0" ToolTip="Remove Selected User" VerticalAlignment="Top" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
+                        <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove User"/>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+                    <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
+                        <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="30" Foreground="White" />
                     </Button>
                 </Grid>
             </materialDesign:ColorZone>
