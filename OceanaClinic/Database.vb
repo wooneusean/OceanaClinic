@@ -85,7 +85,8 @@ Public Class Database
                         "Gumbo LeTroutstain",
                         "I1D1G53 -",
                         "Busted-Lip Catharsises",
-                        "Steelgrippe D'Forte"})
+                        "Steelgrippe D'Forte",
+                        "Naru Sheni"})
 
             For Each name As String In x
                 Dim y = name.Split(" ")
