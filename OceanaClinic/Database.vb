@@ -8,7 +8,7 @@ Public Class Database
     Private Shared connectionString As String = String.Format("Data Source = {0}", fullpath)
     Public Sub Init()
         If Not DuplicateDatabase(fullpath) Then
-            Dim createTable As String =
+            Dim createUsersTable As String =
                 "CREATE TABLE ""Users"" (
 	                ""userId""	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	                ""Firstname""	TEXT,
@@ -17,11 +17,27 @@ Public Class Database
 	                ""Email""	    TEXT UNIQUE,
 	                ""userGroup""	INTEGER
                 );"
+            Dim createPatientsTable As String =
+                "CREATE TABLE ""Patients"" (
+	                ""PatientId""	TEXT NOT NULL UNIQUE,
+	                ""Firstname""	TEXT,
+	                ""Lastname""	TEXT,
+	                ""Phone""	TEXT,
+	                ""House""	TEXT,
+	                ""Email""	TEXT,
+	                ""Weight""	INTEGER DEFAULT 0,
+	                ""Height""	INTEGER DEFAULT 0,
+	                ""BloodType""	INTEGER DEFAULT -1,
+	                ""Allergies""	TEXT DEFAULT 'None',
+	                PRIMARY KEY(""PatientId"")
+                );"
             System.IO.Directory.CreateDirectory(location)
             Using SqlConn As New SQLiteConnection(connectionString)
-                Dim SqlCmd As New SQLiteCommand(createTable, SqlConn)
+                Dim createUsersTableCmd As New SQLiteCommand(createUsersTable, SqlConn)
+                Dim createPatientTableCmd As New SQLiteCommand(createPatientsTable, SqlConn)
                 SqlConn.Open()
-                SqlCmd.ExecuteNonQuery()
+                createUsersTableCmd.ExecuteNonQuery()
+                createPatientTableCmd.ExecuteNonQuery()
                 SqlConn.Close()
             End Using
             DummyData()
@@ -30,8 +46,13 @@ Public Class Database
     Private Sub DummyData()
         Using conn As New SQLiteConnection(connectionString)
             conn.Open()
-            Dim dummyDataQuery As String =
-                "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) VALUES(""Admin"",""Man"",""123"",""asd"",""0"")," + Environment.NewLine
+            Dim dummyUserDataQuery As String =
+                "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) 
+                VALUES(""Admin"",""Man"",""123"",""asd"",""0"")," + Environment.NewLine
+
+            Dim dummyPatientDataQuery As String =
+                "INSERT INTO Patients (PatientId, Firstname, Lastname, Email, Weight, Height, BloodType, Allergies)
+                VALUES" + Environment.NewLine
 
             Dim x As New List(Of String)
             x.AddRange({"Queece Boringman",
@@ -92,15 +113,28 @@ Public Class Database
                 Dim y = name.Split(" ")
                 If name = x.Last() Then
                     Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"");", y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
-                    dummyDataQuery += z
+                    Dim pz = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", 
+                                            ""{5}"",""{6}"",""{7}"");",
+                                           CInt((9999 * Rnd()) + 1000), y(0), y(1), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
+                                           CInt((80 * Rnd()) + 130), Math.Floor(3 * Rnd()), y(1))
+                    dummyUserDataQuery += z
+                    dummyPatientDataQuery += pz
                 Else
                     Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")," + Environment.NewLine, y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
-                    dummyDataQuery += z
+                    Dim pz = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", 
+                                            ""{5}"",""{6}"",""{7}""),",
+                                           CInt((9999 * Rnd()) + 1000), y(0), y(1), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
+                                           CInt((80 * Rnd()) + 130), Math.Floor(3 * Rnd()), y(1))
+                    dummyUserDataQuery += z
+                    dummyPatientDataQuery += pz
                 End If
             Next
 
-            Dim cmd As New SQLiteCommand(dummyDataQuery, conn)
-            cmd.ExecuteNonQuery()
+            Dim dummyUserDataCmd As New SQLiteCommand(dummyUserDataQuery, conn)
+            Dim dummyPatientDataCmd As New SQLiteCommand(dummyPatientDataQuery, conn)
+
+            dummyUserDataCmd.ExecuteNonQuery()
+            dummyPatientDataCmd.ExecuteNonQuery()
 
             conn.Close()
         End Using

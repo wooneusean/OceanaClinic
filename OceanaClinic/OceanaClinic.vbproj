@@ -114,11 +114,15 @@
     <Compile Include="Pages\AdminPage\UserDetails.xaml.vb">
       <DependentUpon>UserDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ReceptionistPage\BillingPage.xaml.vb">
+      <DependentUpon>BillingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReceptionistPage\ReceptionistPage.xaml.vb">
       <DependentUpon>ReceptionistPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ObservableObject.vb" />
     <Compile Include="ViewModels\Patient.vb" />
+    <Compile Include="ViewModels\BillingItem.vb" />
     <Compile Include="ViewModels\User.vb" />
     <Page Include="Pages\AdminPage\AddUser.xaml">
       <SubType>Designer</SubType>
@@ -144,6 +148,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\AdminPage\UserDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReceptionistPage\BillingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

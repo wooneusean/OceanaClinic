@@ -22,28 +22,34 @@
 
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
-            <Grid x:Name="ReceptionistDialog"></Grid>
+            <Grid x:Name="ReceptionistDialog">
+                
+            </Grid>
         </materialDesign:DialogHost.DialogContent>
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
-                <StackPanel>
-                    <ToggleButton 
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                        DockPanel.Dock="Top"
-                        HorizontalAlignment="Right" 
-                        Margin="16"
-                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-                    <materialDesign:ColorZone Mode="PrimaryMid" Padding="12">
-                        <TextBlock>Pages</TextBlock>
+                <StackPanel Width="300" Background="{DynamicResource MaterialDesignPaper}">
+                    <materialDesign:ColorZone Mode="PrimaryMid" Padding="5">
+                        <Grid>
+                            <TextBlock HorizontalAlignment="Left" Style="{StaticResource MaterialDesignHeadline5TextBlock}" TextAlignment="Center" VerticalAlignment="Center" Width="118">Pages</TextBlock>
+                            <ToggleButton 
+                                Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                                DockPanel.Dock="Top"
+                                HorizontalAlignment="Right" 
+                                Margin="16"
+                                IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
+                        </Grid>
                     </materialDesign:ColorZone>
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        Margin="4" HorizontalAlignment="Center"
+                    <Button Width="Auto" Height="Auto" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        Margin="0" Padding="16"
                         Style="{DynamicResource MaterialDesignFlatButton}">Billing</Button>
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        Margin="4" HorizontalAlignment="Center"
+
+                    <Button Width="Auto" Height="Auto" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        Margin="0" Padding="16"
                         Style="{DynamicResource MaterialDesignFlatButton}">Billing</Button>
-                    <Button Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        Margin="4" HorizontalAlignment="Center"
+
+                    <Button Width="Auto" Height="Auto" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
+                        Margin="0" Padding="16"
                         Style="{DynamicResource MaterialDesignFlatButton}">Billing</Button>
                 </StackPanel>
             </materialDesign:DrawerHost.LeftDrawerContent>
@@ -92,6 +98,24 @@
                         </Button>
                     </Grid>
                 </materialDesign:ColorZone>
+                <ContentControl x:Name="ReceptionistContent">
+                    <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="10,84,10,10" 
+                      CanUserSortColumns="True"
+                      SelectionMode="Extended"
+                      CanUserAddRows="False"
+                      AutoGenerateColumns="True"
+                      materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                      materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                      FontSize="18" IsReadOnly="True">
+                        <!--ItemsSource="{Binding Users}"-->
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="Background" Value="#E8E8E8"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                    </DataGrid>
+                </ContentControl>
             </Grid>
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>

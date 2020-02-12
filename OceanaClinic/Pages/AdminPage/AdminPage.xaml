@@ -113,7 +113,7 @@
                     </Button>
                 </Grid>
             </materialDesign:ColorZone>
-            <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="10,84,9.6,10.4" 
+            <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="10,84,10,10" 
                   CanUserSortColumns="True"
                   SelectionMode="Extended"
                   CanUserAddRows="False"

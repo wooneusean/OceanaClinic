@@ -12,19 +12,17 @@ Database Class:
 
 
 Patient Table:
-Full name
 ID No. / Passport No.
+Full name
 Current Address
 Contact Details(House, email)
 Weight, Height, Blood type
 Allergies
 
-CREATE TABLE "Users" (
-	"userId"	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	"Firstname"	TEXT,
-	"Lastname"	TEXT,
-	"Password"	TEXT,
-	"Email"		TEXT,
-	"userGroup"	INTEGER,
-	"isSuperUser"	INTEGER
-);
+Treatment Records Table:
+TreatmentId
+FK Patient ID
+ConsultationFee (standard consultation fee of rm 30) including all medicines, services
+TreatmentDetails
+PrescribedMedicines (can be null)
+PaymentMade (Bool)
