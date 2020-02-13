@@ -114,8 +114,14 @@
     <Compile Include="Pages\AdminPage\UserDetails.xaml.vb">
       <DependentUpon>UserDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ReceptionistPage\AddPatient.xaml.vb">
+      <DependentUpon>AddPatient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReceptionistPage\BillingPage.xaml.vb">
       <DependentUpon>BillingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReceptionistPage\PatientDetails.xaml.vb">
+      <DependentUpon>PatientDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReceptionistPage\ReceptionistPage.xaml.vb">
       <DependentUpon>ReceptionistPage.xaml</DependentUpon>
@@ -151,7 +157,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ReceptionistPage\AddPatient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ReceptionistPage\BillingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReceptionistPage\PatientDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

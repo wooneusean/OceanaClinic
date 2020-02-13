@@ -107,7 +107,7 @@
 						</StackPanel>
 					</Grid>
 				</materialDesign:ColorZone>
-				<ContentControl x:Name="ReceptionistContent">
+				<!--<ContentControl x:Name="ReceptionistContent">-->
 					<DataGrid ColumnWidth="*" x:Name="dgPatients" Margin="10,84,10,10" 
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
@@ -124,7 +124,7 @@
 							</Style>
 						</DataGrid.ColumnHeaderStyle>
 					</DataGrid>
-				</ContentControl>
+				<!--</ContentControl>-->
 				<materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
 			</Grid>
 		</materialDesign:DrawerHost>

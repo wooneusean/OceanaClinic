@@ -30,7 +30,6 @@ Public Class ReceptionistPage
 
     Private Sub btnReload_Click(sender As Object, e As RoutedEventArgs) Handles btnReload.Click
         refreshPatients()
-        'dgPatients.ItemsSource = gVars.dbReception.GetAllPatients()
     End Sub
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
         Dim p As Patient = e.Item

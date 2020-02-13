@@ -29,7 +29,6 @@ Public Class AdminPage
     End Sub
     Private Sub btnReload_Click(sender As Object, e As RoutedEventArgs) Handles btnReload.Click
         refreshUsers()
-        'dgPatients.ItemsSource = gVars.dbReception.GetAllPatients()
     End Sub
     Private Sub txtSearch_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtSearch.TextChanged
         CollectionViewSource.GetDefaultView(dgUsers.ItemsSource).Refresh()
