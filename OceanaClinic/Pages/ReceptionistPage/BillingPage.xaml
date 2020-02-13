@@ -21,8 +21,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <!--add something to the billingitem class, or try to rethink a better solution-->
-                <TextBlock Text="{Binding Quantity,StringFormat={0}x}" />
+                <!--<TextBlock Text="{Binding Quantity,StringFormat={0}x}" />-->
                 <TextBlock Grid.Column="1" Text="{Binding Name}" />
                 <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat=RM {0}}" />
             </Grid>

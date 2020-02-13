@@ -1,4 +1,5 @@
-﻿Imports System.ComponentModel
+﻿Imports System.Collections.ObjectModel
+Imports System.ComponentModel
 Public Class User
     Inherits ObservableObject
     Enum UserGroupEnum
@@ -91,4 +92,7 @@ Public Class User
             OnPropertyChanged(NameOf(UserGroup))
         End Set
     End Property
+End Class
+Public Class ObservableUsers
+    Inherits ObservableCollection(Of User)
 End Class

@@ -1,26 +1,38 @@
-﻿Imports System.Runtime.InteropServices
-Imports MaterialDesignThemes.Wpf
-
+﻿Imports MaterialDesignThemes.Wpf
 Public Class AdminPage
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
+    Dim _users As ObservableUsers
     Public Sub New()
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        dgUsers.ItemsSource = gVars.dbAdmin.GetAllUsers()
+        _users = Me.Resources("users")
+        refreshUsers()
         MySnackbar.MessageQueue = msgQ
         DataContext = Me
     End Sub
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
     End Sub
-
+    Public Sub refreshUsers()
+        _users.Clear()
+        For Each user As User In gVars.dbAdmin.GetAllUsers()
+            _users.Add(user)
+        Next
+    End Sub
     Private Sub btnLogout_Click(sender As Object, e As RoutedEventArgs) Handles btnLogout.Click
         Dim x As MainWindow = New MainWindow
         x.Show()
         Me.Close()
+    End Sub
+    Private Sub btnReload_Click(sender As Object, e As RoutedEventArgs) Handles btnReload.Click
+        refreshUsers()
+        'dgPatients.ItemsSource = gVars.dbReception.GetAllPatients()
+    End Sub
+    Private Sub txtSearch_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtSearch.TextChanged
+        CollectionViewSource.GetDefaultView(dgUsers.ItemsSource).Refresh()
     End Sub
     Private Async Sub btnRemoveUser_Click(sender As Object, e As RoutedEventArgs) Handles btnRemoveUser.Click
         If (dgUsers.SelectedIndex = -1) Then
@@ -65,6 +77,22 @@ Public Class AdminPage
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
         If e.Key = Key.Delete Then
             btnRemoveUser_Click(sender, Nothing)
+        End If
+    End Sub
+    Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
+        Dim u As User = e.Item
+        If u IsNot Nothing Then
+            If (Not String.IsNullOrEmpty(txtSearch.Text)) Then
+                Dim q As String = txtSearch.Text.ToLower
+                If (u.UserID.ToString.Contains(q) Or u.Firstname.ToLower.Contains(q) Or u.Lastname.ToLower.Contains(q) Or
+                u.Email.ToLower.Contains(q) Or u.UserGroup.ToString.ToLower.Contains(q)) Then
+                    e.Accepted = True
+                Else
+                    e.Accepted = False
+                End If
+            Else
+                e.Accepted = True
+            End If
         End If
     End Sub
 End Class
