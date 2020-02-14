@@ -24,19 +24,6 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <local:UserDetailsConverter x:Key="UserDetailsConverter" />
-
-        <Style x:Key="emailBoxError" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ValidEmail}" Value="False">
-                    <Setter Property="BorderBrush" Value="#89FF0000" />
-                    <Setter Property="BorderThickness" Value="2 2 2 2"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ValidEmail}" Value="True">
-                    <Setter Property="BorderBrush" Value="#89000000" />
-                    <Setter Property="BorderThickness" Value="0 0 0 1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
     <Grid x:Name="AddUserDialog">
         <StackPanel>
@@ -48,7 +35,7 @@
             <Label Margin="25,5" Content="Password"/>
             <TextBox Text="{Binding OutUser.Password}" Margin="25,5" x:Name="txtPassword"></TextBox>
             <Label Margin="25,5" Content="Email"/>
-            <TextBox Style="{StaticResource emailBoxError}" Text="{Binding OutUser.Email}" Margin="25,5" x:Name="txtEmail"/>
+            <TextBox Text="{Binding EmField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtEmail"/>
             <Label Margin="25,5" Content="UserGroup"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource UserGroupEnum}}" SelectedItem="{Binding OutUser.UserGroup}" Margin="25,5" x:Name="cbbUserGroup"></ComboBox>
             <StackPanel Margin="0,10"  Orientation="Horizontal" HorizontalAlignment="Center">

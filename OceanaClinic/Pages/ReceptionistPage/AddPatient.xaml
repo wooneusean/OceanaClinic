@@ -6,7 +6,7 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:OceanaClinic"
              mc:Ignorable="d" 
-             MinWidth="600"
+             Width="800"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              TextElement.FontWeight="Medium"
@@ -23,47 +23,41 @@
                 <x:Type TypeName="local:Patient+BloodTypeEnum"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-
-        <Style x:Key="FieldError" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding ValidEmail}" Value="False">
-                    <Setter Property="BorderBrush" Value="#89FF0000" />
-                    <Setter Property="BorderThickness" Value="2 2 2 2"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding ValidEmail}" Value="True">
-                    <Setter Property="BorderBrush" Value="#89000000" />
-                    <Setter Property="BorderThickness" Value="0 0 0 1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
     <Grid x:Name="AddUserDialog">
         <StackPanel>
             <TextBlock Margin="0,15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Add Patient" VerticalAlignment="Top" TextAlignment="Center"/>
-            <Label Margin="25,5" Content="Firstname"/>
-            <TextBox Text="{Binding OutPatient.Firstname}" Margin="25,5" x:Name="txtFirstname"></TextBox>
-            <Label Margin="25,5" Content="Lastname"/>
-            <TextBox Text="{Binding OutPatient.Lastname}" Margin="25,5" x:Name="txtLastname"></TextBox>
-            <Label Margin="25,5" Content="IC Number / Passport Number"/>
-            <TextBox Text="{Binding OutPatient.Identity}" Margin="25,5" x:Name="txtIdentity"></TextBox>
-            <Label Margin="25,5" Content="Mobile Number"/>
-            <TextBox Text="{Binding OutPatient.Mobile}" Margin="25,5" x:Name="txtMobile"></TextBox>
-            <Label Margin="25,5" Content="Current Address"/>
-            <TextBox Text="{Binding OutPatient.Address}" Margin="25,5" x:Name="txtAddress"></TextBox>
-            <Label Margin="25,5" Content="Email"/>
-            <TextBox Style="{StaticResource FieldError}" Text="{Binding OutPatient.Email}" Margin="25,5" x:Name="txtEmail"/>
-            <Label Margin="25,5" Content="Weight"/>
-            <TextBox Text="{Binding OutPatient.Weight}" Margin="25,5" x:Name="txtWeight"></TextBox>
-            <Label Margin="25,5" Content="Height"/>
-            <TextBox Text="{Binding OutPatient.Height}" Margin="25,5" x:Name="txtHeight"></TextBox>
-            <Label Margin="25,5" Content="Blood Type"/>
-            <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding OutPatient.UserGroup}" Margin="25,5" x:Name="cbbBloodType"></ComboBox>
-            <Label Margin="25,5" Content="Allergies"/>
-            <TextBox Text="{Binding OutPatient.Height}" Margin="25,5" x:Name="txtAllergies"></TextBox>
-            <StackPanel Margin="0,10"  Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button IsEnabled="{Binding AllFieldsFilled}" CommandParameter="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="40" Margin="25,5" Content="Save"/>
-                <Button CommandParameter="False" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="40" Margin="25,5" Content="Discard"/>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Width="400">
+                    <Label Margin="15,5" Content="Firstname"/>
+                    <TextBox Text="{Binding OutPatient.Firstname}" Margin="15,5" x:Name="txtFirstname" TabIndex="0" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Lastname"/>
+                    <TextBox Text="{Binding OutPatient.Lastname}" Margin="15,5" x:Name="txtLastname" TabIndex="1" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="IC Number / Passport Number"/>
+                    <TextBox Text="{Binding IdField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="123456-12-1234" Margin="15,5" x:Name="txtIdentity" TabIndex="2" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Mobile Number"/>
+                    <TextBox materialDesign:HintAssist.Hint="010-1234567" Text="{Binding OutPatient.Mobile}" Margin="15,5" x:Name="txtMobile" TabIndex="3" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Current Address"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding OutPatient.Address}" Margin="15,5" x:Name="txtAddress" TabIndex="4" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                </StackPanel>
+                <StackPanel Width="400">
+                    <Label Margin="15,5" Content="Email"/>
+                    <TextBox Text="{Binding OutPatient.Email}" Margin="15,5" x:Name="txtEmail" TabIndex="5" MaxLength="50"/>
+                    <Label Margin="15,5" Content="Weight (KG)"/>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding OutPatient.Weight}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
+                    <Label Margin="15,5" Content="Height (CM)"/>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding OutPatient.Height}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
+                    <Label Margin="15,5" Content="Blood Type"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding OutPatient.BloodType}" Margin="25,2,25,5" x:Name="cbbBloodType" TabIndex="8"></ComboBox>
+                    <Label Margin="15,5" Content="Allergies"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding OutPatient.Allergies}" Margin="15,5" x:Name="txtAllergies" TabIndex="9" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Button CommandParameter="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="50" Margin="15,5" Content="Save" IsEnabled="{Binding AllFieldsFilled}"/>
+                <Button CommandParameter="False" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="50" Margin="15,5" Content="Discard"/>
             </StackPanel>
         </StackPanel>
+        
     </Grid>
 </UserControl>

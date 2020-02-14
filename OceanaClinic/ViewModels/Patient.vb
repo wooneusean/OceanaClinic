@@ -65,9 +65,9 @@ Public Class Patient
         Mobile = ""
         Address = ""
         Email = ""
-        Weight = -1
-        Height = -1
-        BloodType = -1
+        Weight = 0
+        Height = 0
+        BloodType = 1
         Allergies = ""
     End Sub
 End Class

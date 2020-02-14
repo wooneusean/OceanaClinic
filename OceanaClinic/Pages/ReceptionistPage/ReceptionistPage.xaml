@@ -14,101 +14,68 @@
 		TextElement.FontSize="20"
 		TextOptions.TextFormattingMode="Ideal"
 		TextOptions.TextRenderingMode="Auto"
-		FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized">
-	<Window.Resources>
-		<sys:Double x:Key="iconSize">25</sys:Double>
-		<sys:Double x:Key="iconButtonSize">50</sys:Double>
-		<local:ObservablePatients x:Key="patients" />
-		<CollectionViewSource x:Key="cvsPatients" Source="{StaticResource patients}" 
+		FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" PreviewKeyDown="Window_PreviewKeyDown">
+    <Window.Resources>
+        <sys:Double x:Key="iconSize">25</sys:Double>
+        <sys:Double x:Key="iconButtonSize">50</sys:Double>
+        <local:ObservablePatients x:Key="patients" />
+        <CollectionViewSource x:Key="cvsPatients" Source="{StaticResource patients}" 
 						  Filter="CollectionViewSource_Filter">
-		</CollectionViewSource>
-	</Window.Resources>
+        </CollectionViewSource>
+    </Window.Resources>
 
-	<materialDesign:DialogHost Identifier="RootDialog">
-		<materialDesign:DialogHost.DialogContent>
-			<Grid x:Name="ReceptionistDialog">
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <materialDesign:DialogHost.DialogContent>
+            <Grid x:Name="ReceptionistDialog">
 
-			</Grid>
-		</materialDesign:DialogHost.DialogContent>
-		<materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
-			<materialDesign:DrawerHost.LeftDrawerContent>
-				<StackPanel Width="300" Background="{DynamicResource MaterialDesignPaper}">
-					<materialDesign:ColorZone Mode="PrimaryMid" Padding="5">
-						<Grid>
-							<TextBlock HorizontalAlignment="Left" Style="{StaticResource MaterialDesignHeadline5TextBlock}" TextAlignment="Center" VerticalAlignment="Center" Width="118">Pages</TextBlock>
-							<ToggleButton
-								Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-								DockPanel.Dock="Top"
-								HorizontalAlignment="Right" 
-								Margin="16"
-								IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}" />
-						</Grid>
-					</materialDesign:ColorZone>
-					<Button Width="Auto" Height="Auto" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-							Margin="0" Padding="16"
-							Style="{DynamicResource MaterialDesignFlatButton}">Billing</Button>
-
-					<Button Width="Auto" Height="Auto" Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-							Margin="0" Padding="16" x:Name="btnLogout"
-							Style="{DynamicResource MaterialDesignFlatButton}">Logout</Button>
-				</StackPanel>
-			</materialDesign:DrawerHost.LeftDrawerContent>
-			<Grid>
-				<materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
-					<Grid>
-						<StackPanel Orientation="Horizontal" >
-							<ToggleButton Style="{StaticResource MaterialDesignHamburgerToggleButton}" IsChecked="False"
-										x:Name="MenuToggleButton"/>
-							<TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Receptionist Page</TextBlock>
-							<Button x:Name="btnAddPatient" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="25,0,0,0" ToolTip="Add New Patient" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
-								<!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="1*"/>
-										<ColumnDefinition Width="4*"/>
-									</Grid.ColumnDefinitions>
-									<materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
-									<TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Patient"/>
-								</Grid>
-							</Button>
-							<Button x:Name="btnEditPatient" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="0" ToolTip="Edit Selected Patient" HorizontalAlignment="Left" Width="Auto" TabIndex="1">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="1*"/>
-										<ColumnDefinition Width="4*"/>
-									</Grid.ColumnDefinitions>
-									<materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
-									<TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit Patient"/>
-								</Grid>
-							</Button>
-							<Button x:Name="btnRemovePatient" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="0" ToolTip="Remove Selected Patient(s)" HorizontalAlignment="Left" Width="Auto" TabIndex="1">
-								<!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="1*"/>
-										<ColumnDefinition Width="4*"/>
-									</Grid.ColumnDefinitions>
-									<materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
-									<TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Patient"/>
-								</Grid>
-							</Button>
-							<TextBox x:Name="txtSearch" Width="300" Margin="6" VerticalContentAlignment="Center">
-								<materialDesign:HintAssist.Hint>
-									<materialDesign:PackIcon Kind="Magnify" Height="30" Width="30" Foreground="White" />
-								</materialDesign:HintAssist.Hint>
-							</TextBox>
-						</StackPanel>
-						<StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-							<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-								<Button x:Name="btnReload" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
-									<materialDesign:PackIcon Kind="Reload" Height="30" Width="30" Foreground="White" />
-								</Button>
-							</StackPanel>
-						</StackPanel>
-					</Grid>
-				</materialDesign:ColorZone>
-				<!--<ContentControl x:Name="ReceptionistContent">-->
-					<DataGrid ColumnWidth="*" x:Name="dgPatients" Margin="10,84,10,10" 
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Receptionist Page</TextBlock>
+                        <Button x:Name="btnAddPatient" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="25,0,0,0" ToolTip="Add New Patient" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
+                            <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Patient"/>
+                            </Grid>
+                        </Button>
+                        <Button x:Name="btnUpdatePatient" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="0" ToolTip="Update Selected Patient" HorizontalAlignment="Left" Width="Auto" TabIndex="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Margin="5" Width="{StaticResource iconSize}" Height="{StaticResource iconSize}" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Update Patient"/>
+                            </Grid>
+                        </Button>
+                        <TextBox x:Name="txtSearch" Width="300" Margin="6" VerticalContentAlignment="Center">
+                            <materialDesign:HintAssist.Hint>
+                                <materialDesign:PackIcon Kind="Magnify" Height="30" Width="30" Foreground="White" />
+                            </materialDesign:HintAssist.Hint>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnBilling" ToolTip="Go to Billing Page" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                            <materialDesign:PackIcon Kind="Receipt" Height="30" Width="30" Foreground="White" />
+                        </Button>
+                        <Button x:Name="btnReload" ToolTip="Refresh Patient List" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                            <materialDesign:PackIcon Kind="Reload" Height="30" Width="30" Foreground="White" />
+                        </Button>
+                        <Button x:Name="btnLogout" ToolTip="Log Out" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                            <materialDesign:PackIcon Kind="Power" Height="30" Width="30" Foreground="White" />
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:ColorZone>
+            <DataGrid ColumnWidth="0.5*" x:Name="dgPatients" Margin="0,80,0,0" 
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
 					  CanUserAddRows="False"
@@ -116,17 +83,14 @@
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
 					  FontSize="18" IsReadOnly="True" ItemsSource="{Binding Source={StaticResource cvsPatients}}">
-						<!--ItemsSource="{Binding Users}"-->
-						<DataGrid.ColumnHeaderStyle>
-							<Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
-								<Setter Property="FontSize" Value="18"/>
-								<Setter Property="Background" Value="#E8E8E8"/>
-							</Style>
-						</DataGrid.ColumnHeaderStyle>
-					</DataGrid>
-				<!--</ContentControl>-->
-				<materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
-			</Grid>
-		</materialDesign:DrawerHost>
-	</materialDesign:DialogHost>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="Background" Value="#E8E8E8"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+            </DataGrid>
+            <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

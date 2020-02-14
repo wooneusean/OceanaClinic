@@ -1,6 +1,5 @@
 ﻿'https://www.youtube.com/watch?v=UN7nMNVw2hk SQLite with Visual Studio
 Imports System.Data.SQLite
-
 Public Class Database
     Private Shared location As String = "data/"
     Private Shared filename As String = "main.db"
@@ -14,7 +13,7 @@ Public Class Database
 					""Firstname""	TEXT,
 					""Lastname""	TEXT,
 					""Password""	TEXT,
-					""Email""	    TEXT UNIQUE,
+					""Email""	    TEXT UNIQUE COLLATE NOCASE, 'https://stackoverflow.com/questions/1188749/how-to-change-the-collation-of-sqlite3-database-to-sort-case-insensitively
 					""userGroup""	INTEGER
 				);"
             Dim createPatientsTable As String =
@@ -306,7 +305,7 @@ Public Class ReceptionistDB
     Public Function InsertNewPatient(patient As Patient) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
             Dim insertNewUserQuery As String =
-                        "INSERT INTO Users(Firstname,Lastname,Identity,Mobile,Address,Email,Weight,Height,BloodType,Allergies) 
+                        "INSERT INTO Patients(Firstname,Lastname,Identity,Mobile,Address,Email,Weight,Height,BloodType,Allergies) 
 						VALUES(@Firstname,@Lastname,@Identity,@Mobile,@Address,@Email,@Weight,@Height,@BloodType,@Allergies)"
             Dim cmd As New SQLiteCommand(insertNewUserQuery, conn)
             cmd.Parameters.AddWithValue("@Firstname", patient.Firstname)
@@ -325,13 +324,12 @@ Public Class ReceptionistDB
             Return i
         End Using
     End Function
-    'https://stackoverflow.com/questions/16029441/how-to-delete-multiple-rows-in-sql-where-id-x-to-y/16029501 Delete multiple rows using SQL
+    ''' https://stackoverflow.com/questions/16029441/how-to-delete-multiple-rows-in-sql-where-id-x-to-y/16029501 Delete multiple rows using SQL
     ''' <summary>
     ''' Remove selected patients.
     ''' </summary>
     ''' <param name="patients">List of patients to delete</param>
     ''' <returns>Returns number of effected rows</returns>
-    ''' https://stackoverflow.com/questions/337704/parameterize-an-sql-in-clause
     Public Function RemovePatients(patients As List(Of Patient)) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
             conn.Open()
@@ -391,9 +389,9 @@ Public Class ReceptionistDB
             Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
             Dim selectedPatient As Patient = Nothing
             While reader.Read()
-                selectedPatient = New Patient(CInt(reader("PatientId")), reader("Firstname"), reader("Lastname"), reader("Identity"),
-                                             reader("Mobile"), reader("Address"), reader("Email"), CInt(reader("Weight")), CInt(reader("Height")),
-                                             CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies"))
+                selectedPatient = New Patient(CInt(reader("PatientId")), reader("Firstname").ToString, reader("Lastname").ToString, reader("Identity").ToString,
+                                             reader("Mobile").ToString, reader("Address").ToString, reader("Email").ToString, CInt(reader("Weight")), CInt(reader("Height")),
+                                             CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies").ToString)
             End While
             Return selectedPatient
         End Using
@@ -408,9 +406,9 @@ Public Class ReceptionistDB
             Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
             Dim selectedPatient As Patient = Nothing
             While reader.Read()
-                selectedPatient = New Patient(CInt(reader("PatientId")), reader("Firstname"), reader("Lastname"), reader("Identity"),
-                                             reader("Mobile"), reader("Address"), reader("Email"), CInt(reader("Weight")), CInt(reader("Height")),
-                                             CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies"))
+                selectedPatient = New Patient(CInt(reader("PatientId")), reader("Firstname").ToString, reader("Lastname").ToString, reader("Identity").ToString,
+                                             reader("Mobile").ToString, reader("Address").ToString, reader("Email").ToString, CInt(reader("Weight")), CInt(reader("Height")),
+                                             CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies").ToString)
             End While
             Return selectedPatient
         End Using

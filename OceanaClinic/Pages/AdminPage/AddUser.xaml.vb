@@ -1,56 +1,62 @@
 ﻿Imports System.ComponentModel
 Imports MaterialDesignThemes.Wpf
-
 Public Class AddUser
-    Implements INotifyPropertyChanged
-    Public Event _PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
+    Implements INotifyPropertyChanged, INotifyDataErrorInfo
 
+    Dim errorsDictionary As New Dictionary(Of String, List(Of String))
+    Public Event _PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
+    Public Event _ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
+    Public Sub ErrorsChanged(e As String)
+        RaiseEvent _ErrorsChanged(Me, New DataErrorsChangedEventArgs(e))
+        PropertyChanged(NameOf(AllFieldsFilled))
+    End Sub
     Public Sub PropertyChanged(ByVal e As String)
         RaiseEvent _PropertyChanged(Me, New PropertyChangedEventArgs(e))
     End Sub
+    Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
+        Get
+            Try
+                Dim errorCount = errorsDictionary.Values.FirstOrDefault().Count
+                If errorCount > 0 Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Catch ex As Exception
 
+            End Try
+            Return True
+        End Get
+    End Property
     Private _allFieldsFilled As Boolean
     Public ReadOnly Property AllFieldsFilled() As Boolean
         Get
             If String.IsNullOrEmpty(txtEmail.Text) Or String.IsNullOrEmpty(txtFirstname.Text) Or String.IsNullOrEmpty(txtLastname.Text) Or String.IsNullOrEmpty(txtPassword.Text) Then
                 Return False
             Else
-                If ValidEmail Then
-                    Return True
-                Else
+                If HasErrors Then
                     Return False
+                Else
+                    Return True
                 End If
             End If
         End Get
     End Property
-
-    Private _validEmail As Boolean
-    Public Property ValidEmail() As Boolean
-        Get
-            Return _validEmail
-        End Get
-        Set(ByVal value As Boolean)
-            _validEmail = value
-            PropertyChanged(NameOf(ValidEmail))
-        End Set
-    End Property
-
-    Private _outUser As User
     Public Property OutUser() As User
+    Public Property EmField() As String
         Get
-            Return _outUser
+            Return OutUser.Email
         End Get
-        Set(ByVal value As User)
-            _outUser = value
+        Set(ByVal value As String)
+            OutUser.Email = value
         End Set
     End Property
-
     Sub New(ByRef inUser As User)
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        _outUser = inUser
+        OutUser = inUser
         Me.DataContext = Me
     End Sub
 
@@ -59,13 +65,38 @@ Public Class AddUser
     End Sub
 
     Private Sub txtEmail_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtEmail.TextChanged
-        Dim userFound = gVars.dbAdmin.GetUserByEmail(txtEmail.Text)
-        If (userFound Is Nothing) Then
-            ValidEmail = True
-            PropertyChanged(NameOf(AllFieldsFilled))
-        Else
-            ValidEmail = False
-            PropertyChanged(NameOf(AllFieldsFilled))
-        End If
+        PropertyChanged(NameOf(AllFieldsFilled))
+        Validate()
     End Sub
+    Private Sub Validate()
+        Task.Run(Sub() ValidateEmail())
+    End Sub
+    Private Sub ValidateEmail()
+        Dim errorList As List(Of String)
+        If errorsDictionary.TryGetValue(NameOf(EmField), errorList) = False Then
+            errorList = New List(Of String)
+        Else
+            errorList.Clear()
+        End If
+
+        If (String.IsNullOrWhiteSpace(EmField)) Then
+            errorList.Add("Email cannot be empty!")
+        ElseIf (Not (gVars.dbAdmin.GetUserByEmail(EmField) Is Nothing)) Then
+            errorList.Add("User with same email already exist in database!")
+        End If
+
+        errorsDictionary(NameOf(EmField)) = errorList
+        ErrorsChanged(NameOf(EmField))
+    End Sub
+
+    Public Function GetErrors(e As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
+        Dim errors As New List(Of String)
+        If (Not String.IsNullOrWhiteSpace(e)) Then
+            Dim outErrors As New List(Of String)
+            errorsDictionary.TryGetValue(e, outErrors)
+            Return outErrors
+        Else
+            Return Nothing
+        End If
+    End Function
 End Class

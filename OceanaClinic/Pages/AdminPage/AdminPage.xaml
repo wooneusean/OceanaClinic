@@ -118,16 +118,16 @@
                         </TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnReload" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                        <Button x:Name="btnReload" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Refresh User List" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
                             <materialDesign:PackIcon Kind="Reload" Height="30" Width="30" Foreground="White" />
                         </Button>
-                        <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
-                            <materialDesign:PackIcon Kind="LogoutVariant" Height="30" Width="30" Foreground="White" />
+                        <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Log out" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
+                            <materialDesign:PackIcon Kind="Power" Height="30" Width="30" Foreground="White" />
                         </Button>
                     </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
-            <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="10,84,10,10" 
+            <DataGrid ColumnWidth="*" x:Name="dgUsers" Margin="0,80,0,0" 
                   CanUserSortColumns="True"
                   SelectionMode="Extended"
                   CanUserAddRows="False"

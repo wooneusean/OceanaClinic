@@ -41,7 +41,7 @@ Public Class AdminPage
         Dim selectedUsers As List(Of User) = UtilityConverter.SelectedItemsToListOfUsers(dgUsers.SelectedItems)
         If result = True Then
             gVars.dbAdmin.RemoveUsers(selectedUsers)
-            dgUsers.ItemsSource = gVars.dbAdmin.GetAllUsers()
+            refreshUsers()
             msgQ.Enqueue("Successfully removed " + selectedUsers.Count.ToString + " users!")
         End If
     End Sub
@@ -54,7 +54,7 @@ Public Class AdminPage
         Dim result As Boolean = Await DialogHost.Show(New UserDetails(selectedUser), "RootDialog")
         If result = True Then
             gVars.dbAdmin.UpdateUser(selectedUser)
-            dgUsers.ItemsSource = gVars.dbAdmin.GetAllUsers()
+            refreshUsers()
             msgQ.Enqueue("User of UserID(" + selectedUser.UserID.ToString + ") successfully updated!")
         End If
     End Sub
@@ -64,7 +64,7 @@ Public Class AdminPage
         Dim result As Boolean = Await DialogHost.Show(New AddUser(inUser), "RootDialog")
         If result = True Then
             gVars.dbAdmin.InsertNewUser(inUser)
-            dgUsers.ItemsSource = gVars.dbAdmin.GetAllUsers()
+            refreshUsers()
             msgQ.Enqueue("New user (" + inUser.Email + ") successfully updated!")
         End If
     End Sub

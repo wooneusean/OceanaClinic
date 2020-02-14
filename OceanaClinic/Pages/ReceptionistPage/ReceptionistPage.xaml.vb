@@ -49,4 +49,22 @@ Public Class ReceptionistPage
             End If
         End If
     End Sub
+
+    Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgPatients.MouseDoubleClick
+        'btnEdit_Click(sender, Nothing)
+    End Sub
+    Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
+        If e.Key = Key.Delete Then
+            'btnRemoveUser_Click(sender, Nothing)
+        End If
+    End Sub
+    Private Async Sub btnAddPatient_Click(sender As Object, e As RoutedEventArgs) Handles btnAddPatient.Click
+        Dim inPatient As Patient = New Patient()
+        Dim result As Boolean = Await DialogHost.Show(New AddPatient(inPatient), "RootDialog")
+        If result = True Then
+            gVars.dbReception.InsertNewPatient(inPatient)
+            refreshPatients()
+            msgQ.Enqueue("New user (" + inPatient.Identity + ") successfully updated!")
+        End If
+    End Sub
 End Class
