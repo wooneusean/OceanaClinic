@@ -22,7 +22,9 @@ Class MainWindow
                 Case 1
                     msgQ.Enqueue("Wrong email or password!")
                 Case 2
-                    msgQ.Enqueue("Wrong email or password!")
+                    Dim x As ReceptionistPage = New ReceptionistPage()
+                    x.Show()
+                    Me.Close()
                 Case -1
                     msgQ.Enqueue("Wrong email or password!")
             End Select

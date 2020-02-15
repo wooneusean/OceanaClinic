@@ -30,27 +30,27 @@
             <StackPanel Orientation="Horizontal">
                 <StackPanel Width="400">
                     <Label Margin="15,5" Content="Firstname"/>
-                    <TextBox Text="{Binding OutPatient.Firstname}" Margin="15,5" x:Name="txtFirstname" TabIndex="0" MaxLength="50"></TextBox>
+                    <TextBox Text="{Binding FnField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtFirstname" TabIndex="0" MaxLength="50"></TextBox>
                     <Label Margin="15,5" Content="Lastname"/>
-                    <TextBox Text="{Binding OutPatient.Lastname}" Margin="15,5" x:Name="txtLastname" TabIndex="1" MaxLength="50"></TextBox>
+                    <TextBox Text="{Binding LnField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtLastname" TabIndex="1" MaxLength="50"></TextBox>
                     <Label Margin="15,5" Content="IC Number / Passport Number"/>
                     <TextBox Text="{Binding IdField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="123456-12-1234" Margin="15,5" x:Name="txtIdentity" TabIndex="2" MaxLength="50"></TextBox>
                     <Label Margin="15,5" Content="Mobile Number"/>
-                    <TextBox materialDesign:HintAssist.Hint="010-1234567" Text="{Binding OutPatient.Mobile}" Margin="15,5" x:Name="txtMobile" TabIndex="3" MaxLength="50"></TextBox>
+                    <TextBox Text="{Binding MoField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="010-1234567"  Margin="15,5" x:Name="txtMobile" TabIndex="3" MaxLength="50"></TextBox>
                     <Label Margin="15,5" Content="Current Address"/>
-                    <TextBox MinHeight="75" Height="Auto" Text="{Binding OutPatient.Address}" Margin="15,5" x:Name="txtAddress" TabIndex="4" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding AddrField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtAddress" TabIndex="4" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
                 </StackPanel>
                 <StackPanel Width="400">
                     <Label Margin="15,5" Content="Email"/>
-                    <TextBox Text="{Binding OutPatient.Email}" Margin="15,5" x:Name="txtEmail" TabIndex="5" MaxLength="50"/>
+                    <TextBox Text="{Binding EmField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtEmail" TabIndex="5" MaxLength="50"/>
                     <Label Margin="15,5" Content="Weight (KG)"/>
-                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding OutPatient.Weight}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding WeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
                     <Label Margin="15,5" Content="Height (CM)"/>
-                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding OutPatient.Height}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding HeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
                     <Label Margin="15,5" Content="Blood Type"/>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding OutPatient.BloodType}" Margin="25,2,25,5" x:Name="cbbBloodType" TabIndex="8"></ComboBox>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding OutPatient.BloodType}" Margin="15,2,25,5" x:Name="cbbBloodType" TabIndex="8"></ComboBox>
                     <Label Margin="15,5" Content="Allergies"/>
-                    <TextBox MinHeight="75" Height="Auto" Text="{Binding OutPatient.Allergies}" Margin="15,5" x:Name="txtAllergies" TabIndex="9" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding AlleField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtAllergies" TabIndex="9" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >

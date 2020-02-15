@@ -3,102 +3,43 @@ Imports System.Text.RegularExpressions
 Imports System.Threading.Tasks
 'https://www.codeproject.com/Tips/876349/WPF-Validation-using-INotifyDataErrorInfo INotifyDataErrorInfo
 Public Class AddPatient
-    Implements INotifyPropertyChanged, INotifyDataErrorInfo
+    Dim ViewModel As New AddPatientViewModel
 
-    Dim errorsDictionary As New Dictionary(Of String, List(Of String))
-    Public Event _PropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
-    Public Event _ErrorsChanged As EventHandler(Of DataErrorsChangedEventArgs) Implements INotifyDataErrorInfo.ErrorsChanged
-
-    Public Sub PropertyChanged(ByVal e As String)
-        RaiseEvent _PropertyChanged(Me, New PropertyChangedEventArgs(e))
-    End Sub
-    Public Sub ErrorsChanged(e As String)
-        RaiseEvent _ErrorsChanged(Me, New DataErrorsChangedEventArgs(e))
-    End Sub
-    Public Function GetErrors(e As String) As IEnumerable Implements INotifyDataErrorInfo.GetErrors
-        Dim errors As New List(Of String)
-        If (Not String.IsNullOrWhiteSpace(e)) Then
-            Dim outErrors As New List(Of String)
-            errorsDictionary.TryGetValue(e, outErrors)
-            Return outErrors
-        Else
-            Return Nothing
-        End If
-    End Function
-    Private Sub Validate()
-        Task.Run(Sub() ValidateIdentity())
-    End Sub
     Private Sub ValidateIdentity()
-        Dim errorList As List(Of String)
-        If errorsDictionary.TryGetValue(NameOf(IdField), errorList) = False Then
-            errorList = New List(Of String)
-        Else
-            errorList.Clear()
-        End If
-
-        If (String.IsNullOrWhiteSpace(IdField)) Then
-            errorList.Add("IC Number\Passport Number cannot be empty!")
-        ElseIf (gVars.dbReception.GetPatientByIdentity(IdField) IsNot Nothing) Then
-            errorList.Add("User with same IC Number\Passport Number already exist in database!")
-        End If
-
-        errorsDictionary(NameOf(IdField)) = errorList
-        ErrorsChanged(NameOf(IdField))
+        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.IdField), ViewModel.IdField, "", "Identity"))
     End Sub
-    Public ReadOnly Property HasErrors As Boolean Implements INotifyDataErrorInfo.HasErrors
-        Get
-            Try
-                Dim errorCount = errorsDictionary.Values.FirstOrDefault().Count
-                If errorCount > 0 Then
-                    Return True
-                Else
-                    Return False
-                End If
-            Catch ex As Exception
-
-            End Try
-            Return True
-        End Get
-    End Property
-    Private _allFieldsFilled As Boolean
-    Public ReadOnly Property AllFieldsFilled() As Boolean
-        Get
-            If String.IsNullOrEmpty(txtFirstname.Text) Or String.IsNullOrEmpty(txtLastname.Text) Or String.IsNullOrEmpty(txtAddress.Text) Or
-                String.IsNullOrEmpty(txtAllergies.Text) Or String.IsNullOrEmpty(txtEmail.Text) Or String.IsNullOrEmpty(txtHeight.Text) Or
-                String.IsNullOrEmpty(txtMobile.Text) Or String.IsNullOrEmpty(txtWeight.Text) Then
-                Return False
-            Else
-                If HasErrors Then
-                    Return False
-                Else
-                    Return True
-                End If
-            End If
-        End Get
-    End Property
+    Private Sub ValidateMobile()
+        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.MoField), ViewModel.MoField, "Invalid phone number format!", "PhoneNumber"))
+    End Sub
     Sub New(ByRef inPatient As Patient)
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        OutPatient = inPatient
-        Me.DataContext = Me
+        ViewModel.OutPatient = inPatient
+        DataContext = ViewModel
     End Sub
     Private Sub txtFields_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtFirstname.TextChanged, txtLastname.TextChanged, txtAddress.TextChanged,
-        txtAllergies.TextChanged, txtEmail.TextChanged, txtHeight.TextChanged, txtMobile.TextChanged, txtWeight.TextChanged
-        PropertyChanged(NameOf(AllFieldsFilled))
+        txtAllergies.TextChanged, txtEmail.TextChanged, txtHeight.TextChanged, txtWeight.TextChanged
+        ViewModel.OnPropertyChanged("AllFieldsFilled")
     End Sub
 
     Private Sub txtIdentity_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtIdentity.TextChanged
-        PropertyChanged(NameOf(AllFieldsFilled))
-        Validate()
+        ValidateIdentity()
+    End Sub
+    Private Sub txtMobile_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtMobile.TextChanged
+        ValidateMobile()
     End Sub
     'https://programmingistheway.wordpress.com/2017/02/17/only-numbers-in-a-wpf-textbox-with-regular-expressions/
     Private Sub OnlyNumeric_PreviewTextInput(sender As Object, e As TextCompositionEventArgs)
         Dim regex As Regex = New Regex("\D")
         e.Handled = regex.IsMatch(e.Text)
     End Sub
-#Region "asdasjdsa"
+End Class
+
+Class AddPatientViewModel
+    Inherits ValidatableObservableObject
+#Region "VM Properties"
     Public Property OutPatient() As Patient
     Public Property FnField() As String
         Get
@@ -132,7 +73,7 @@ Public Class AddPatient
             OutPatient.Address = value
         End Set
     End Property
-    Public Property AllField() As String
+    Public Property AlleField() As String
         Get
             Return OutPatient.Allergies
         End Get
@@ -172,5 +113,48 @@ Public Class AddPatient
             OutPatient.Mobile = value
         End Set
     End Property
+    Private _allFieldsFilled As Boolean
+    Public ReadOnly Property AllFieldsFilled() As Boolean
+        Get
+            If String.IsNullOrEmpty(FnField) Or String.IsNullOrEmpty(LnField) Or String.IsNullOrEmpty(AddrField) Or
+                String.IsNullOrEmpty(AlleField) Or String.IsNullOrEmpty(EmField) Or String.IsNullOrEmpty(HeField) Or
+                String.IsNullOrEmpty(MoField) Or String.IsNullOrEmpty(IdField) Or String.IsNullOrEmpty(WeField) Then
+                Return False
+            Else
+                If HasErrors Then
+                    Return False
+                Else
+                    Return True
+                End If
+            End If
+        End Get
+    End Property
 #End Region
+    Public Overrides Sub Validation(propName As String, ByRef propValue As String, errContent As String, type As String)
+        Dim errorList As List(Of String)
+        If PropertyErrorsDictionary.TryGetValue(propName, errorList) = False Then
+            errorList = New List(Of String)
+        Else
+            errorList.Clear()
+        End If
+
+        Select Case type
+            Case "Identity"
+                If (String.IsNullOrWhiteSpace(IdField)) Then
+                    errorList.Add("IC Number\Passport Number cannot be empty!")
+                ElseIf (gVars.dbReception.GetPatientByIdentity(IdField) IsNot Nothing) Then
+                    errorList.Add("User with same IC Number\Passport Number already exist in database!")
+                End If
+            Case "PhoneNumber"
+                Dim regex As Regex = New Regex("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$") 'https://regexr.com/3c53v phone number regex
+                If Not regex.IsMatch(propValue) Then
+                    errorList.Add(errContent)
+                End If
+            Case Else
+        End Select
+
+        PropertyErrorsDictionary(propName) = errorList
+        OnErrorsChanged(propName)
+        OnPropertyChanged(NameOf(AllFieldsFilled))
+    End Sub
 End Class

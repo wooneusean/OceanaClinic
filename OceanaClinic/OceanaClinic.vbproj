@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\Patient.vb" />
     <Compile Include="ViewModels\BillingItem.vb" />
     <Compile Include="ViewModels\User.vb" />
+    <Compile Include="ViewModels\ValidatableObservableObject.vb" />
     <Page Include="Pages\AdminPage\AddUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
