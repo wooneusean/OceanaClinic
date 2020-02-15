@@ -4,9 +4,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OceanaClinic"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             Width="800"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Medium"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             FontSize="16">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="BloodTypeEnum" MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:Patient+BloodTypeEnum"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid x:Name="AddUserDialog">
+        <StackPanel>
+            <TextBlock Margin="0,15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Update Patient Profile" VerticalAlignment="Top" TextAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Width="400">
+                    <Label Margin="15,5" Content="Firstname"/>
+                    <TextBox Text="{Binding FnField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtFirstname" TabIndex="0" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Lastname"/>
+                    <TextBox Text="{Binding LnField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtLastname" TabIndex="1" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="IC Number / Passport Number"/>
+                    <TextBox Text="{Binding IdField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="123456-12-1234" Margin="15,5" x:Name="txtIdentity" TabIndex="2" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Mobile Number"/>
+                    <TextBox Text="{Binding MoField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" materialDesign:HintAssist.Hint="010-1234567"  Margin="15,5" x:Name="txtMobile" TabIndex="3" MaxLength="50"></TextBox>
+                    <Label Margin="15,5" Content="Current Address"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding AddrField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtAddress" TabIndex="4" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                </StackPanel>
+                <StackPanel Width="400">
+                    <Label Margin="15,5" Content="Email"/>
+                    <TextBox Text="{Binding EmField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtEmail" TabIndex="5" MaxLength="50"/>
+                    <Label Margin="15,5" Content="Weight (KG)"/>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" TextChanged="Numeric_TextChanged" Text="{Binding WeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
+                    <Label Margin="15,5" Content="Height (CM)"/>
+                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" TextChanged="Numeric_TextChanged" Text="{Binding HeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
+                    <Label Margin="15,5" Content="Blood Type"/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding Patient.BloodType}" Margin="15,2,25,5" x:Name="cbbBloodType" TabIndex="8"></ComboBox>
+                    <Label Margin="15,5" Content="Allergies"/>
+                    <TextBox MinHeight="75" Height="Auto" Text="{Binding AlleField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtAllergies" TabIndex="9" TextWrapping="Wrap" AcceptsReturn="True" MaxLength="255"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
+                <Button CommandParameter="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="50" Margin="15,5" Content="Save" IsEnabled="{Binding AllFieldsFilled}"/>
+                <Button CommandParameter="False" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Width="80" Height="50" Margin="15,5" Content="Discard"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

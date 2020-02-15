@@ -50,21 +50,35 @@ Public Class ReceptionistPage
         End If
     End Sub
 
-    Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgPatients.MouseDoubleClick
-        'btnEdit_Click(sender, Nothing)
-    End Sub
-    Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)
-        If e.Key = Key.Delete Then
-            'btnRemoveUser_Click(sender, Nothing)
-        End If
+    Private Sub dgPatients_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgPatients.MouseDoubleClick
+        btnUpdatePatient_Click(sender, Nothing)
     End Sub
     Private Async Sub btnAddPatient_Click(sender As Object, e As RoutedEventArgs) Handles btnAddPatient.Click
         Dim inPatient As Patient = New Patient()
         Dim result As Boolean = Await DialogHost.Show(New AddPatient(inPatient), "RootDialog")
         If result = True Then
-            gVars.dbReception.InsertNewPatient(inPatient)
+            If gVars.dbReception.InsertNewPatient(inPatient) > 0 Then
+                msgQ.Enqueue("Success! New patient (" + inPatient.Identity + ") profile created!")
+            Else
+                msgQ.Enqueue("Failure! New patient (" + inPatient.Identity + ") failed to be created!")
+            End If
             refreshPatients()
-            msgQ.Enqueue("New user (" + inPatient.Identity + ") successfully updated!")
+        End If
+    End Sub
+
+    Private Async Sub btnUpdatePatient_Click(sender As Object, e As RoutedEventArgs) Handles btnUpdatePatient.Click
+        If dgPatients.SelectedIndex = -1 Then
+            Return
+        End If
+        Dim selectedPatient As Patient = New Patient(dgPatients.SelectedValue)
+        Dim result As Boolean = Await DialogHost.Show(New PatientDetails(selectedPatient), "RootDialog")
+        If result = True Then
+            If gVars.dbReception.UpdatePatient(selectedPatient) > 0 Then
+                msgQ.Enqueue("Success! Patient of PatientID(" + selectedPatient.PatientId.ToString + ") updated!")
+            Else
+                msgQ.Enqueue("Failure! Patient of PatientID(" + selectedPatient.PatientId.ToString + ") failed to be updated!")
+            End If
+            refreshPatients()
         End If
     End Sub
 End Class

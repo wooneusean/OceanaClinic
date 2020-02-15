@@ -1,6 +1,4 @@
-﻿Imports System.ComponentModel
-Imports System.Text.RegularExpressions
-Imports System.Threading.Tasks
+﻿Imports System.Text.RegularExpressions
 'https://www.codeproject.com/Tips/876349/WPF-Validation-using-INotifyDataErrorInfo INotifyDataErrorInfo
 Public Class AddPatient
     Dim ViewModel As New AddPatientViewModel
@@ -34,6 +32,22 @@ Public Class AddPatient
     Private Sub OnlyNumeric_PreviewTextInput(sender As Object, e As TextCompositionEventArgs)
         Dim regex As Regex = New Regex("\D")
         e.Handled = regex.IsMatch(e.Text)
+    End Sub
+    Private Sub Numeric_TextChanged(sender As Object, e As TextChangedEventArgs)
+        Dim s As TextBox = sender
+        If String.IsNullOrWhiteSpace(s.Text) Then
+            s.Text = "0"
+        Else
+            Dim regex As Regex = New Regex("\D")
+            If regex.IsMatch(s.Text) Then
+                Dim n As Integer
+                If Integer.TryParse(s.Text, n) Then
+                    s.Text = n
+                Else
+                    s.Text = 0
+                End If
+            End If
+        End If
     End Sub
 End Class
 

@@ -14,7 +14,8 @@
         TextElement.FontSize="20"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" Loaded="Window_Loaded" MinWidth="750" MinHeight="430" PreviewKeyDown="Window_PreviewKeyDown">
+        FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized" Loaded="Window_Loaded"
+        MinWidth="1000" MinHeight="710" PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <sys:Double x:Key="iconSize">25</sys:Double>
         <sys:Double x:Key="iconButtonSize">50</sys:Double>

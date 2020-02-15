@@ -1,8 +1,7 @@
-﻿Imports System.ComponentModel
-Imports MaterialDesignThemes.Wpf
-Public Class AddUser
+﻿Public Class AddUser
     Dim ViewModel As New AddUserViewModel
     Sub New(ByRef inUser As User)
+
         ' This call is required by the designer.
         InitializeComponent()
 
@@ -10,16 +9,14 @@ Public Class AddUser
         ViewModel.OutUser = inUser
         DataContext = ViewModel
     End Sub
-
+    Private Sub ValidateEmail()
+        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.EmField), ViewModel.EmField, "", "Email"))
+    End Sub
     Private Sub txtFields_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtFirstname.TextChanged, txtLastname.TextChanged, txtPassword.TextChanged
         ViewModel.OnPropertyChanged("AllFieldsFilled")
     End Sub
-
     Private Sub txtEmail_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtEmail.TextChanged
         ValidateEmail()
-    End Sub
-    Private Sub ValidateEmail()
-        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.EmField), ViewModel.EmField, "", "Email"))
     End Sub
 End Class
 

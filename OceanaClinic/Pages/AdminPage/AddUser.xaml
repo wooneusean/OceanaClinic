@@ -29,11 +29,11 @@
         <StackPanel>
             <TextBlock Margin="0,15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Add User" VerticalAlignment="Top" TextAlignment="Center"/>
             <Label Margin="25,5" Content="Firstname"/>
-            <TextBox Text="{Binding OutUser.Firstname}" Margin="25,5" x:Name="txtFirstname"></TextBox>
+            <TextBox Text="{Binding FnField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtFirstname"></TextBox>
             <Label Margin="25,5" Content="Lastname"/>
-            <TextBox Text="{Binding OutUser.Lastname}" Margin="25,5" x:Name="txtLastname"></TextBox>
+            <TextBox Text="{Binding LnField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtLastname"></TextBox>
             <Label Margin="25,5" Content="Password"/>
-            <TextBox Text="{Binding OutUser.Password}" Margin="25,5" x:Name="txtPassword"></TextBox>
+            <TextBox Text="{Binding PwField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtPassword"></TextBox>
             <Label Margin="25,5" Content="Email"/>
             <TextBox Text="{Binding EmField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtEmail"/>
             <Label Margin="25,5" Content="UserGroup"/>

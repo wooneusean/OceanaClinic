@@ -13,15 +13,15 @@ Public Class Database
 					""Firstname""	TEXT,
 					""Lastname""	TEXT,
 					""Password""	TEXT,
-					""Email""	    TEXT UNIQUE COLLATE NOCASE, 'https://stackoverflow.com/questions/1188749/how-to-change-the-collation-of-sqlite3-database-to-sort-case-insensitively
+					""Email""	    TEXT UNIQUE COLLATE NOCASE,
 					""userGroup""	INTEGER
-				);"
+				);" 'https://stackoverflow.com/questions/1188749/how-to-change-the-collation-of-sqlite3-database-to-sort-case-insensitively
             Dim createPatientsTable As String =
                 "CREATE TABLE ""Patients"" (
 					""PatientId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 					""Firstname""	TEXT,
 					""Lastname""	TEXT,
-					""Identity""	TEXT UNIQUE,
+					""Identity""	TEXT UNIQUE COLLATE NOCASE,
 					""Mobile""	    TEXT,
 					""Address""	    TEXT,
 					""Email""	    TEXT,

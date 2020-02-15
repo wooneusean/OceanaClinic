@@ -26,7 +26,7 @@
     </UserControl.Resources>
     <Grid x:Name="AddUserDialog">
         <StackPanel>
-            <TextBlock Margin="0,15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Add Patient" VerticalAlignment="Top" TextAlignment="Center"/>
+            <TextBlock Margin="0,15" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Create Patient Profile" VerticalAlignment="Top" TextAlignment="Center"/>
             <StackPanel Orientation="Horizontal">
                 <StackPanel Width="400">
                     <Label Margin="15,5" Content="Firstname"/>
@@ -44,9 +44,9 @@
                     <Label Margin="15,5" Content="Email"/>
                     <TextBox Text="{Binding EmField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtEmail" TabIndex="5" MaxLength="50"/>
                     <Label Margin="15,5" Content="Weight (KG)"/>
-                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding WeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
+                    <TextBox TextChanged="Numeric_TextChanged" PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding WeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtWeight" TabIndex="6" MaxLength="4"></TextBox>
                     <Label Margin="15,5" Content="Height (CM)"/>
-                    <TextBox PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding HeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
+                    <TextBox TextChanged="Numeric_TextChanged" PreviewTextInput="OnlyNumeric_PreviewTextInput" Text="{Binding HeField,UpdateSourceTrigger=PropertyChanged}" Margin="15,5" x:Name="txtHeight" TabIndex="7" MaxLength="4"></TextBox>
                     <Label Margin="15,5" Content="Blood Type"/>
                     <ComboBox ItemsSource="{Binding Source={StaticResource BloodTypeEnum}}" SelectedItem="{Binding OutPatient.BloodType}" Margin="15,2,25,5" x:Name="cbbBloodType" TabIndex="8"></ComboBox>
                     <Label Margin="15,5" Content="Allergies"/>

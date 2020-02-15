@@ -47,25 +47,25 @@ Public Class ValidatableObservableObject
     End Sub
 
     Public Overridable Sub Validation(propName As String, ByRef propValue As String, errContent As String, type As String)
-        Dim listErr As List(Of String)
-        If PropertyErrorsDictionary.TryGetValue(propName, listErr) = False Then
-            listErr = New List(Of String)
+        Dim errorList As List(Of String)
+        If PropertyErrorsDictionary.TryGetValue(propName, errorList) = False Then
+            errorList = New List(Of String)
         Else
-            listErr.Clear()
+            errorList.Clear()
         End If
         Select Case type
             Case "NullWhite"
                 If (String.IsNullOrWhiteSpace(propValue)) Then
-                    listErr.Add(errContent)
+                    errorList.Add(errContent)
                     OnErrorsChanged(propName)
                 End If
             Case "NoYolo"
                 If (propValue.Contains("Yolo")) Then
-                    listErr.Add(errContent)
+                    errorList.Add(errContent)
                     OnErrorsChanged(propName)
                 End If
             Case Else
         End Select
-        PropertyErrorsDictionary(propName) = listErr
+        PropertyErrorsDictionary(propName) = errorList
     End Sub
 End Class

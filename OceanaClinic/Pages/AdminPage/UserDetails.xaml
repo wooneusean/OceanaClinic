@@ -31,11 +31,11 @@
             <Label Margin="25,5" Content="User ID"/>
             <TextBox IsEnabled="False" IsReadOnly="True" Text="{Binding User.UserID}" Margin="25,5" x:Name="txtUserId"></TextBox>
             <Label Margin="25,5" Content="Firstname"/>
-            <TextBox Text="{Binding User.Firstname}" Margin="25,5" x:Name="txtFirstname"></TextBox>
+            <TextBox Text="{Binding FnField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtFirstname"></TextBox>
             <Label Margin="25,5" Content="Lastname"/>
-            <TextBox Text="{Binding User.Lastname}" Margin="25,5" x:Name="txtLastname"></TextBox>
+            <TextBox Text="{Binding LnField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtLastname"></TextBox>
             <Label Margin="25,5" Content="Password"/>
-            <TextBox Text="{Binding User.Password}" Margin="25,5" x:Name="txtPassword"></TextBox>
+            <TextBox Text="{Binding PwField,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtPassword"></TextBox>
             <Label Margin="25,5" Content="Email"/>
             <TextBox Text="{Binding EmField,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" Margin="25,5" x:Name="txtEmail"></TextBox>
             <Label Margin="25,5" Content="UserGroup"/>

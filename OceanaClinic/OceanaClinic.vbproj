@@ -126,11 +126,11 @@
     <Compile Include="Pages\ReceptionistPage\ReceptionistPage.xaml.vb">
       <DependentUpon>ReceptionistPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ObservableObject.vb" />
-    <Compile Include="ViewModels\Patient.vb" />
-    <Compile Include="ViewModels\BillingItem.vb" />
-    <Compile Include="ViewModels\User.vb" />
-    <Compile Include="ViewModels\ValidatableObservableObject.vb" />
+    <Compile Include="Classes\ObservableObject.vb" />
+    <Compile Include="Classes\Patient.vb" />
+    <Compile Include="Classes\BillingItem.vb" />
+    <Compile Include="Classes\User.vb" />
+    <Compile Include="Classes\ValidatableObservableObject.vb" />
     <Page Include="Pages\AdminPage\AddUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

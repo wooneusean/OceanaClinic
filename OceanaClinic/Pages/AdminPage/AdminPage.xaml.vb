@@ -40,9 +40,12 @@ Public Class AdminPage
         Dim result As Boolean = Await DialogHost.Show(MultiDeleteDialogBox, "RootDialog")
         Dim selectedUsers As List(Of User) = UtilityConverter.SelectedItemsToListOfUsers(dgUsers.SelectedItems)
         If result = True Then
-            gVars.dbAdmin.RemoveUsers(selectedUsers)
+            If gVars.dbAdmin.RemoveUsers(selectedUsers) > 0 Then
+                msgQ.Enqueue("Success! Removed " + selectedUsers.Count.ToString + " users!")
+            Else
+                msgQ.Enqueue("Failure! Failed to remove " + selectedUsers.Count.ToString + " users!")
+            End If
             refreshUsers()
-            msgQ.Enqueue("Successfully removed " + selectedUsers.Count.ToString + " users!")
         End If
     End Sub
 
@@ -53,9 +56,12 @@ Public Class AdminPage
         Dim selectedUser As User = New User(dgUsers.SelectedValue)
         Dim result As Boolean = Await DialogHost.Show(New UserDetails(selectedUser), "RootDialog")
         If result = True Then
-            gVars.dbAdmin.UpdateUser(selectedUser)
+            If gVars.dbAdmin.UpdateUser(selectedUser) > 0 Then
+                msgQ.Enqueue("Success! User of UserID(" + selectedUser.UserID.ToString + ") updated!")
+            Else
+                msgQ.Enqueue("Failure! User of UserID(" + selectedUser.UserID.ToString + ") failed to be updated!")
+            End If
             refreshUsers()
-            msgQ.Enqueue("User of UserID(" + selectedUser.UserID.ToString + ") successfully updated!")
         End If
     End Sub
 
@@ -63,10 +69,14 @@ Public Class AdminPage
         Dim inUser As User = New User()
         Dim result As Boolean = Await DialogHost.Show(New AddUser(inUser), "RootDialog")
         If result = True Then
-            gVars.dbAdmin.InsertNewUser(inUser)
-            refreshUsers()
-            msgQ.Enqueue("New user (" + inUser.Email + ") successfully updated!")
+            If gVars.dbAdmin.InsertNewUser(inUser) > 0 Then
+                msgQ.Enqueue("Success! New user (" + inUser.Email + ") successfully created!")
+            Else
+                msgQ.Enqueue("Failure! Failed to create user (" + inUser.Email + ")!")
+            End If
         End If
+
+        refreshUsers()
     End Sub
 
     Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgUsers.MouseDoubleClick
