@@ -31,6 +31,7 @@ Public Class ReceptionistPage
     Private Sub btnReload_Click(sender As Object, e As RoutedEventArgs) Handles btnReload.Click
         refreshPatients()
     End Sub
+    'https://docs.microsoft.com/en-us/dotnet/framework/wpf/controls/how-to-group-sort-and-filter-data-in-the-datagrid-control
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
         Dim p As Patient = e.Item
         If p IsNot Nothing Then

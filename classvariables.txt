@@ -4,12 +4,6 @@ Name
 Password
 Email
 userGroup{admin,doctor,staff nurse, patient}
-isSuperUser
-
-Admin inherits user class
-
-Database Class:
-
 
 Patient Table:
 ID No. / Passport No.
@@ -19,10 +13,32 @@ Contact Details(House, email)
 Weight, Height, Blood type
 Allergies
 
-Treatment Records Table:
-TreatmentId
-FK Patient ID
-ConsultationFee (standard consultation fee of rm 30) including all medicines, services
+Billing:
+ - staffnurse enter medi fees/services (lab services, health check, xray)
+ - Itemized bill
+
+Treatment Records Table (Patient ID/Name):
+- TreatmentId
+- FK Patient Name
+- FK Patient ID
+- ConsultationFee (standard consultation fee of rm 30) including all medicines, services
+- TreatmentDetails
+- [PrescribedMedicines (can be null)
+  - Medicines table
+    > name
+    > patient id
+    > doctor (prescriber)]
+- PaymentMade 0 - no,1 - yes
+
+Treatment Details Table:
+TreatmentID
+FK PatientID
+PrescribedMeds
 TreatmentDetails
-PrescribedMedicines (can be null)
-PaymentMade (Bool)
+
+Billing Item Type:
+ - Medicine
+ - Lab Service
+ - X-Ray
+ - Comprehensive Health Check
+ - Partial Health Check

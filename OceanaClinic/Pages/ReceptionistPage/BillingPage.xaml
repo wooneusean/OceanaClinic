@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OceanaClinic" Height="720" Width="1000"
+             xmlns:local="clr-namespace:OceanaClinic" Height="720" Width="1280"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -27,4 +27,17 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
+
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <materialDesign:DialogHost.DialogContent>
+            <Grid x:Name="ReceptionistDialog">
+
+            </Grid>
+        </materialDesign:DialogHost.DialogContent>
+        <materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Billing Page</TextBlock>
+            </StackPanel>
+        </materialDesign:ColorZone>
+    </materialDesign:DialogHost>
 </UserControl>

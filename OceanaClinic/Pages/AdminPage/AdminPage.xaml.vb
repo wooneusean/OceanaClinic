@@ -88,6 +88,7 @@ Public Class AdminPage
             btnRemoveUser_Click(sender, Nothing)
         End If
     End Sub
+    'https://docs.microsoft.com/en-us/dotnet/framework/wpf/controls/how-to-group-sort-and-filter-data-in-the-datagrid-control
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
         Dim u As User = e.Item
         If u IsNot Nothing Then
