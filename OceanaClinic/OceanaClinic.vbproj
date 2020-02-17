@@ -105,6 +105,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Currency.vb" />
     <Compile Include="Converters.vb" />
     <Compile Include="Database.vb" />
     <Compile Include="gVars.vb" />

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OceanaClinic" Height="720" Width="1280"
+             xmlns:local="clr-namespace:OceanaClinic"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -12,32 +12,89 @@
              TextElement.FontSize="20"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
-             FontFamily="{DynamicResource MaterialDesignFont}" FontSize="20">
-    <UserControl.Resources>
-        <DataTemplate x:Key="TransactionItem" DataType="{x:Type local:BillingItem}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <!--<TextBlock Text="{Binding Quantity,StringFormat={0}x}" />-->
-                <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                <TextBlock Grid.Column="2" Text="{Binding Price, StringFormat=RM {0}}" />
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
-
+             FontFamily="{DynamicResource MaterialDesignFont}" FontSize="20" d:DesignWidth="1280" d:DesignHeight="720">
+    
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
             <Grid x:Name="ReceptionistDialog">
 
             </Grid>
         </materialDesign:DialogHost.DialogContent>
-        <materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Billing Page</TextBlock>
-            </StackPanel>
-        </materialDesign:ColorZone>
+        <Grid>
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Billing Page</TextBlock>
+                </StackPanel>
+            </materialDesign:ColorZone>
+            <Grid Margin="0,80,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1">
+                    <materialDesign:Card Margin="25,18,25,12">
+                        <Grid>
+                            <Label>Total:</Label>
+                            <TextBlock Foreground="#13ceeb" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="RM 117" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Margin="25,12">
+                        <Grid>
+                            <Label>Received:</Label>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Label Padding="0" Foreground="#eb1c46" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="96" Margin="0,0,25,0" >RM</Label>
+                                <TextBox Foreground="#eb1c46" Text="200" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+                    <materialDesign:Card Margin="25,12">
+                        <Grid>
+                            <Label>Change:</Label>
+                            <TextBlock Foreground="#999999" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="RM 83" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </materialDesign:Card>
+                </StackPanel>
+                <Grid Background="#f0f0f0" Margin="0" >
+                    <DataGrid ColumnWidth="*" x:Name="dgItems"
+					  CanUserSortColumns="True"
+					  SelectionMode="Extended"
+					  CanUserAddRows="False"
+					  AutoGenerateColumns="True"
+					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+					  FontSize="18" IsReadOnly="True" Margin="15,15,15,110" MinHeight="450">
+                        <!--ItemsSource="{Binding Source={StaticResource cvsPatients}}-->
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                <Setter Property="FontSize" Value="18"/>
+                                <Setter Property="Background" Value="#E8E8E8"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+                    </DataGrid>
+                    <Button x:Name="btnAddBillingItem" Padding="10,0" Height="55" Margin="10,0,0,50" ToolTip="Add Item to Bill" Width="Auto" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="30" Height="30" Kind="Add" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Item"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btnRemoveBillingItem" Padding="10,0" Height="55" Margin="144,0,0,50" ToolTip="Remove Item from Bill" Width="Auto" TabIndex="1" HorizontalAlignment="Left" Background="#FFDC2920" BorderBrush="#FFDC2920" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="30" Height="30" Kind="Minus" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Item"/>
+                        </Grid>
+                    </Button>
+                    <Label Width="225" VerticalAlignment="Bottom"  Height="75" Margin="0,0,15,35" Background="#FFFAFAFA" HorizontalAlignment="Right" FontSize="48" FontWeight="Light" Content="RM 117" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                </Grid>
+            </Grid>
+        </Grid>
     </materialDesign:DialogHost>
 </UserControl>

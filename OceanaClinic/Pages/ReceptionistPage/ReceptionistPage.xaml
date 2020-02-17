@@ -25,6 +25,7 @@
         </CollectionViewSource>
     </Window.Resources>
 
+    <ContentControl x:Name="ReceptionistContent">
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
             <Grid x:Name="ReceptionistDialog">
@@ -94,4 +95,5 @@
             <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
     </materialDesign:DialogHost>
+    </ContentControl>
 </Window>

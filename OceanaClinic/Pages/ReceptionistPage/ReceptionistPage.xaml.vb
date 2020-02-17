@@ -82,4 +82,8 @@ Public Class ReceptionistPage
             refreshPatients()
         End If
     End Sub
+
+    Private Sub btnBilling_Click(sender As Object, e As RoutedEventArgs) Handles btnBilling.Click
+        ReceptionistContent.Content = New BillingPage
+    End Sub
 End Class
