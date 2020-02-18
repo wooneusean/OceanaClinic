@@ -1,9 +1,9 @@
 ﻿Public Class Currency
-    Public Property Value() As Double
+    Public Property Value() As Decimal
     Public Property Prefix() As String
 
     Public Overrides Function ToString() As String
-        Dim x As Double = Decimal.Round(Value, 2, MidpointRounding.AwayFromZero)
+        Dim x As Decimal = Decimal.Round(Value, 2, MidpointRounding.AwayFromZero)
         Dim y As String = x.ToString.Split(".")(1)
         Dim z As String = x.ToString.Split(".")(0)
         If y.Length = 1 Then
@@ -17,7 +17,7 @@
         Value = 0
         Prefix = "RM "
     End Sub
-    Sub New(val As Integer, pre As String)
+    Sub New(val As Decimal, pre As String)
         Value = val
         Prefix = pre
     End Sub
@@ -25,7 +25,7 @@
         Value = 0
         Prefix = pre
     End Sub
-    Sub New(val As Integer)
+    Sub New(val As Decimal)
         Value = val
         Prefix = "RM "
     End Sub

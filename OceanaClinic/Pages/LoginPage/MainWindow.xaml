@@ -15,24 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" ResizeMode="NoResize">
 
-    <!--<materialDesign:DialogHost>
-        <materialDesign:DialogHost.DialogContent>
 
-            -->
-    <!--put your dialog content here-->
-    <!--
-
-            <Grid Background="White" Name="DialogBox" Margin="10" Width="85" Height="85">
-                <ProgressBar Name="LoadingSpinner" Style="{DynamicResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" Width="40" Height="40" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" BorderThickness="5"/>
-            </Grid>
-        </materialDesign:DialogHost.DialogContent>
-
-        -->
-    <!--put the content over which the dialog is shown here (e.g. your main window grid)-->
-    <!--
-
-        
-    </materialDesign:DialogHost>-->
     <Grid Background="{DynamicResource MaterialDesignPaper}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width=".05*"/>
@@ -45,7 +28,15 @@
         </Grid.RowDefinitions>
 
 
-        <materialDesign:Card Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" Height="370" VerticalAlignment="Top">
+        <materialDesign:Card Grid.Column="1" Margin="10,10,10,0" Grid.Row="1" Height="370" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+            <materialDesign:Card.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="10.796"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="35.276"/>
+                </TransformGroup>
+            </materialDesign:Card.RenderTransform>
             <Grid>
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Label Margin="25,10,25,5" VerticalContentAlignment="Center" Content="Email" FontSize="20" MinWidth="272" MinHeight="32"/>

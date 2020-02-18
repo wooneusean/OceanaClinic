@@ -432,4 +432,17 @@ Public Class ReceptionistDB
             Return patients
         End Using
     End Function
+
+    Public Function GetBillingItems(itemId As Integer) As List(Of BillingItem)
+        Dim billingItems As New List(Of BillingItem)
+        Dim getBillingItemsQuery As String = "SELECT * FROM BillingItems WHERE ItemId = @itemId"
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim cmd As New SQLiteCommand(getBillingItemsQuery, conn)
+            conn.Open()
+            Dim reader As SQLiteDataReader = cmd.ExecuteReader()
+            While reader.Read()
+                billingItems.Add(New BillingItem(CInt(reader("ItemId")), reader("Name"),
+            End While
+        End Using
+    End Function
 End Class

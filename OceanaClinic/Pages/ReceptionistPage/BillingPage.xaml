@@ -13,6 +13,13 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              FontFamily="{DynamicResource MaterialDesignFont}" FontSize="20" d:DesignWidth="1280" d:DesignHeight="720">
+
+    <UserControl.Resources>
+        <local:ObservablePatients x:Key="billingItems" />
+        <CollectionViewSource x:Key="cvsBillingItems" Source="{StaticResource billingItems}" 
+						  Filter="CollectionViewSource_Filter">
+        </CollectionViewSource>
+    </UserControl.Resources>
     
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
