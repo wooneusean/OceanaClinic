@@ -8,6 +8,5 @@ Public Class ObservableObject
     Protected Sub OnPropertyChanged(ByVal e As String)
         RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(e))
     End Sub
-
 End Class
 

@@ -30,13 +30,39 @@ Public Class Database
 					""BloodType""	INTEGER DEFAULT -1,
 					""Allergies""	TEXT DEFAULT 'None'
 				);"
+            Dim createBillingItemsTable As String =
+                "CREATE TABLE ""BillingItems"" (
+	                ""ItemId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	                ""Name""	TEXT DEFAULT '<NO_NAME>',
+	                ""Type""	INTEGER DEFAULT -1,
+	                ""Price""	NUMERIC DEFAULT 0
+                );"
+            Dim createTransactionsTable As String =
+                "CREATE TABLE ""Transactions"" (
+                    ""TransactionId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    ""ItemId""	        INTEGER NOT NULL,
+                    ""PatientId""	    INTEGER NOT NULL,
+                    ""Quantity""	    INTEGER DEFAULT 0,
+                    ""Completed""	    INTEGER DEFAULT 0,
+                    FOREIGN KEY(""ItemId"") REFERENCES ""BillingItems""(""ItemId""),
+                    FOREIGN KEY(""PatientId"") REFERENCES ""Patients""(""PatientId"")
+                );"
+
             System.IO.Directory.CreateDirectory(location)
             Using SqlConn As New SQLiteConnection(connectionString)
+
                 Dim createUsersTableCmd As New SQLiteCommand(createUsersTable, SqlConn)
                 Dim createPatientTableCmd As New SQLiteCommand(createPatientsTable, SqlConn)
+                Dim createBillingItemsTableCmd As New SQLiteCommand(createBillingItemsTable, SqlConn)
+                Dim createTransactionsTableCmd As New SQLiteCommand(createTransactionsTable, SqlConn)
+
                 SqlConn.Open()
+
                 createUsersTableCmd.ExecuteNonQuery()
                 createPatientTableCmd.ExecuteNonQuery()
+                createBillingItemsTableCmd.ExecuteNonQuery()
+                createTransactionsTableCmd.ExecuteNonQuery()
+
                 SqlConn.Close()
             End Using
             DummyData()
@@ -51,89 +77,130 @@ Public Class Database
 
             Dim dummyPatientDataQuery As String =
                 "INSERT INTO Patients (Firstname, Lastname, Identity, Email, Weight, Height, BloodType, Allergies)
-				VALUES" + Environment.NewLine
+				VALUES"
 
-            Dim x As New List(Of String)
-            x.AddRange({"Queece Boringman",
-                        "Gremlin T.Squarfish",
-                        "Mynas Opposite",
-                        "Jannider Snoutlick",
-                        "Dirt Stick",
-                        "Buckrain Politosh",
-                        "Fresident Freepaw-Flitzen",
-                        "Azimuth Starcrack-II",
-                        "Greek Baby",
-                        "Danny Sassoon",
-                        "Vodorok Pagina",
-                        "Biquinn Thunderhands-Elfson",
-                        "Dunkrod Gluck",
-                        "Brockwyn 1000-Babies",
-                        "Exquizardus Sunset-Mitchellham",
-                        "Ping Pong-Leg",
-                        "Tootee Frootee",
-                        "Logan Hymen-Valencia",
-                        "Ronce Lafontaine",
-                        "Jeneric Tounguetaste",
-                        "Frizzy Totay",
-                        "Goblin! -",
-                        "Rustrap D'Pencil",
-                        "Nacho Thigh-Juice",
-                        "Lemmicus D'Seuss",
-                        "Rorschach Tok-Tok",
-                        "Brick-Spunck Badgerballs",
-                        "Laporte Dipthong",
-                        "Boner P'TiffyJr.",
-                        "Horris Sophistofable",
-                        "BarkBark HooHaw",
-                        "Lucifan Y.Sassafras",
-                        "Simon Asterisk",
-                        "Carlton TheSeeker",
-                        "Shiprecc -",
-                        "???? -",
-                        "Pete Crapletters",
-                        "7th-Hope Skelligan",
-                        "Bouncy House",
-                        "Snip-Snip Testafuente",
-                        "Herpsichord -",
-                        "Tri-pecker Floam",
-                        "Party Machine",
-                        "Oracle Vidunatru",
-                        "Nogbone Danky",
-                        "Lavalamp Sequeltank",
-                        "SirAmblin Flecator",
-                        "Hockbew Egress",
-                        "Gumbo LeTroutstain",
-                        "I1D1G53 -",
-                        "Busted-Lip Catharsises",
-                        "Steelgrippe D'Forte",
-                        "Naru Sheni"})
+            Dim dummyBillingItemDataQuery As String =
+                "INSERT INTO BillingItems (Name, Type, Price)
+				VALUES (""Lab Services"", 2, 100),
+                       (""X-Ray"", 2, 50),
+                       (""Comprehensive Health Check"", 1, 120),
+                       (""Partial Health Check"", 1, 75)," + Environment.NewLine
 
-            For Each name As String In x
+            Dim dummyTransactionDataQuery As String =
+                "INSERT INTO Transactions (ItemId, PatientId, Quantity, Completed)
+                VALUES "
+
+            Dim names As New List(Of String)
+            names.AddRange({"Queece Boringman",
+                            "Gremlin T.Squarfish",
+                            "Mynas Opposite",
+                            "Jannider Snoutlick",
+                            "Dirt Stick",
+                            "Buckrain Politosh",
+                            "Fresident Freepaw-Flitzen",
+                            "Azimuth Starcrack-II",
+                            "Greek Baby",
+                            "Danny Sassoon",
+                            "Vodorok Pagina",
+                            "Biquinn Thunderhands-Elfson",
+                            "Dunkrod Gluck",
+                            "Brockwyn 1000-Babies",
+                            "Exquizardus Sunset-Mitchellham",
+                            "Ping Pong-Leg",
+                            "Tootee Frootee",
+                            "Logan Hymen-Valencia",
+                            "Ronce Lafontaine",
+                            "Jeneric Tounguetaste",
+                            "Frizzy Totay",
+                            "Goblin! -",
+                            "Rustrap D'Pencil",
+                            "Nacho Thigh-Juice",
+                            "Lemmicus D'Seuss",
+                            "Rorschach Tok-Tok",
+                            "Brick-Spunck Badgerballs",
+                            "Laporte Dipthong",
+                            "Boner P'TiffyJr.",
+                            "Horris Sophistofable",
+                            "BarkBark HooHaw",
+                            "Lucifan Y.Sassafras",
+                            "Simon Asterisk",
+                            "Carlton TheSeeker",
+                            "Shiprecc -",
+                            "???? -",
+                            "Pete Crapletters",
+                            "7th-Hope Skelligan",
+                            "Bouncy House",
+                            "Snip-Snip Testafuente",
+                            "Herpsichord -",
+                            "Tri-pecker Floam",
+                            "Party Machine",
+                            "Oracle Vidunatru",
+                            "Nogbone Danky",
+                            "Lavalamp Sequeltank",
+                            "SirAmblin Flecator",
+                            "Hockbew Egress",
+                            "Gumbo LeTroutstain",
+                            "I1D1G53 -",
+                            "Busted-Lip Catharsises",
+                            "Steelgrippe D'Forte",
+                            "Naru Sheni"})
+
+            Dim items As New List(Of String)
+            items.AddRange({"Emerald Potions",
+                            "Mandrake Protection",
+                            "Moonseed Potion",
+                            "Swelling Gas",
+                            "Madame Glossy's Silver Polish",
+                            "Bundimum",
+                            "Potion No. 86",
+                            "Manication",
+                            "Antidote to Unctuous Uncommon Potion",
+                            "Forgetfulness Potion"})
+
+            Dim UserTableData
+            Dim PatientTableData
+            For Each name As String In names
+                Randomize()
                 Dim y = name.Split(" ")
-                If name = x.Last() Then
-                    Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"");", y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
-                    Dim pz = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", 
-											""{5}"",""{6}"",""{7}"");",
-                                           y(0), y(1), CInt((9999 * Rnd()) + 1000), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
-                                           CInt((80 * Rnd()) + 130), Math.Floor(7 * Rnd()), y(1))
-                    dummyUserDataQuery += z
-                    dummyPatientDataQuery += pz
-                Else
-                    Dim z = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")," + Environment.NewLine, y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
-                    Dim pz = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", 
-											""{5}"",""{6}"",""{7}""),",
-                                           y(0), y(1), CInt((999999 * Rnd()) + 100000), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
-                                           CInt((80 * Rnd()) + 130), Math.Floor(7 * Rnd()), y(1))
-                    dummyUserDataQuery += z
-                    dummyPatientDataQuery += pz
-                End If
+
+                UserTableData = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")" + If(name = names.Last(), ";", ",") + Environment.NewLine,
+                                              y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
+
+                Randomize()
+                PatientTableData = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", ""{5}"",""{6}"",""{7}"")" + If(name = names.Last(), ";", ",") + Environment.NewLine,
+                                                 y(0), y(1), CInt((9999 * Rnd()) + 1000), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
+                                                 CInt((80 * Rnd()) + 130), Math.Floor(8 * Rnd()), y(1))
+
+                dummyUserDataQuery += UserTableData
+                dummyPatientDataQuery += PatientTableData
+            Next
+
+            Dim BillingItemTableData
+            For Each item As String In items
+                Randomize()
+                BillingItemTableData = String.Format("(""{0}"", ""{1}"", ""{2}"")" + If(item = items.Last(), ";", ",") + Environment.NewLine, item, "0", CInt((200 * Rnd()) + 30))
+
+                dummyBillingItemDataQuery += BillingItemTableData
+            Next
+
+            Dim TransactionTableData
+            For x = 0 To 50
+                Randomize()
+                TransactionTableData = String.Format("(""{0}"",""{1}"",""{2}"",""{3}"")" + If(x = 50, ";", ",") + Environment.NewLine,
+                                                     Math.Floor(CInt(14 * Rnd())), Math.Floor(CInt(53 * Rnd())), CInt(10 * Rnd()), Math.Floor(CInt(1 * Rnd())))
+
+                dummyTransactionDataQuery += TransactionTableData
             Next
 
             Dim dummyUserDataCmd As New SQLiteCommand(dummyUserDataQuery, conn)
             Dim dummyPatientDataCmd As New SQLiteCommand(dummyPatientDataQuery, conn)
+            Dim dummyBillingItemDataCmd As New SQLiteCommand(dummyBillingItemDataQuery, conn)
+            Dim dummyTransactionDataCmd As New SQLiteCommand(dummyTransactionDataQuery, conn)
 
             dummyUserDataCmd.ExecuteNonQuery()
             dummyPatientDataCmd.ExecuteNonQuery()
+            dummyBillingItemDataCmd.ExecuteNonQuery()
+            dummyTransactionDataCmd.ExecuteNonQuery()
 
             conn.Close()
         End Using
@@ -441,8 +508,9 @@ Public Class ReceptionistDB
             conn.Open()
             Dim reader As SQLiteDataReader = cmd.ExecuteReader()
             While reader.Read()
-                billingItems.Add(New BillingItem(CInt(reader("ItemId")), reader("Name"),
+                billingItems.Add(New BillingItem(CInt(reader("ItemId")), reader("Name"), reader("Type"), reader("Price")))
             End While
+            Return billingItems
         End Using
     End Function
 End Class

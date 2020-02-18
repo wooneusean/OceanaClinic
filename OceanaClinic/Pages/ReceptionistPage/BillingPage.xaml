@@ -15,12 +15,13 @@
              FontFamily="{DynamicResource MaterialDesignFont}" FontSize="20" d:DesignWidth="1280" d:DesignHeight="720">
 
     <UserControl.Resources>
-        <local:ObservablePatients x:Key="billingItems" />
+        <local:ObservableBillingItems x:Key="billingItems" />
         <CollectionViewSource x:Key="cvsBillingItems" Source="{StaticResource billingItems}" 
 						  Filter="CollectionViewSource_Filter">
         </CollectionViewSource>
+        <local:StringToDoubleConverter x:Key="StringToDoubleConverter"/>
     </UserControl.Resources>
-    
+
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
             <Grid x:Name="ReceptionistDialog">
@@ -43,7 +44,7 @@
                     <materialDesign:Card Margin="25,18,25,12">
                         <Grid>
                             <Label>Total:</Label>
-                            <TextBlock Foreground="#13ceeb" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="RM 117" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Foreground="#13ceeb" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="{Binding NetTotal}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </materialDesign:Card>
                     <materialDesign:Card Margin="25,12">
@@ -51,18 +52,39 @@
                             <Label>Received:</Label>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Label Padding="0" Foreground="#eb1c46" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="96" Margin="0,0,25,0" >RM</Label>
-                                <TextBox Foreground="#eb1c46" Text="200" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center"/>
+                                <TextBox Foreground="#eb1c46" Text="{Binding Payment,Converter={StaticResource StringToDoubleConverter}}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
                     </materialDesign:Card>
                     <materialDesign:Card Margin="25,12">
                         <Grid>
                             <Label>Change:</Label>
-                            <TextBlock Foreground="#999999" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="RM 83" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <TextBlock Foreground="#999999" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="{Binding Change}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </materialDesign:Card>
                 </StackPanel>
                 <Grid Background="#f0f0f0" Margin="0" >
+                    <Grid Margin="15,15,15,0" Height="40" VerticalAlignment="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label HorizontalAlignment="Right" VerticalAlignment="Bottom">Patient ID :</Label>
+                        <TextBox Text="{Binding PatientId}" Margin="5" Grid.Column="1"/>
+                        <Button Padding="0" Grid.Column="2" Height="Auto">
+                            <Button.Content>
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="4*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Kind="Magnify" Height="25" Width="25" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Find Bill"/>
+                                </Grid>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
                     <DataGrid ColumnWidth="*" x:Name="dgItems"
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
@@ -70,7 +92,7 @@
 					  AutoGenerateColumns="True"
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-					  FontSize="18" IsReadOnly="True" Margin="15,15,15,110" MinHeight="450">
+					  FontSize="18" IsReadOnly="True" Margin="15,60,15,110" MinHeight="450">
                         <!--ItemsSource="{Binding Source={StaticResource cvsPatients}}-->
                         <DataGrid.ColumnHeaderStyle>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
@@ -79,7 +101,7 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                     </DataGrid>
-                    <Button x:Name="btnAddBillingItem" Padding="10,0" Height="55" Margin="10,0,0,50" ToolTip="Add Item to Bill" Width="Auto" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Button x:Name="btnAddBillingItem" Padding="10,0" Height="55" Margin="15,0,0,50" ToolTip="Add Item to Bill" Width="130" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -89,7 +111,7 @@
                             <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Item"/>
                         </Grid>
                     </Button>
-                    <Button x:Name="btnRemoveBillingItem" Padding="10,0" Height="55" Margin="144,0,0,50" ToolTip="Remove Item from Bill" Width="Auto" TabIndex="1" HorizontalAlignment="Left" Background="#FFDC2920" BorderBrush="#FFDC2920" VerticalAlignment="Bottom">
+                    <Button x:Name="btnRemoveBillingItem" Padding="10,0" Height="55" Margin="150,0,0,50" ToolTip="Remove Item from Bill" Width="155" TabIndex="1" HorizontalAlignment="Left" Background="#FFDC2920" BorderBrush="#FFDC2920" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -99,7 +121,7 @@
                             <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Item"/>
                         </Grid>
                     </Button>
-                    <Label Width="225" VerticalAlignment="Bottom"  Height="75" Margin="0,0,15,35" Background="#FFFAFAFA" HorizontalAlignment="Right" FontSize="48" FontWeight="Light" Content="RM 117" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                    <Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="350,0,15,35" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                 </Grid>
             </Grid>
         </Grid>

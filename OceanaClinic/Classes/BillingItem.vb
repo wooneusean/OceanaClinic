@@ -3,8 +3,8 @@
 Public Class BillingItem
     Inherits ObservableObject
     Enum ItemTypeEnum
-        Consultation
         Medication
+        Consultation
         Service
     End Enum
     Private _itemId As Integer
