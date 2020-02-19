@@ -1,4 +1,7 @@
-﻿Public Class BillingPage
+﻿Imports System.ComponentModel
+Imports System.Text.RegularExpressions
+
+Public Class BillingPage
     Dim _billingItems As ObservableBillingItems
     Dim ViewModel As New BillingPageViewModel
     Sub New()
@@ -8,7 +11,10 @@
 
         ' Add any initialization after the InitializeComponent() call.
         _billingItems = Me.Resources("billingItems")
-        ViewModel.NetTotal = New Currency(23302329.5)
+        'ViewModel.NetTotal = New Currency(323232.7)
+        ViewModel.NetTotal = New Currency(340000.2D)
+        ViewModel.PatientId = 0
+        ViewModel.Payment = 0
         DataContext = ViewModel
     End Sub
     Public Sub refreshBillingItems()
@@ -20,48 +26,31 @@
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
 
     End Sub
+
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        refreshBillingItems()
+    End Sub
 End Class
 
 Public Class BillingPageViewModel
     Inherits ObservableObject
-    Private _patientId As Integer
+    'IMPLEMENT VALIDATION
     Public Property PatientId() As Integer
+    Private _payment As Decimal
+    Public Property Payment() As Decimal
         Get
-            Return _patientId
+            Return _payment
         End Get
-        Set(ByVal value As Integer)
-            _patientId = value
-        End Set
-    End Property
-    Private _payment As Currency
-    Public Property Payment() As Double
-        Get
-            If (_payment Is Nothing) Then
-                _payment = New Currency()
-                Return _payment.Value
-            Else
-                Return _payment.Value
-            End If
-        End Get
-        Set(ByVal value As Double)
-            If _payment Is Nothing Then
-                _payment = New Currency(value)
-            Else
-                _payment.Value = value
-            End If
-            OnPropertyChanged("Payment")
-            OnPropertyChanged("Change")
+        Set(ByVal value As Decimal)
+            _payment = value
+            OnPropertyChanged(NameOf(Payment))
+            OnPropertyChanged(NameOf(Change))
         End Set
     End Property
     Private _netTotal As Currency
     Public Property NetTotal() As Currency
         Get
-            If (_netTotal Is Nothing) Then
-                _netTotal = New Currency()
-                Return _netTotal
-            Else
-                Return _netTotal
-            End If
+            Return _netTotal
         End Get
         Set(ByVal value As Currency)
             _netTotal = value
@@ -71,7 +60,14 @@ Public Class BillingPageViewModel
     Private _change As Currency
     Public ReadOnly Property Change() As Currency
         Get
-            Return New Currency(NetTotal.Value - Payment)
+            Dim changeVal As Currency
+            If changeVal Is Nothing Then
+                changeVal = New Currency(Payment - NetTotal.Value)
+            Else
+                changeVal.Value = Payment - NetTotal.Value
+            End If
+            Return changeVal
         End Get
     End Property
+
 End Class

@@ -33,19 +33,22 @@ Class UtilityConverter
         Return users
     End Function
 End Class
-Class StringToDoubleConverter
+Class StringToDecimalConverter
     Implements IValueConverter
-
     Public Function Convert(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.Convert
-        Dim doubleVal As Double = 0
-        If Double.TryParse(value, doubleVal) Then
-            Return doubleVal
-        Else
-            Return 0
-        End If
+        Return value.ToString()
     End Function
 
     Public Function ConvertBack(value As Object, targetType As Type, parameter As Object, culture As CultureInfo) As Object Implements IValueConverter.ConvertBack
-        Return value.ToString
+        If TypeOf (value) Is String Then
+            Dim doubleVal As Decimal = 0
+            If Decimal.TryParse(value, doubleVal) Then
+                Return doubleVal
+            Else
+                Return 0
+            End If
+        Else
+            Return 0
+        End If
     End Function
 End Class

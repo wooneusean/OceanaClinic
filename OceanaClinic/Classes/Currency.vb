@@ -8,7 +8,11 @@
         Dim wholeNumber As String
         Dim decimalNumber As String
         If split.Count > 1 Then
-            wholeNumber = String.Format("{0:#,##0}", CInt(split(0)))
+            Try
+                wholeNumber = String.Format("{0:#,##0}", CInt(split(0)))
+            Catch ex As System.OverflowException
+                wholeNumber = "0"
+            End Try
             decimalNumber = split(1)
             If decimalNumber.Length = 1 Then
                 decimalNumber += "0"
@@ -16,7 +20,11 @@
                 decimalNumber += "00"
             End If
         Else
-            wholeNumber = String.Format("{0:#,##0}", CInt(split(0)))
+            Try
+                wholeNumber = String.Format("{0:#,##0}", CInt(split(0)))
+            Catch ex As System.OverflowException
+                wholeNumber = "0"
+            End Try
             decimalNumber = "00"
         End If
         Return Prefix + wholeNumber + "." + decimalNumber
@@ -33,7 +41,7 @@
         Value = 0
         Prefix = "RM "
     End Sub
-    Sub New(val As Double, pre As String)
+    Sub New(val As Decimal, pre As String)
         Value = val
         Prefix = pre
     End Sub
@@ -41,7 +49,7 @@
         Value = 0
         Prefix = pre
     End Sub
-    Sub New(val As Double)
+    Sub New(val As Decimal)
         Value = val
         Prefix = "RM "
     End Sub

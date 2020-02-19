@@ -19,7 +19,7 @@
         <CollectionViewSource x:Key="cvsBillingItems" Source="{StaticResource billingItems}" 
 						  Filter="CollectionViewSource_Filter">
         </CollectionViewSource>
-        <local:StringToDoubleConverter x:Key="StringToDoubleConverter"/>
+        <local:StringToDecimalConverter x:Key="StringToDecimalConverter"/>
     </UserControl.Resources>
 
     <materialDesign:DialogHost Identifier="RootDialog">
@@ -52,7 +52,7 @@
                             <Label>Received:</Label>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Label Padding="0" Foreground="#eb1c46" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="96" Margin="0,0,25,0" >RM</Label>
-                                <TextBox Foreground="#eb1c46" Text="{Binding Payment,Converter={StaticResource StringToDoubleConverter}}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center"/>
+                                <TextBox x:Name="txtPayment" MinWidth="250" Foreground="#eb1c46" Text="{Binding Payment,ValidatesOnDataErrors=True,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToDecimalConverter}}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center" />
                             </StackPanel>
                         </Grid>
                     </materialDesign:Card>
@@ -67,12 +67,12 @@
                     <Grid Margin="15,15,15,0" Height="40" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <Label HorizontalAlignment="Right" VerticalAlignment="Bottom">Patient ID :</Label>
-                        <TextBox Text="{Binding PatientId}" Margin="5" Grid.Column="1"/>
-                        <Button Padding="0" Grid.Column="2" Height="Auto">
+                        <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="24">Patient ID :</Label>
+                        <TextBox Text="{Binding PatientId}" Margin="15,0" Grid.Column="1"/>
+                        <Button Padding="0" Margin="15,0" Grid.Column="2" Height="Auto" Click="Button_Click">
                             <Button.Content>
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
@@ -92,7 +92,7 @@
 					  AutoGenerateColumns="True"
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-					  FontSize="18" IsReadOnly="True" Margin="15,60,15,110" MinHeight="450">
+					  FontSize="18" IsReadOnly="True" Margin="15,60,15,110" MinHeight="450" ItemsSource="{StaticResource billingItems}">
                         <!--ItemsSource="{Binding Source={StaticResource cvsPatients}}-->
                         <DataGrid.ColumnHeaderStyle>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
