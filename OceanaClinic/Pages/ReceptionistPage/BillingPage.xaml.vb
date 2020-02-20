@@ -1,34 +1,75 @@
 ﻿Imports System.ComponentModel
 Imports System.Text.RegularExpressions
+Imports MaterialDesignThemes.Wpf
 
 Public Class BillingPage
-    Dim _billingItems As ObservableBillingItems
+    Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
+    Dim _transactions As ObservableTransactions
     Dim ViewModel As New BillingPageViewModel
-    Sub New()
+    Dim MainPage As Receptionist
+    Sub New(ByRef _mainPage As Receptionist, Optional ByVal patientId As Integer = 0)
 
         ' This call is required by the designer.
         InitializeComponent()
 
         ' Add any initialization after the InitializeComponent() call.
-        _billingItems = Me.Resources("billingItems")
-        'ViewModel.NetTotal = New Currency(323232.7)
-        ViewModel.NetTotal = New Currency(340000.2D)
-        ViewModel.PatientId = 0
+        _transactions = Me.Resources("transactions")
+        MainPage = _mainPage
+        ViewModel.PatientId = patientId
         ViewModel.Payment = 0
+        RefreshTransactions()
         DataContext = ViewModel
+        MySnackbar.MessageQueue = msgQ
     End Sub
-    Public Sub refreshBillingItems()
-        _billingItems.Clear()
-        For Each billingItem As BillingItem In gVars.dbReception.GetBillingItems(ViewModel.PatientId)
-            _billingItems.Add(billingItem)
+    Public Sub RefreshTransactions()
+        _transactions.Clear()
+        Dim _newNetTotal As Decimal = 0
+        For Each transaction As Transaction In gVars.dbReception.GetPatientTransactions(ViewModel.PatientId)
+            _transactions.Add(transaction)
+            _newNetTotal += transaction.ItemPrice.Value
         Next
+        Dim p As Patient = gVars.dbReception.GetPatientById(ViewModel.PatientId)
+        If (p IsNot Nothing) Then
+            ViewModel.PatientIdentity = p.Identity
+            ViewModel.PatientName = p.Firstname + " " + p.Lastname
+        Else
+            ViewModel.PatientIdentity = ""
+            ViewModel.PatientName = ""
+        End If
+        ViewModel.NetTotal = New Currency(_newNetTotal)
     End Sub
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
 
     End Sub
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        refreshBillingItems()
+        RefreshTransactions()
+    End Sub
+
+    Private Sub btnLogout_Click(sender As Object, e As RoutedEventArgs) Handles btnLogout.Click
+        Dim x As MainWindow = New MainWindow
+        x.Show()
+        Window.GetWindow(Me).Close()
+    End Sub
+
+    Private Sub btnPatients_Click(sender As Object, e As RoutedEventArgs) Handles btnPatients.Click
+        Dim rcptPg As ReceptionistPage
+        If rcptPg Is Nothing Then
+            rcptPg = New ReceptionistPage(MainPage)
+        End If
+        MainPage.ReceptionistControl.Content = rcptPg
+    End Sub
+
+    Private Sub btnConfirmPayment_Click(sender As Object, e As RoutedEventArgs) Handles btnConfirmPayment.Click
+        If _transactions.Count > 0 Then
+            If gVars.dbReception.ConfirmTransations(_transactions) > 0 Then
+                msgQ.Enqueue("Success! Payment is confirmed!")
+            Else
+                msgQ.Enqueue("Failure! Payment confirmation failed!")
+            End If
+            txtPayment.Text = "0"
+            RefreshTransactions()
+        End If
     End Sub
 End Class
 
@@ -55,6 +96,7 @@ Public Class BillingPageViewModel
         Set(ByVal value As Currency)
             _netTotal = value
             OnPropertyChanged(NameOf(NetTotal))
+            OnPropertyChanged(NameOf(Change))
         End Set
     End Property
     Private _change As Currency
@@ -69,5 +111,24 @@ Public Class BillingPageViewModel
             Return changeVal
         End Get
     End Property
-
+    Private _patientName As String
+    Public Property PatientName() As String
+        Get
+            Return _patientName
+        End Get
+        Set(ByVal value As String)
+            _patientName = value
+            OnPropertyChanged(NameOf(PatientName))
+        End Set
+    End Property
+    Private _patientIdentity As String
+    Public Property PatientIdentity() As String
+        Get
+            Return _patientIdentity
+        End Get
+        Set(ByVal value As String)
+            _patientIdentity = value
+            OnPropertyChanged(NameOf(PatientIdentity))
+        End Set
+    End Property
 End Class

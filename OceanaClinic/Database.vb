@@ -48,6 +48,7 @@ Public Class Database
                     FOREIGN KEY(""PatientId"") REFERENCES ""Patients""(""PatientId"")
                 );"
 
+
             System.IO.Directory.CreateDirectory(location)
             Using SqlConn As New SQLiteConnection(connectionString)
 
@@ -273,7 +274,7 @@ Public Class AdminDB
     ''' https://stackoverflow.com/questions/337704/parameterize-an-sql-in-clause
     Public Function RemoveUsers(_users As List(Of User)) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
-            conn.Open()
+
             Dim removeUserQuery As String = "DELETE FROM Users WHERE userId IN ("
             For Each user As User In _users
                 If user.UserID = _users.Last.UserID Then
@@ -283,6 +284,7 @@ Public Class AdminDB
                 End If
             Next
             Dim cmd As New SQLiteCommand(removeUserQuery, conn)
+            conn.Open()
             Dim i = cmd.ExecuteNonQuery()
             conn.Close()
             Return i
@@ -325,6 +327,7 @@ Public Class AdminDB
             While reader.Read()
                 selectedUser = New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum))
             End While
+            SqlConn.Close()
             Return selectedUser
         End Using
     End Function
@@ -335,12 +338,12 @@ Public Class AdminDB
             Dim SqlCmd As New SQLiteCommand(getUserQuery, SqlConn)
             SqlCmd.Parameters.AddWithValue("@email", email)
             SqlConn.Open()
-
             Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
             Dim selectedUser As User = Nothing
             While reader.Read()
                 selectedUser = New User(CInt(reader("userId")), reader("Firstname"), reader("Lastname"), reader("Password"), reader("Email"), CType(CInt(reader("userGroup")), User.UserGroupEnum))
             End While
+            SqlConn.Close()
             Return selectedUser
         End Using
     End Function
@@ -349,9 +352,9 @@ Public Class AdminDB
     ''' </summary>
     ''' <returns>Returns a List(Of User)</returns>
     Public Function GetAllUsers() As List(Of User)
-        Dim users As New List(Of User)
-        Dim getAllUsersQuery As String = "SELECT * FROM Users"
         Using SqlConn As New SQLiteConnection(Database.connectionString)
+            Dim users As New List(Of User)
+            Dim getAllUsersQuery As String = "SELECT * FROM Users"
             Dim SqlCmd As New SQLiteCommand(getAllUsersQuery, SqlConn)
             SqlConn.Open()
             Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
@@ -399,7 +402,6 @@ Public Class ReceptionistDB
     ''' <returns>Returns number of effected rows</returns>
     Public Function RemovePatients(patients As List(Of Patient)) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
-            conn.Open()
             Dim removePatientQuery As String = "DELETE FROM Patients WHERE PatientId IN ("
             For Each patient As Patient In patients
                 If patient.PatientId = patients.Last.PatientId Then
@@ -409,6 +411,7 @@ Public Class ReceptionistDB
                 End If
             Next
             Dim cmd As New SQLiteCommand(removePatientQuery, conn)
+            conn.Open()
             Dim i = cmd.ExecuteNonQuery()
             conn.Close()
             Return i
@@ -460,6 +463,7 @@ Public Class ReceptionistDB
                                              reader("Mobile").ToString, reader("Address").ToString, reader("Email").ToString, CInt(reader("Weight")), CInt(reader("Height")),
                                              CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies").ToString)
             End While
+            SqlConn.Close()
             Return selectedPatient
         End Using
     End Function
@@ -477,6 +481,7 @@ Public Class ReceptionistDB
                                              reader("Mobile").ToString, reader("Address").ToString, reader("Email").ToString, CInt(reader("Weight")), CInt(reader("Height")),
                                              CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies").ToString)
             End While
+            SqlConn.Close()
             Return selectedPatient
         End Using
     End Function
@@ -485,9 +490,9 @@ Public Class ReceptionistDB
     ''' </summary>
     ''' <returns>Returns a List(Of Patient)</returns>
     Public Function GetAllPatients() As List(Of Patient)
-        Dim patients As New List(Of Patient)
-        Dim getAllPatientsQuery As String = "SELECT * FROM Patients"
         Using SqlConn As New SQLiteConnection(Database.connectionString)
+            Dim patients As New List(Of Patient)
+            Dim getAllPatientsQuery As String = "SELECT * FROM Patients"
             Dim SqlCmd As New SQLiteCommand(getAllPatientsQuery, SqlConn)
             SqlConn.Open()
             Dim reader As SQLiteDataReader = SqlCmd.ExecuteReader()
@@ -496,14 +501,15 @@ Public Class ReceptionistDB
                                              reader("Mobile").ToString, reader("Address").ToString, reader("Email").ToString, CInt(reader("Weight")), CInt(reader("Height")),
                                              CType(CInt(reader("BloodType")), Patient.BloodTypeEnum), reader("Allergies").ToString))
             End While
+            SqlConn.Close()
             Return patients
         End Using
     End Function
 
     Public Function GetBillingItems(itemId As Integer) As List(Of BillingItem)
-        Dim billingItems As New List(Of BillingItem)
-        Dim getBillingItemsQuery As String = "SELECT * FROM BillingItems WHERE ItemId = @itemId"
         Using conn As New SQLiteConnection(Database.connectionString)
+            Dim billingItems As New List(Of BillingItem)
+            Dim getBillingItemsQuery As String = "SELECT * FROM BillingItems WHERE ItemId = @itemId"
             Dim cmd As New SQLiteCommand(getBillingItemsQuery, conn)
             cmd.Parameters.AddWithValue("@itemId", itemId)
             conn.Open()
@@ -511,21 +517,36 @@ Public Class ReceptionistDB
             While reader.Read()
                 billingItems.Add(New BillingItem(CInt(reader("ItemId")), reader("Name"), reader("Type"), New Currency(CInt(reader("Price")))))
             End While
+            conn.Close()
             Return billingItems
         End Using
     End Function
-    'COMPLETE THIS
-    Public Function GetPatientTransactions(patientId As Integer) As List(Of BillingItem)
-        Dim billingItems As New List(Of BillingItem)
-        Dim getBillingItemsQuery As String = "SELECT * FROM BillingItems WHERE ItemId = @itemId"
+    Public Function GetPatientTransactions(patientId As Integer) As List(Of Transaction)
         Using conn As New SQLiteConnection(Database.connectionString)
-            Dim cmd As New SQLiteCommand(getBillingItemsQuery, conn)
+            Dim transactions As New List(Of Transaction)
+            Dim getTransactionsQuery As String = "SELECT Transactions.TransactionId,Transactions.Quantity,BillingItems.Name,BillingItems.Price,BillingItems.Type FROM Transactions JOIN BillingItems ON Transactions.ItemId = BillingItems.ItemId WHERE Transactions.PatientId = @patientId AND Transactions.Completed = 0"
+            Dim cmd As New SQLiteCommand(getTransactionsQuery, conn)
+            cmd.Parameters.AddWithValue("@patientId", patientId)
             conn.Open()
             Dim reader As SQLiteDataReader = cmd.ExecuteReader()
             While reader.Read()
-                billingItems.Add(New BillingItem(CInt(reader("ItemId")), reader("Name"), reader("Type"), reader("Price")))
+                transactions.Add(New Transaction(CInt(reader("TransactionId")), CInt(reader("Quantity")), reader("Name"), CDec(reader("Price")), CInt(reader("Type"))))
             End While
-            Return billingItems
+            conn.Close()
+            Return transactions
+        End Using
+    End Function
+    Public Function ConfirmTransations(transactions As ObservableTransactions) As Integer
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim confirmTransactionsQuery As String = "UPDATE Transactions SET Completed = 1 WHERE TransactionId IN ("
+            For Each _transaction As Transaction In transactions
+                confirmTransactionsQuery += _transaction.Id.ToString + If(_transaction.Id = transactions.Last().Id, ");", ",")
+            Next
+            Dim cmd As New SQLiteCommand(confirmTransactionsQuery, conn)
+            conn.Open()
+            Dim i As Integer = cmd.ExecuteNonQuery()
+            conn.Close()
+            Return i
         End Using
     End Function
 End Class

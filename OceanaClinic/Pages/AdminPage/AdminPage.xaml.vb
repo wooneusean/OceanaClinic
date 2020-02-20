@@ -9,14 +9,14 @@ Public Class AdminPage
 
         ' Add any initialization after the InitializeComponent() call.
         _users = Me.Resources("users")
-        refreshUsers()
+        RefreshUsers()
         MySnackbar.MessageQueue = msgQ
         DataContext = Me
     End Sub
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
     End Sub
-    Public Sub refreshUsers()
+    Public Sub RefreshUsers()
         _users.Clear()
         For Each user As User In gVars.dbAdmin.GetAllUsers()
             _users.Add(user)
@@ -28,7 +28,7 @@ Public Class AdminPage
         Me.Close()
     End Sub
     Private Sub btnReload_Click(sender As Object, e As RoutedEventArgs) Handles btnReload.Click
-        refreshUsers()
+        RefreshUsers()
     End Sub
     Private Sub txtSearch_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtSearch.TextChanged
         CollectionViewSource.GetDefaultView(dgUsers.ItemsSource).Refresh()
@@ -45,7 +45,7 @@ Public Class AdminPage
             Else
                 msgQ.Enqueue("Failure! Failed to remove " + selectedUsers.Count.ToString + " users!")
             End If
-            refreshUsers()
+            RefreshUsers()
         End If
     End Sub
 
@@ -61,7 +61,7 @@ Public Class AdminPage
             Else
                 msgQ.Enqueue("Failure! User of UserID(" + selectedUser.UserID.ToString + ") failed to be updated!")
             End If
-            refreshUsers()
+            RefreshUsers()
         End If
     End Sub
 
@@ -76,7 +76,7 @@ Public Class AdminPage
             End If
         End If
 
-        refreshUsers()
+        RefreshUsers()
     End Sub
 
     Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgUsers.MouseDoubleClick

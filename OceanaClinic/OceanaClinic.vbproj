@@ -106,6 +106,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\Currency.vb" />
+    <Compile Include="Classes\Transaction.vb" />
     <Compile Include="Converters.vb" />
     <Compile Include="Database.vb" />
     <Compile Include="gVars.vb" />
@@ -123,6 +124,9 @@
     </Compile>
     <Compile Include="Pages\ReceptionistPage\PatientDetails.xaml.vb">
       <DependentUpon>PatientDetails.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ReceptionistPage\Receptionist.xaml.vb">
+      <DependentUpon>Receptionist.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ReceptionistPage\ReceptionistPage.xaml.vb">
       <DependentUpon>ReceptionistPage.xaml</DependentUpon>
@@ -168,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ReceptionistPage\PatientDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReceptionistPage\Receptionist.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -218,6 +226,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>

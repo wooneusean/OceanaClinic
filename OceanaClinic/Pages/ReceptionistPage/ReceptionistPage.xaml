@@ -1,4 +1,4 @@
-﻿<Window x:Class="ReceptionistPage"
+﻿<UserControl x:Class="ReceptionistPage"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,6 @@
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		xmlns:local="clr-namespace:OceanaClinic"
 		mc:Ignorable="d"
-		Title="ReceptionistPage" Height="720" Width="1280"
         MinHeight="720" MinWidth="1280"
 		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 		TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,17 +14,16 @@
 		TextElement.FontSize="20"
 		TextOptions.TextFormattingMode="Ideal"
 		TextOptions.TextRenderingMode="Auto"
-		FontFamily="{DynamicResource MaterialDesignFont}" WindowStartupLocation="CenterScreen" FontSize="20" WindowState="Maximized">
-    <Window.Resources>
+		FontFamily="{DynamicResource MaterialDesignFont}" FontSize="20">
+    <UserControl.Resources>
         <sys:Double x:Key="iconSize">25</sys:Double>
         <sys:Double x:Key="iconButtonSize">50</sys:Double>
         <local:ObservablePatients x:Key="patients" />
         <CollectionViewSource x:Key="cvsPatients" Source="{StaticResource patients}" 
 						  Filter="CollectionViewSource_Filter">
         </CollectionViewSource>
-    </Window.Resources>
+    </UserControl.Resources>
 
-    <ContentControl x:Name="ReceptionistContent">
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
             <Grid x:Name="ReceptionistDialog">
@@ -66,7 +64,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button x:Name="btnBilling" ToolTip="Go to Billing Page" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
-                            <materialDesign:PackIcon Kind="Receipt" Height="30" Width="30" Foreground="White" />
+                            <materialDesign:PackIcon Kind="CurrencyUsd" Height="30" Width="30" Foreground="White" />
                         </Button>
                         <Button x:Name="btnReload" ToolTip="Refresh Patient List" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
                             <materialDesign:PackIcon Kind="Reload" Height="30" Width="30" Foreground="White" />
@@ -95,5 +93,4 @@
             <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
     </materialDesign:DialogHost>
-    </ContentControl>
-</Window>
+</UserControl>
