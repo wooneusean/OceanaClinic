@@ -32,6 +32,13 @@ Class UtilityConverter
         Next
         Return users
     End Function
+    Public Shared Function SelectedItemsToListOfTransactions(selectedItems As IList) As List(Of Transaction)
+        Dim transactions As New List(Of Transaction)
+        For Each transaction As Transaction In selectedItems
+            transactions.Add(New Transaction(transaction.Id, transaction.Quantity, transaction.Name, transaction.PricePerUnit.Value))
+        Next
+        Return transactions
+    End Function
 End Class
 Class StringToDecimalConverter
     Implements IValueConverter

@@ -22,16 +22,6 @@ Public Class Transaction
             OnPropertyChanged(NameOf(Id))
         End Set
     End Property
-    Private _quantity As Integer
-    Public Property Quantity() As Integer
-        Get
-            Return _quantity
-        End Get
-        Set(value As Integer)
-            _quantity = value
-            OnPropertyChanged(NameOf(Quantity))
-        End Set
-    End Property
     Private _name As String
     Public Property Name() As String 'Name from BillingItems table
         Get
@@ -43,7 +33,7 @@ Public Class Transaction
         End Set
     End Property
     Private _price As Currency
-    Public Property ItemPrice() As Currency 'Price from BillingItems table
+    Public Property PricePerUnit() As Currency 'Price from BillingItems table
         Get
             Return _price
         End Get
@@ -53,17 +43,27 @@ Public Class Transaction
             Else
                 _price = value
             End If
-            OnPropertyChanged(NameOf(ItemPrice))
+            OnPropertyChanged(NameOf(PricePerUnit))
         End Set
     End Property
-    Private Property ItemType() As BillingItem.ItemTypeEnum 'Price from BillingItems table
-    Sub New(_trId As Integer, _quantity As Integer, _itemName As String, _itemPrice As Decimal, _itemType As Integer)
+    Private _quantity As Integer
+    Public Property Quantity() As Integer
+        Get
+            Return _quantity
+        End Get
+        Set(value As Integer)
+            _quantity = value
+            OnPropertyChanged(NameOf(Quantity))
+        End Set
+    End Property
+    'Private Property ItemType() As BillingItem.ItemTypeEnum 'Price from BillingItems table
+    Sub New(_trId As Integer, _quantity As Integer, _itemName As String, _itemPrice As Decimal)
         'TransactionId = _trId
         Id = _trId
         Quantity = _quantity
         Name = _itemName
-        ItemPrice = New Currency(_itemPrice)
-        ItemType = CType(_itemType, BillingItem.ItemTypeEnum)
+        PricePerUnit = New Currency(_itemPrice)
+        'ItemType = CType(_itemType, BillingItem.ItemTypeEnum)
     End Sub
 End Class
 Public Class ObservableTransactions

@@ -26,9 +26,48 @@
 
     <materialDesign:DialogHost Identifier="RootDialog">
         <materialDesign:DialogHost.DialogContent>
-            <Grid x:Name="ReceptionistDialog">
-
-            </Grid>
+            <StackPanel x:Name="dlgRemoveItemConfirmation" Width="800">
+                <TextBlock TextAlignment="Center" Style="{StaticResource MaterialDesignBody1TextBlock}" 
+                   Text="Are you sure you want to remove&#x0a;the items listed below from the patients' bill?" Margin="10" VerticalAlignment="Top"/>
+                <DataGrid MaxHeight="600" ColumnWidth="*" x:Name="dgDlgPatientItems"
+                          CanUserSortColumns="True"
+                          SelectionMode="Single"
+                          CanUserAddRows="False"
+                          AutoGenerateColumns="False"
+                          materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+                          materialDesign:DataGridAssist.ColumnHeaderPadding="8"
+                          FontSize="14" IsReadOnly="True"
+                          ItemsSource="{Binding SelectedItems, ElementName=dgItems}" Margin="10,0" MinHeight="80" VerticalAlignment="Center">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="Background" Value="#E8E8E8"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="ID" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Name" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding ItemPrice}" Header="Item Price" MaxLength="255"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10">
+                    <Button Margin="5,0" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Content="Yes" Width="75" Height="35">
+                        <Button.CommandParameter>
+                            <sys:Boolean>
+                                True
+                            </sys:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                    <Button Margin="5,0" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Content="No" Width="75" Height="35">
+                        <Button.CommandParameter>
+                            <sys:Boolean>
+                                False
+                            </sys:Boolean>
+                        </Button.CommandParameter>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
         </materialDesign:DialogHost.DialogContent>
         <Grid>
             <materialDesign:ColorZone Mode="PrimaryMid" Padding="12" Height="80">
@@ -103,7 +142,7 @@
                                         <ColumnDefinition Width="4*"/>
                                     </Grid.ColumnDefinitions>
                                     <materialDesign:PackIcon Kind="Magnify" Height="25" Width="25" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Find Patient Bill" ToolTip="Show unpaid transactions from the patient"/>
+                                    <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Find Patient Bill" ToolTip="Show unpaid transactions from the patient" FontSize="16"/>
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -115,7 +154,7 @@
 					  AutoGenerateColumns="True"
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
-					  FontSize="18" IsReadOnly="True" Margin="15,80,15,110" MinHeight="450" ItemsSource="{StaticResource transactions}">
+					  FontSize="18" IsReadOnly="True" Margin="15,80,15,145" MinHeight="450" ItemsSource="{StaticResource transactions}">
                         <DataGrid.ColumnHeaderStyle>
                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                                 <Setter Property="FontSize" Value="18"/>
@@ -123,27 +162,27 @@
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
                     </DataGrid>
-                    <Button x:Name="btnAddTransactionItem" Padding="10,0" Height="55" Margin="15,0,0,46" ToolTip="Add Item to Bill" Width="130" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="0,0,15,70" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
+                    <Button x:Name="btnAddTransactionItem" Padding="0" Height="50" Width="150" Margin="15,0,0,86" ToolTip="Add Item to Bill" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
                             <materialDesign:PackIcon Margin="5" Width="30" Height="30" Kind="Add" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Item"/>
+                            <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Item"/>
                         </Grid>
                     </Button>
-                    <Button x:Name="btnRemoveTransactionItem" Padding="10,0" Height="55" Margin="150,0,0,46" ToolTip="Remove Item from Bill" Width="155" TabIndex="1" HorizontalAlignment="Left" Background="#FFDC2920" BorderBrush="#FFDC2920" VerticalAlignment="Bottom">
+                    <Button x:Name="btnRemoveTransactionItem" Padding="0" Height="50" Margin="170,0,0,86" ToolTip="Remove Item from Bill" TabIndex="1" Background="#FFDC2920" BorderBrush="#FFDC2920" HorizontalAlignment="Left" Width="150" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
                             <materialDesign:PackIcon Margin="5" Width="30" Height="30" Kind="Minus" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Item"/>
+                            <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove Item" Height="16" Width="84"/>
                         </Grid>
                     </Button>
-                    <Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="350,0,15,35" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                 </Grid>
             </Grid>
             <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />

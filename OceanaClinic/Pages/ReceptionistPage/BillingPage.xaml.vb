@@ -3,6 +3,13 @@ Imports System.Text.RegularExpressions
 Imports MaterialDesignThemes.Wpf
 
 Public Class BillingPage
+    ''' <summary>
+    ''' TO DO:
+    ''' 1) MAKE dgItems SHOW CERTAIN COLUMS
+    ''' 2) ADD ALL COLUMNS TO TRANSACTION CLASS
+    ''' 3) ADD A "Total Price" COLUMN = QUANTITY * PRICE
+    ''' 4) FIND A WAY TO ADD TRANSACTION -> INSERT INTO Transactions(ItemId,PatientId,Quantity)
+    ''' </summary>
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
     Dim _transactions As ObservableTransactions
     Dim ViewModel As New BillingPageViewModel
@@ -26,7 +33,7 @@ Public Class BillingPage
         Dim _newNetTotal As Decimal = 0
         For Each transaction As Transaction In gVars.dbReception.GetPatientTransactions(ViewModel.PatientId)
             _transactions.Add(transaction)
-            _newNetTotal += transaction.ItemPrice.Value
+            _newNetTotal += transaction.PricePerUnit.Value * transaction.Quantity
         Next
         Dim p As Patient = gVars.dbReception.GetPatientById(ViewModel.PatientId)
         If (p IsNot Nothing) Then
@@ -68,6 +75,22 @@ Public Class BillingPage
                 msgQ.Enqueue("Failure! Payment confirmation failed!")
             End If
             txtPayment.Text = "0"
+            RefreshTransactions()
+        End If
+    End Sub
+
+    Private Async Sub btnRemoveTransactionItem_Click(sender As Object, e As RoutedEventArgs) Handles btnRemoveTransactionItem.Click
+        If (dgItems.SelectedIndex = -1) Then
+            Return
+        End If
+        Dim result As Boolean = Await DialogHost.Show(dlgRemoveItemConfirmation, "RootDialog")
+        Dim selectedTransactions As List(Of Transaction) = UtilityConverter.SelectedItemsToListOfTransactions(dgItems.SelectedItems)
+        If result = True Then
+            If gVars.dbReception.RemoveTransactions(selectedTransactions) > 0 Then
+                msgQ.Enqueue("Success! Removed " + selectedTransactions.Count.ToString + " transactions!")
+            Else
+                msgQ.Enqueue("Failure! Failed to remove " + selectedTransactions.Count.ToString + " transactions!")
+            End If
             RefreshTransactions()
         End If
     End Sub
