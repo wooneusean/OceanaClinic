@@ -122,9 +122,6 @@
     <Compile Include="Pages\ReceptionistPage\AddPatient.xaml.vb">
       <DependentUpon>AddPatient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReceptionistPage\AddTransactionItem.xaml.vb">
-      <DependentUpon>AddTransactionItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\ReceptionistPage\BillingPage.xaml.vb">
       <DependentUpon>BillingPage.xaml</DependentUpon>
     </Compile>
@@ -174,10 +171,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ReceptionistPage\AddPatient.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\ReceptionistPage\AddTransactionItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

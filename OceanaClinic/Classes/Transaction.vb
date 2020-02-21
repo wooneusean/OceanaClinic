@@ -2,24 +2,24 @@
 
 Public Class Transaction
     Inherits ObservableObject
-    'Private _transactionId As Integer
-    'Public Property TransactionId() As Integer
-    '    Get
-    '        Return _transactionId
-    '    End Get
-    '    Set(value As Integer)
-    '        _transactionId = value
-    '        OnPropertyChanged(NameOf(TransactionId))
-    '    End Set
-    'End Property
-    Private _id As Integer
-    Public Property Id() As Integer
+    Private _transactionId As Integer
+    Public Property TransactionId() As Integer
         Get
-            Return _id
+            Return _transactionId
         End Get
         Set(value As Integer)
-            _id = value
-            OnPropertyChanged(NameOf(Id))
+            _transactionId = value
+            OnPropertyChanged(NameOf(TransactionId))
+        End Set
+    End Property
+    Private _ItemId As Integer
+    Public Property ItemId() As Integer
+        Get
+            Return _ItemId
+        End Get
+        Set(value As Integer)
+            _ItemId = value
+            OnPropertyChanged(NameOf(ItemId))
         End Set
     End Property
     Private _name As String
@@ -33,7 +33,7 @@ Public Class Transaction
         End Set
     End Property
     Private _price As Currency
-    Public Property PricePerUnit() As Currency 'Price from BillingItems table
+    Public Property Price() As Currency 'Price from BillingItems table
         Get
             Return _price
         End Get
@@ -43,7 +43,8 @@ Public Class Transaction
             Else
                 _price = value
             End If
-            OnPropertyChanged(NameOf(PricePerUnit))
+            OnPropertyChanged(NameOf(Price))
+            OnPropertyChanged(NameOf(SubTotal))
         End Set
     End Property
     Private _quantity As Integer
@@ -54,16 +55,45 @@ Public Class Transaction
         Set(value As Integer)
             _quantity = value
             OnPropertyChanged(NameOf(Quantity))
+            OnPropertyChanged(NameOf(SubTotal))
         End Set
     End Property
-    'Private Property ItemType() As BillingItem.ItemTypeEnum 'Price from BillingItems table
-    Sub New(_trId As Integer, _quantity As Integer, _itemName As String, _itemPrice As Decimal)
-        'TransactionId = _trId
-        Id = _trId
+    Private _itemType As BillingItem.ItemTypeEnum
+    Public Property ItemType() As BillingItem.ItemTypeEnum
+        Get
+            Return _itemType
+        End Get
+        Set(value As BillingItem.ItemTypeEnum)
+            _itemType = value
+            OnPropertyChanged(NameOf(ItemType))
+        End Set
+    End Property
+    Private _subTotal As Currency
+    Public ReadOnly Property SubTotal() As Currency
+        Get
+            If _subTotal Is Nothing Then
+                _subTotal = New Currency(Price.Value * Quantity)
+            Else
+                _subTotal.Value = Price.Value * Quantity
+            End If
+            Return _subTotal
+        End Get
+    End Property
+    Sub New(_trId As Integer, _itId As Integer, _itemName As String, _quantity As Integer, _itemPrice As Decimal, _itTy As Integer)
+        TransactionId = _trId
+        ItemId = _itId
         Quantity = _quantity
         Name = _itemName
-        PricePerUnit = New Currency(_itemPrice)
-        'ItemType = CType(_itemType, BillingItem.ItemTypeEnum)
+        Price = New Currency(_itemPrice)
+        ItemType = CType(_itTy, BillingItem.ItemTypeEnum)
+    End Sub
+    Sub New()
+        TransactionId = -1
+        ItemId = -1
+        Quantity = 1
+        Name = ""
+        Price = New Currency(0)
+        ItemType = CType(-1, BillingItem.ItemTypeEnum)
     End Sub
 End Class
 Public Class ObservableTransactions

@@ -35,7 +35,7 @@ Class UtilityConverter
     Public Shared Function SelectedItemsToListOfTransactions(selectedItems As IList) As List(Of Transaction)
         Dim transactions As New List(Of Transaction)
         For Each transaction As Transaction In selectedItems
-            transactions.Add(New Transaction(transaction.Id, transaction.Quantity, transaction.Name, transaction.PricePerUnit.Value))
+            transactions.Add(New Transaction(transaction.TransactionId, transaction.ItemId, transaction.Name, transaction.Quantity, transaction.Price.Value, transaction.ItemType))
         Next
         Return transactions
     End Function

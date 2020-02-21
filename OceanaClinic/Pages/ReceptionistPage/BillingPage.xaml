@@ -45,10 +45,11 @@
                         </Style>
                     </DataGrid.ColumnHeaderStyle>
                     <DataGrid.Columns>
-                        <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="ID" MaxLength="255"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" MaxLength="255"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Name" MaxLength="255"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding ItemPrice}" Header="Item Price" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding TransactionId}" Header="ID" Width="1*" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="10*" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="1*" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding Price}" Header="Price" Width="2*" MaxLength="255"/>
+                        <materialDesign:DataGridTextColumn Binding="{Binding SubTotal}" Header="SubTotal" Width="2*" MaxLength="255"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10">
@@ -151,7 +152,7 @@
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
 					  CanUserAddRows="False"
-					  AutoGenerateColumns="True"
+					  AutoGenerateColumns="False"
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
 					  FontSize="18" IsReadOnly="True" Margin="15,80,15,145" MinHeight="450" ItemsSource="{StaticResource transactions}">
@@ -161,6 +162,14 @@
                                 <Setter Property="Background" Value="#E8E8E8"/>
                             </Style>
                         </DataGrid.ColumnHeaderStyle>
+                        <DataGrid.Columns>
+                            <materialDesign:DataGridTextColumn Binding="{Binding TransactionId}" Header="ID" Width="1*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="10*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="1*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Price}" Header="Price" Width="2*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding SubTotal}" Header="SubTotal" Width="2*" MaxLength="255"/>
+                        </DataGrid.Columns>
+                        <!--_trId As Integer, _itId As Integer, _itemName As String, _quantity As Integer, _itemPrice As Decimal, _itTy As Integer-->
                     </DataGrid>
                     <Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="0,0,15,70" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
                     <Button x:Name="btnAddTransactionItem" Padding="0" Height="50" Width="150" Margin="15,0,0,86" ToolTip="Add Item to Bill" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">

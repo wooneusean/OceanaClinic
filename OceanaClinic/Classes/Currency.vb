@@ -36,7 +36,6 @@
     Public Shared Operator -(ByVal c1 As Currency, ByVal c2 As Currency) As Currency
         Return New Currency(c1.Value - c2.Value, c1.Prefix)
     End Operator
-
     Sub New()
         Value = 0
         Prefix = "RM "

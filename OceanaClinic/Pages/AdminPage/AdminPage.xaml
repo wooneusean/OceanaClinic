@@ -136,7 +136,6 @@
                   materialDesign:DataGridAssist.CellPadding="13 8 8 8"
                   materialDesign:DataGridAssist.ColumnHeaderPadding="8"
                   FontSize="18" IsReadOnly="True" ItemsSource="{Binding Source={StaticResource cvsUsers}}">
-                <!--ItemsSource="{Binding Users}"-->
                 <DataGrid.ColumnHeaderStyle>
                     <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                         <Setter Property="FontSize" Value="18"/>

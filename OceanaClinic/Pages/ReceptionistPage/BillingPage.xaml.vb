@@ -33,7 +33,7 @@ Public Class BillingPage
         Dim _newNetTotal As Decimal = 0
         For Each transaction As Transaction In gVars.dbReception.GetPatientTransactions(ViewModel.PatientId)
             _transactions.Add(transaction)
-            _newNetTotal += transaction.PricePerUnit.Value * transaction.Quantity
+            _newNetTotal += transaction.SubTotal.Value
         Next
         Dim p As Patient = gVars.dbReception.GetPatientById(ViewModel.PatientId)
         If (p IsNot Nothing) Then
@@ -90,6 +90,19 @@ Public Class BillingPage
                 msgQ.Enqueue("Success! Removed " + selectedTransactions.Count.ToString + " transactions!")
             Else
                 msgQ.Enqueue("Failure! Failed to remove " + selectedTransactions.Count.ToString + " transactions!")
+            End If
+            RefreshTransactions()
+        End If
+    End Sub
+
+    Private Async Sub btnAddTransactionItem_Click(sender As Object, e As RoutedEventArgs) Handles btnAddTransactionItem.Click
+        Dim itemToAdd As New Transaction
+        Dim result As Boolean = Await DialogHost.Show(New AddItem(itemToAdd), "RootDialog")
+        If result = True Then
+            If gVars.dbReception.InsertNewTransaction(itemToAdd, ViewModel.PatientId) > 0 Then
+                msgQ.Enqueue("Success! New item added for " + ViewModel.PatientName + "!")
+            Else
+                msgQ.Enqueue("Failure! Failed to add item!")
             End If
             RefreshTransactions()
         End If
