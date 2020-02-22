@@ -148,7 +148,7 @@
                             </Button.Content>
                         </Button>
                     </Grid>
-                    <DataGrid MinColumnWidth="120" ColumnWidth="*" x:Name="dgItems"
+                    <DataGrid MinColumnWidth="60" ColumnWidth="*" x:Name="dgItems"
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
 					  CanUserAddRows="False"
@@ -165,9 +165,9 @@
                         <DataGrid.Columns>
                             <materialDesign:DataGridTextColumn Binding="{Binding TransactionId}" Header="ID" Width="1*" MaxLength="255"/>
                             <materialDesign:DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="10*" MaxLength="255"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="1*" MaxLength="255"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding Price}" Header="Price" Width="2*" MaxLength="255"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding SubTotal}" Header="SubTotal" Width="2*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Quantity}" Header="Quantity" Width="2.5*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding Price}" Header="Price" Width="2.5*" MaxLength="255"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding SubTotal}" Header="SubTotal" Width="2.5*" MaxLength="255"/>
                         </DataGrid.Columns>
                         <!--_trId As Integer, _itId As Integer, _itemName As String, _quantity As Integer, _itemPrice As Decimal, _itTy As Integer-->
                     </DataGrid>

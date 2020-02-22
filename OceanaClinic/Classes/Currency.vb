@@ -1,4 +1,5 @@
 ﻿Public Class Currency
+    Implements IComparable(Of Currency)
     Public Property Value() As Decimal
     Public Property Prefix() As String
 
@@ -52,4 +53,7 @@
         Value = val
         Prefix = "RM "
     End Sub
+    Public Function CompareTo(other As Currency) As Integer Implements IComparable(Of Currency).CompareTo
+        Return Value.CompareTo(other.Value)
+    End Function
 End Class

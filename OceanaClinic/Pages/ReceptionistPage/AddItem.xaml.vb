@@ -12,7 +12,7 @@ Public Class AddItem
         _billingItems = Me.Resources("billingItems")
         RefreshBillingItems()
         ViewModel.ItemToAdd = _itemToAdd
-        ViewModel.ItemQuantityToAdd = 1
+        ViewModel.ItemToAddQuantity = 1
         DataContext = ViewModel
     End Sub
     Private Sub RefreshBillingItems()
@@ -54,7 +54,7 @@ Public Class AddItem
 
     Private Sub dgDlgBillingItems_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dgDlgBillingItems.SelectionChanged
         Dim bi As BillingItem = dgDlgBillingItems.SelectedValue
-        ViewModel.ItemIdToAdd = bi.ItemId
+        ViewModel.ItemToAddId = bi.ItemId
     End Sub
 End Class
 Public Class AddItemViewModel
@@ -69,30 +69,31 @@ Public Class AddItemViewModel
             OnPropertyChanged(NameOf(ItemToAdd))
         End Set
     End Property
-    Public Property ItemIdToAdd() As Integer
+    Public Property ItemToAddId() As Integer
         Get
             Return _itemToAdd.ItemId
         End Get
         Set(ByVal value As Integer)
             _itemToAdd.ItemId = value
-            OnPropertyChanged(NameOf(ItemIdToAdd))
+            OnPropertyChanged(NameOf(ItemToAddId))
+            OnPropertyChanged(NameOf(ItemToAddQuantity))
             OnPropertyChanged(NameOf(CanSubmit))
         End Set
     End Property
-    Public Property ItemQuantityToAdd() As Integer
+    Public Property ItemToAddQuantity() As Integer
         Get
             Return _itemToAdd.Quantity
         End Get
         Set(ByVal value As Integer)
             _itemToAdd.Quantity = value
-            OnPropertyChanged(NameOf(ItemQuantityToAdd))
-            OnPropertyChanged(NameOf(ItemIdToAdd))
+            OnPropertyChanged(NameOf(ItemToAddQuantity))
+            OnPropertyChanged(NameOf(ItemToAddId))
             OnPropertyChanged(NameOf(CanSubmit))
         End Set
     End Property
     Public ReadOnly Property CanSubmit() As Boolean
         Get
-            If (_itemToAdd.Quantity > 0) And (_itemToAdd.ItemId <> -1) Then
+            If (ItemToAddQuantity > 0) And (ItemToAddId <> -1) Then
                 Return True
             Else
                 Return False

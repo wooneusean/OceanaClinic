@@ -44,6 +44,7 @@ Public Class BillingPage
             ViewModel.PatientName = ""
         End If
         ViewModel.NetTotal = New Currency(_newNetTotal)
+        Console.WriteLine(ViewModel.NetTotal.CompareTo(ViewModel.Change))
     End Sub
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
 

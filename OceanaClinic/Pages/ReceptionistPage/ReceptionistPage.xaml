@@ -75,11 +75,11 @@
                     </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
-            <DataGrid ColumnWidth="0.5*" x:Name="dgPatients" Margin="0,80,0,0" 
+            <DataGrid MinColumnWidth="60" x:Name="dgPatients" Margin="0,80,0,0" 
 					  CanUserSortColumns="True"
 					  SelectionMode="Extended"
 					  CanUserAddRows="False"
-					  AutoGenerateColumns="True"
+					  AutoGenerateColumns="False"
 					  materialDesign:DataGridAssist.CellPadding="13 8 8 8"
 					  materialDesign:DataGridAssist.ColumnHeaderPadding="8"
 					  FontSize="18" IsReadOnly="True" ItemsSource="{Binding Source={StaticResource cvsPatients}}">
@@ -89,6 +89,19 @@
                         <Setter Property="Background" Value="#E8E8E8"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <materialDesign:DataGridTextColumn Binding="{Binding PatientId}" Header="ID" Width=".5*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Firstname}" Header="Firstname" Width="2*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Lastname}" Header="Lastname" Width="2*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Identity}" Header="IC/Passport No." Width="1.75*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Mobile}" Header="Mobile No." Width="1.5*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="2.5*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="2*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Weight}" Header="Weight" Width="1*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Height}" Header="Height" Width="1*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding BloodType}" Header="Blood Type" Width="1.25*" MaxLength="255"/>
+                    <materialDesign:DataGridTextColumn Binding="{Binding Allergies}" Header="Allergies" Width="2.5*" MaxLength="255"/>
+                </DataGrid.Columns>
             </DataGrid>
             <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
