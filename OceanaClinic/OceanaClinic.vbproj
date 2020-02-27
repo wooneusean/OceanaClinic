@@ -125,6 +125,9 @@
     <Compile Include="Pages\ReceptionistPage\BillingPage.xaml.vb">
       <DependentUpon>BillingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ReceptionistPage\EditItem.xaml.vb">
+      <DependentUpon>EditItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReceptionistPage\PatientDetails.xaml.vb">
       <DependentUpon>PatientDetails.xaml</DependentUpon>
     </Compile>
@@ -175,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ReceptionistPage\BillingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ReceptionistPage\EditItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

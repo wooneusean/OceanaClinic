@@ -2,7 +2,7 @@
 
 Public Class Transaction
     Inherits ObservableObject
-    Implements IComparable(Of Transaction)
+    Implements IComparable
     Private _transactionId As Integer
     Public Property TransactionId() As Integer
         Get
@@ -97,8 +97,9 @@ Public Class Transaction
         ItemType = CType(-1, BillingItem.ItemTypeEnum)
     End Sub
 
-    Public Function CompareTo(other As Transaction) As Integer Implements IComparable(Of Transaction).CompareTo
-        Return Price.CompareTo(other.Price)
+    Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
+        Dim other As Transaction = obj
+        Return Price.Value.CompareTo(other.Price.Value)
     End Function
 End Class
 Public Class ObservableTransactions

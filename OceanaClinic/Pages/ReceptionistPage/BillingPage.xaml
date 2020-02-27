@@ -102,12 +102,13 @@
                             <TextBlock Foreground="#13ceeb" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="{Binding NetTotal}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </materialDesign:Card>
-                    <materialDesign:Card Margin="30,15" Height="130">
+                    <materialDesign:Card Margin="30,16,30,15" Height="130">
                         <Grid>
                             <Label>Received:</Label>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Label Padding="0" Foreground="#EB1C46" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Light" FontSize="96" Margin="0,0,25,0" >RM</Label>
-                                <TextBox x:Name="txtPayment" MinWidth="250" Foreground="#eb1c46" Text="{Binding Payment,ValidatesOnDataErrors=True,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToDecimalConverter}}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center" />
+                                <TextBox x:Name="txtPayment" MinWidth="250" Foreground="#eb1c46" Text="{Binding Payment,ValidatesOnDataErrors=True,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center" Margin="0,5,0,20" />
+                                <!--<TextBox x:Name="txtPayment" MinWidth="250" Foreground="#eb1c46" Text="{Binding Payment,ValidatesOnDataErrors=True,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource StringToDecimalConverter}}" Style="{StaticResource MaterialDesignTextBox}" VerticalAlignment="Center" FontSize="96" FontWeight="Light" HorizontalAlignment="Center" />-->
                             </StackPanel>
                         </Grid>
                     </materialDesign:Card>
@@ -117,7 +118,7 @@
                             <TextBlock Foreground="#999999" Style="{StaticResource MaterialDesignHeadline1TextBlock}" Text="{Binding Change}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Grid>
                     </materialDesign:Card>
-                    <Button Margin="25,12" x:Name="btnConfirmPayment" Padding="10,0" Height="90" ToolTip="Confirm Payment Of Bill" Width="350" TabIndex="1" HorizontalAlignment="Center" Background="#FF32A852" BorderBrush="#FF32A852" VerticalAlignment="Bottom">
+                    <Button IsEnabled="{Binding CanConfirm}" Margin="25,12" x:Name="btnConfirmPayment" Padding="10,0" Height="90" ToolTip="Confirm Payment Of Bill" Width="350" TabIndex="1" HorizontalAlignment="Center" Background="#FF32A852" BorderBrush="#FF32A852" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*"/>
@@ -171,8 +172,8 @@
                         </DataGrid.Columns>
                         <!--_trId As Integer, _itId As Integer, _itemName As String, _quantity As Integer, _itemPrice As Decimal, _itTy As Integer-->
                     </DataGrid>
-                    <Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="0,0,15,70" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>
-                    <Button x:Name="btnAddTransactionItem" Padding="0" Height="50" Width="150" Margin="15,0,0,86" ToolTip="Add Item to Bill" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                    <!--<Label Padding="15,0" VerticalAlignment="Bottom" Height="75" Margin="0,0,15,70" Background="#FFFAFAFA" FontSize="48" FontWeight="Light" Content="{Binding NetTotal,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" HorizontalAlignment="Right"/>-->
+                    <Button x:Name="btnAddTransactionItem" Padding="0" Height="50" Width="150" Margin="15,0,0,86" ToolTip="Add item to bill" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -182,7 +183,17 @@
                             <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add Item"/>
                         </Grid>
                     </Button>
-                    <Button x:Name="btnRemoveTransactionItem" Padding="0" Height="50" Margin="170,0,0,86" ToolTip="Remove Item from Bill" TabIndex="1" Background="#FFDC2920" BorderBrush="#FFDC2920" HorizontalAlignment="Left" Width="150" VerticalAlignment="Bottom">
+                    <Button x:Name="btnEditTransactionItem" Padding="0" Height="50" Width="150" Margin="170,0,0,86" ToolTip="Edit item bill" TabIndex="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Margin="5" Width="25" Height="25" Kind="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit Item"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btnRemoveTransactionItem" Padding="0" Height="50" Margin="325,0,0,86" ToolTip="Remove item from bill" TabIndex="1" Background="#FFDC2920" BorderBrush="#FFDC2920" HorizontalAlignment="Left" Width="150" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>

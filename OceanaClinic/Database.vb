@@ -578,6 +578,19 @@ Public Class ReceptionistDB
             Return i
         End Using
     End Function
+    Public Function UpdateTransaction(trxn As Transaction) As Integer
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim updateTransactionQuery As String = "UPDATE Transactions SET ItemId = @itemId, Quantity = @quantity WHERE TransactionId = @transactionId"
+            Dim cmd As New SQLiteCommand(updateTransactionQuery, conn)
+            cmd.Parameters.AddWithValue("@itemId", trxn.ItemId)
+            cmd.Parameters.AddWithValue("@quantity", trxn.Quantity)
+            cmd.Parameters.AddWithValue("@transactionId", trxn.TransactionId)
+            conn.Open()
+            Dim i As Integer = cmd.ExecuteNonQuery
+            conn.Close()
+            Return i
+        End Using
+    End Function
     'Public Function AddTransaction()
     Public Function ConfirmTransations(transactions As ObservableTransactions) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)

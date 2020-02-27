@@ -44,7 +44,7 @@ Public Class BillingPage
             ViewModel.PatientName = ""
         End If
         ViewModel.NetTotal = New Currency(_newNetTotal)
-        Console.WriteLine(ViewModel.NetTotal.CompareTo(ViewModel.Change))
+        ValidatePayment()
     End Sub
     Public Sub CollectionViewSource_Filter(sender As Object, e As FilterEventArgs)
 
@@ -108,19 +108,56 @@ Public Class BillingPage
             RefreshTransactions()
         End If
     End Sub
+    Private Async Sub btnEditTransactionItem_Click(sender As Object, e As RoutedEventArgs) Handles btnEditTransactionItem.Click
+        If dgItems.SelectedIndex = -1 Then
+            Return
+        End If
+        Dim itemToEdit As Transaction = dgItems.SelectedValue
+        Dim result As Boolean = Await DialogHost.Show(New EditItem(itemToEdit), "RootDialog")
+        If result = True Then
+            If gVars.dbReception.UpdateTransaction(itemToEdit) > 0 Then
+                msgQ.Enqueue("Success! Updated item for " + ViewModel.PatientName + "!")
+            Else
+                msgQ.Enqueue("Failure! Failed to add item!")
+            End If
+            RefreshTransactions()
+        End If
+    End Sub
+    Private Sub ValidatePayment()
+        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.Payment), ViewModel.Payment, "", "Payment"))
+    End Sub
+    Private Sub txtPayment_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtPayment.TextChanged
+        ValidatePayment()
+    End Sub
+
 End Class
 
 Public Class BillingPageViewModel
-    Inherits ObservableObject
-    'IMPLEMENT VALIDATION
+    Inherits ValidatableObservableObject
     Public Property PatientId() As Integer
-    Private _payment As Decimal
-    Public Property Payment() As Decimal
+    Public ReadOnly Property CanConfirm() As Boolean
         Get
-            Return _payment
+            If _payment > 0 And Not HasErrors Then
+                Return True
+            Else
+                Return False
+            End If
         End Get
-        Set(ByVal value As Decimal)
-            _payment = value
+    End Property
+    Private _payment As Decimal
+    Private _paymentStr As String
+    Public Property Payment() As String
+        Get
+            Return _paymentStr
+        End Get
+        Set(ByVal value As String)
+            _paymentStr = value
+            Dim dec As Decimal = 0
+            If Decimal.TryParse(value, dec) Then
+                _payment = dec
+            Else
+                _payment = 0
+            End If
             OnPropertyChanged(NameOf(Payment))
             OnPropertyChanged(NameOf(Change))
         End Set
@@ -141,9 +178,9 @@ Public Class BillingPageViewModel
         Get
             Dim changeVal As Currency
             If changeVal Is Nothing Then
-                changeVal = New Currency(Payment - NetTotal.Value)
+                changeVal = New Currency(_payment - _netTotal.Value)
             Else
-                changeVal.Value = Payment - NetTotal.Value
+                changeVal.Value = _payment - _netTotal.Value
             End If
             Return changeVal
         End Get
@@ -168,4 +205,34 @@ Public Class BillingPageViewModel
             OnPropertyChanged(NameOf(PatientIdentity))
         End Set
     End Property
+    Public Overrides Sub Validation(propName As String, ByRef propValue As String, errContent As String, type As String)
+        Dim errorList As List(Of String)
+        If PropertyErrorsDictionary.TryGetValue(propName, errorList) = False Then
+            errorList = New List(Of String)
+        Else
+            errorList.Clear()
+        End If
+
+        Select Case type
+            Case "Payment"
+                If (String.IsNullOrWhiteSpace(_paymentStr)) Then
+                    errorList.Add("Payment cannot be empty!")
+                Else
+                    Dim regex As Regex = New Regex("^(\d*\.)?\d+$") ' https://www.regextester.com/95625 decimal number regex
+                    If Not regex.IsMatch(_paymentStr) Then
+                        errorList.Add("Incorrect format! Correct format: 20.00, 15.9, 9.78")
+                    Else
+                        If _payment < _netTotal.Value Then
+                            errorList.Add("Payment cannot be less than amount due!")
+                        End If
+                    End If
+                End If
+            Case Else
+        End Select
+
+        PropertyErrorsDictionary(propName) = errorList
+        OnErrorsChanged(propName)
+        Console.WriteLine(propName)
+        OnPropertyChanged(NameOf(CanConfirm))
+    End Sub
 End Class
