@@ -116,6 +116,9 @@
     <Compile Include="Pages\AdminPage\UserDetails.xaml.vb">
       <DependentUpon>UserDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DoctorPage\Doctor.xaml.vb">
+      <DependentUpon>Doctor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ReceptionistPage\AddItem.xaml.vb">
       <DependentUpon>AddItem.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\AdminPage\AdminPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DoctorPage\Doctor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

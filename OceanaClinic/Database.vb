@@ -8,46 +8,62 @@ Public Class Database
     Public Sub Init()
         If Not DuplicateDatabase(fullpath) Then
             Dim createUsersTable As String =
-                "CREATE TABLE ""Users"" (
-					""userId""	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-					""Firstname""	TEXT,
-					""Lastname""	TEXT,
-					""Password""	TEXT,
-					""Email""	    TEXT UNIQUE COLLATE NOCASE,
-					""userGroup""	INTEGER
+                "CREATE TABLE 'Users' (
+					'userId'	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+					'Firstname'	TEXT,
+					'Lastname'	TEXT,
+					'Password'	TEXT,
+					'Email'	    TEXT UNIQUE COLLATE NOCASE,
+					'userGroup'	INTEGER
 				);" 'https://stackoverflow.com/questions/1188749/how-to-change-the-collation-of-sqlite3-database-to-sort-case-insensitively
             Dim createPatientsTable As String =
-                "CREATE TABLE ""Patients"" (
-					""PatientId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-					""Firstname""	TEXT,
-					""Lastname""	TEXT,
-					""Identity""	TEXT UNIQUE COLLATE NOCASE,
-					""Mobile""	    TEXT,
-					""Address""	    TEXT,
-					""Email""	    TEXT,
-					""Weight""	    INTEGER DEFAULT 0,
-					""Height""	    INTEGER DEFAULT 0,
-					""BloodType""	INTEGER DEFAULT -1,
-					""Allergies""	TEXT DEFAULT 'None'
+                "CREATE TABLE 'Patients' (
+					'PatientId'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+					'Firstname'	TEXT,
+					'Lastname'	TEXT,
+					'Identity'	TEXT UNIQUE COLLATE NOCASE,
+					'Mobile'	    TEXT,
+					'Address'	    TEXT,
+					'Email'	    TEXT,
+					'Weight'	    INTEGER DEFAULT 0,
+					'Height'	    INTEGER DEFAULT 0,
+					'BloodType'	INTEGER DEFAULT -1,
+					'Allergies'	TEXT DEFAULT 'None'
 				);"
             Dim createBillingItemsTable As String =
-                "CREATE TABLE ""BillingItems"" (
-	                ""ItemId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	                ""Name""	TEXT DEFAULT '<NO_NAME>',
-	                ""Type""	INTEGER DEFAULT -1,
-	                ""Price""	NUMERIC DEFAULT 0
+                "CREATE TABLE 'BillingItems' (
+	                'ItemId'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	                'Name'	TEXT DEFAULT '<NO_NAME>',
+	                'Type'	INTEGER DEFAULT -1,
+	                'Price'	NUMERIC DEFAULT 0
                 );"
             Dim createTransactionsTable As String =
-                "CREATE TABLE ""Transactions"" (
-                    ""TransactionId""	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                    ""ItemId""	        INTEGER NOT NULL,
-                    ""PatientId""	    INTEGER NOT NULL,
-                    ""Quantity""	    INTEGER DEFAULT 0,
-                    ""Completed""	    INTEGER DEFAULT 0,
-                    FOREIGN KEY(""ItemId"") REFERENCES ""BillingItems""(""ItemId""),
-                    FOREIGN KEY(""PatientId"") REFERENCES ""Patients""(""PatientId"")
+                "CREATE TABLE 'Transactions' (
+                    'TransactionId'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    'ItemId'	        INTEGER NOT NULL,
+                    'PatientId'	    INTEGER NOT NULL,
+                    'Quantity'	    INTEGER DEFAULT 0,
+                    'Completed'	    INTEGER DEFAULT 0,
+                    FOREIGN KEY('ItemId') REFERENCES 'BillingItems'('ItemId'),
+                    FOREIGN KEY('PatientId') REFERENCES 'Patients'('PatientId')
                 );"
-
+            Dim createTreatmentsTable As String =
+                "CREATE TABLE 'Treatments' (
+	                'TreatmentId'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	                'PatientId'	INTEGER NOT NULL DEFAULT -1,
+	                'TreatmentDesc'	TEXT,
+	                'TreatmentDate'	TEXT,
+	                FOREIGN KEY('PatientId') REFERENCES 'Patients'('PatientId')
+                );"
+            Dim createPrescriptionsTable As String =
+                "CREATE TABLE 'Prescriptions' (
+	                'PrescriptionId'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	                'TreatmentId'	INTEGER NOT NULL,
+	                'ItemId'	INTEGER NOT NULL,
+	                'PrescriptionDate'	TEXT NOT NULL,
+	                FOREIGN KEY('TreatmentId') REFERENCES 'Treatments'('TreatmentId'),
+	                FOREIGN KEY('ItemId') REFERENCES 'BillingItems'('ItemId')
+                );"
 
             System.IO.Directory.CreateDirectory(location)
             Using conn As New SQLiteConnection(connectionString)
@@ -56,6 +72,8 @@ Public Class Database
                 Dim createPatientTableCmd As New SQLiteCommand(createPatientsTable, conn)
                 Dim createBillingItemsTableCmd As New SQLiteCommand(createBillingItemsTable, conn)
                 Dim createTransactionsTableCmd As New SQLiteCommand(createTransactionsTable, conn)
+                Dim createTreatmentsTableCmd As New SQLiteCommand(createTreatmentsTable, conn)
+                Dim createPrescriptionsTableCmd As New SQLiteCommand(createPrescriptionsTable, conn)
 
                 conn.Open()
 
@@ -63,6 +81,8 @@ Public Class Database
                 createPatientTableCmd.ExecuteNonQuery()
                 createBillingItemsTableCmd.ExecuteNonQuery()
                 createTransactionsTableCmd.ExecuteNonQuery()
+                createTreatmentsTableCmd.ExecuteNonQuery()
+                createPrescriptionsTableCmd.ExecuteNonQuery()
 
                 conn.Close()
             End Using
@@ -74,7 +94,7 @@ Public Class Database
             conn.Open()
             Dim dummyUserDataQuery As String =
                 "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) 
-				VALUES(""Admin"",""Man"",""123"",""asd"",""0"")," + Environment.NewLine
+				VALUES('Admin','Man','123','asd','0')," + Environment.NewLine
 
             Dim dummyPatientDataQuery As String =
                 "INSERT INTO Patients (Firstname, Lastname, Identity, Email, Weight, Height, BloodType, Allergies)
@@ -82,14 +102,22 @@ Public Class Database
 
             Dim dummyBillingItemDataQuery As String =
                 "INSERT INTO BillingItems (Name, Type, Price)
-				VALUES (""Lab Services"", 2, 100),
-                       (""X-Ray"", 2, 50),
-                       (""Comprehensive Health Check"", 1, 120),
-                       (""Partial Health Check"", 1, 75)," + Environment.NewLine
+				VALUES ('Lab Services', 2, 100),
+                       ('X-Ray', 2, 50),
+                       ('Comprehensive Health Check', 1, 120),
+                       ('Partial Health Check', 1, 75)," + Environment.NewLine
 
             Dim dummyTransactionDataQuery As String =
                 "INSERT INTO Transactions (ItemId, PatientId, Quantity, Completed)
-                VALUES "
+                VALUES"
+
+            Dim dummyTreatmentDataQuery As String =
+                "INSERT INTO Treatments (PatientId, TreatmentDesc, TreatmentDate)
+                VALUES"
+
+            Dim dummyPrescriptionDataQuery As String =
+                "INSERT INTO Prescriptions (TreatmentId, ItemId, PrescriptionDate) 
+                VALUES"
 
             Dim names As New List(Of String)
             names.AddRange({"Queece Boringman",
@@ -164,11 +192,11 @@ Public Class Database
                 Randomize()
                 Dim y = name.Split(" ")
 
-                UserTableData = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"")" + If(name = names.Last(), ";", ",") + Environment.NewLine,
+                UserTableData = String.Format("('{0}', '{1}', '{2}', '{3}', '{4}')" + If(name = names.Last(), ";", ",") + Environment.NewLine,
                                               y(0), y(1), CInt((99999 * Rnd()) + 10000), y(0) + "@mail.com", Math.Floor(3 * Rnd()))
 
                 Randomize()
-                PatientTableData = String.Format("(""{0}"", ""{1}"", ""{2}"", ""{3}"", ""{4}"", ""{5}"",""{6}"",""{7}"")" + If(name = names.Last(), ";", ",") + Environment.NewLine,
+                PatientTableData = String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}','{6}','{7}')" + If(name = names.Last(), ";", ",") + Environment.NewLine,
                                                  y(0), y(1), CInt((9999 * Rnd()) + 1000), y(0) + "@mail.com", CInt((200 * Rnd()) + 30),
                                                  CInt((80 * Rnd()) + 130), Math.Floor(8 * Rnd()), y(1))
 
@@ -179,7 +207,7 @@ Public Class Database
             Dim BillingItemTableData
             For Each item As String In items
                 Randomize()
-                BillingItemTableData = String.Format("(""{0}"", ""{1}"", ""{2}"")" + If(item = items.Last(), ";", ",") + Environment.NewLine, item, "0", CInt((200 * Rnd()) + 30))
+                BillingItemTableData = String.Format("('{0}', '{1}', '{2}')" + If(item = items.Last(), ";", ",") + Environment.NewLine, item, "0", CInt((200 * Rnd()) + 30))
 
                 dummyBillingItemDataQuery += BillingItemTableData
             Next
@@ -187,21 +215,49 @@ Public Class Database
             Dim TransactionTableData
             For x = 1 To 255
                 Randomize(x)
-                TransactionTableData = String.Format("(""{0}"",""{1}"",""{2}"",""{3}"")" + If(x = 255, ";", ",") + Environment.NewLine,
+                TransactionTableData = String.Format("('{0}','{1}','{2}','{3}')" + If(x = 255, ";", ",") + Environment.NewLine,
                                                      Math.Floor(CInt(14 * Rnd())), Math.Floor(CInt(53 * Rnd())), CInt(10 * Rnd()), Math.Floor(CInt(1 * Rnd())))
 
                 dummyTransactionDataQuery += TransactionTableData
+            Next
+
+            Dim TreatmentTableData
+            For x = 1 To 255
+                Randomize(x)
+                Dim d As String = Math.Floor(CInt(29 * Rnd() + 1)).ToString + "/" +
+                                                   Math.Floor(CInt(11 * Rnd() + 1)).ToString + "/" +
+                                                   Math.Floor(CInt(20 * Rnd() + 2000)).ToString
+                TreatmentTableData = String.Format("('{0}', '{1}', '{2}')" + If(x = 255, ";", ",") + Environment.NewLine,
+                                                   Math.Floor(CInt(52 * Rnd())), "Treated something idk",
+                                                   Date.Parse(d))
+                dummyTreatmentDataQuery += TreatmentTableData
+            Next
+
+            Dim PrescriptionTableData
+            For x = 1 To 255
+                Randomize(x)
+                Dim d As String = Math.Floor(CInt(29 * Rnd() + 1)).ToString + "/" +
+                                                   Math.Floor(CInt(11 * Rnd() + 1)).ToString + "/" +
+                                                   Math.Floor(CInt(20 * Rnd() + 2000)).ToString
+                PrescriptionTableData = String.Format("('{0}', '{1}', '{2}')" + If(x = 255, ";", ",") + Environment.NewLine,
+                                                   Math.Floor(CInt(255 * Rnd())), Math.Floor(CInt(14 * Rnd())),
+                                                   Date.Parse(d))
+                dummyPrescriptionDataQuery += PrescriptionTableData
             Next
 
             Dim dummyUserDataCmd As New SQLiteCommand(dummyUserDataQuery, conn)
             Dim dummyPatientDataCmd As New SQLiteCommand(dummyPatientDataQuery, conn)
             Dim dummyBillingItemDataCmd As New SQLiteCommand(dummyBillingItemDataQuery, conn)
             Dim dummyTransactionDataCmd As New SQLiteCommand(dummyTransactionDataQuery, conn)
+            Dim dummyTreatmentDataCmd As New SQLiteCommand(dummyTreatmentDataQuery, conn)
+            Dim dummyPrescriptionDataCmd As New SQLiteCommand(dummyPrescriptionDataQuery, conn)
 
             dummyUserDataCmd.ExecuteNonQuery()
             dummyPatientDataCmd.ExecuteNonQuery()
             dummyBillingItemDataCmd.ExecuteNonQuery()
             dummyTransactionDataCmd.ExecuteNonQuery()
+            dummyTreatmentDataCmd.ExecuteNonQuery()
+            dummyPrescriptionDataCmd.ExecuteNonQuery()
 
             conn.Close()
         End Using
@@ -605,4 +661,7 @@ Public Class ReceptionistDB
             Return i
         End Using
     End Function
+End Class
+Public Class DoctorDB
+
 End Class

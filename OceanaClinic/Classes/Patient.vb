@@ -16,12 +16,6 @@ Public Class Patient
     Public Property Firstname() As String
     Public Property Lastname() As String
     Public Property Identity() As String
-    'Private _fullName As String
-    'Public ReadOnly Property Fullname() As String
-    '    Get
-    '        Return Firstname + " " + Lastname
-    '    End Get
-    'End Property
     Public Property Mobile() As String
     Public Property Address() As String
     Public Property Email() As String
