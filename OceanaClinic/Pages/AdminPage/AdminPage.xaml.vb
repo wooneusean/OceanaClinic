@@ -80,7 +80,9 @@ Public Class AdminPage
     End Sub
 
     Private Sub dgUsers_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgUsers.MouseDoubleClick
-        btnEdit_Click(sender, Nothing)
+        If dgUsers.SelectedIndex > -1 Then
+            btnEdit_Click(sender, Nothing)
+        End If
     End Sub
 
     Private Sub Window_PreviewKeyDown(sender As Object, e As KeyEventArgs)

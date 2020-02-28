@@ -130,6 +130,17 @@ Public Class BillingPage
         ValidatePayment()
     End Sub
 
+    Private Sub dgItems_PreviewKeyDown(sender As Object, e As KeyEventArgs) Handles dgItems.PreviewKeyDown
+        If e.Key = Key.Delete Then
+            btnRemoveTransactionItem_Click(sender, Nothing)
+        End If
+    End Sub
+
+    Private Sub dgItems_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgItems.MouseDoubleClick
+        If dgItems.SelectedIndex > -1 Then
+            btnEditTransactionItem_Click(sender, Nothing)
+        End If
+    End Sub
 End Class
 
 Public Class BillingPageViewModel

@@ -22,7 +22,7 @@
         <StackPanel>
             <TextBlock Margin="5,0" Text="{Binding ItemToAdd.Name}" HorizontalAlignment="Center"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBox Text="{Binding ItemToAddQuantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="txtQuantity" MinWidth="60" FontSize="22" HorizontalContentAlignment="Center" Height="32" VerticalContentAlignment="Center"/>
+                <TextBox Text="{Binding ItemToAddQuantity,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" x:Name="txtQuantity" MinWidth="60" FontSize="22" HorizontalContentAlignment="Center" Height="Auto" VerticalContentAlignment="Center"/>
                 <Label Padding="5,0" VerticalAlignment="Bottom">x</Label>
             </StackPanel>
         </StackPanel>
