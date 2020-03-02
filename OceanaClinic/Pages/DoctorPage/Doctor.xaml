@@ -25,47 +25,10 @@
                 <Grid>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Doctor Page</TextBlock>
-                        <Button x:Name="btnAddUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" Height="Auto" Margin="25,0,0,0" ToolTip="Add New User" HorizontalAlignment="Left" Width="Auto" TabIndex="1" >
-                            <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="4*"/>
-                                </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Margin="5" Width="25" Height="25" Kind="PersonAdd" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add User"/>
-                            </Grid>
-                        </Button>
-                        <Button x:Name="btnEdit" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}"  Height="Auto" Margin="0" ToolTip="Edit Selected User" HorizontalAlignment="Left" Width="Auto" TabIndex="1">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="4*"/>
-                                </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Margin="5" Width="25" Height="25" Kind="UserEdit" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit User"/>
-                            </Grid>
-                        </Button>
-                        <Button x:Name="btnRemoveUser" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}"  Height="Auto" Margin="0" ToolTip="Remove Selected User(s)" HorizontalAlignment="Left" Width="Auto" TabIndex="1">
-                            <!--Foreground="Black" Background="#FFFAFAFA" BorderBrush="#FFFAFAFA"-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="4*"/>
-                                </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Margin="5" Width="25" Height="25" Kind="PersonRemove" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove User"/>
-                            </Grid>
-                        </Button>
-                        <TextBox x:Name="txtSearch" Width="300" Margin="6" VerticalContentAlignment="Center">
-                            <materialDesign:HintAssist.Hint>
-                                <materialDesign:PackIcon Kind="Magnify" Height="30" Width="30" Foreground="White" />
-                            </materialDesign:HintAssist.Hint>
-                        </TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnReload" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Refresh User List" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
-                            <materialDesign:PackIcon Kind="Reload" Height="30" Width="30" Foreground="White" />
+                        <Button Visibility="{Binding SelectedIndex, Source=RootTransitioner}" x:Name="btnBack" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Go back to &quot;Find Patient&quot; page." VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                            <materialDesign:PackIcon Kind="ArrowBack" Height="30" Width="30" Foreground="White" />
                         </Button>
                         <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Log out" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
                             <materialDesign:PackIcon Kind="Power" Height="30" Width="30" Foreground="White" />
@@ -73,40 +36,191 @@
                     </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
-            <Grid Margin="0,80,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <materialDesign:Card Margin="10" FontSize="18">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
-                        <StackPanel Margin="25">
-                            <TextBlock FontSize="16" Margin="0,0,0,5" Text="Patient ID"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16"  Margin="0,5" Text="Firstname"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Lastname"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="IC/Passport No."/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Mobile No."/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Address"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Height="84" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Email"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Weight"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Height"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="BloodType"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Text="Patient ID"/>
-                            <TextBlock FontSize="16" Margin="0,5" Text="Allergies"/>
-                            <TextBox IsReadOnly="True" Margin="0,5" Height="84" Text="Patient ID"/>
+            <materialDesign:Transitioner SelectedIndex="1" x:Name="RootTransitioner" AutoApplyTransitionOrigins="True">
+                <materialDesign:TransitionerSlide>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBox x:Name="txtSearch" Margin="0" VerticalContentAlignment="Center" MinWidth="500" FontSize="36" materialDesign:HintAssist.Hint="Enter patient name or ID"/>
+                            <Button x:Name="btnFindPatient" Padding="0" Height="55" Margin="10" ToolTip="Find patient with provided ID or Name" HorizontalAlignment="Center" Width="200" TabIndex="1" FontSize="22">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <materialDesign:PackIcon Margin="0" Width="36" Height="36" Kind="Search" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <TextBlock Margin="10" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Find Patient"/>
+                                </Grid>
+                            </Button>
                         </StackPanel>
-                    </ScrollViewer>
-                </materialDesign:Card>
-            </Grid>
+                    </Grid>
+                </materialDesign:TransitionerSlide>
+
+                <materialDesign:TransitionerSlide>
+                    <Grid Margin="0,80,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3*"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:Card Margin="10,10,5,10" FontSize="18">
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                <StackPanel Margin="25">
+                                    <TextBlock FontSize="16" Margin="0,0,0,5" Text="Patient ID"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.PatientId}"/>
+                                    <TextBlock FontSize="16"  Margin="0,5" Text="Firstname"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Firstname}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Lastname"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Lastname}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="IC/Passport No."/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Identity}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Mobile No."/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Mobile}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Address"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Height="84" Text="{Binding Patient.Address}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Email"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Email}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Weight"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Weight}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Height"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.Height}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="BloodType"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Text="{Binding Patient.BloodType}"/>
+                                    <TextBlock FontSize="16" Margin="0,5" Text="Allergies"/>
+                                    <TextBox IsReadOnly="True" Margin="0,5" Height="84" Text="{Binding Patient.Allergies}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </materialDesign:Card>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <materialDesign:Card Margin="5,10,10,5">
+                                <Grid Margin="0">
+                                    <Grid Height="60" VerticalAlignment="Top">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center">Treatments</TextBlock>
+                                            <Button x:Name="btnAddTreatment" Margin="5,0" Padding="2" Height="40"
+                                                    ToolTip="Add New Treatment" HorizontalAlignment="Left" Width="80" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Width="25" Height="25" Kind="Add" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                            <Button x:Name="btnEditTreatment" Margin="5,0" Padding="2" Height="40" 
+                                                    ToolTip="Edit Treatment" HorizontalAlignment="Left" Width="80" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Margin="5" Width="20" Height="20" Kind="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                            <Button x:Name="btnRemoveTreatment" Margin="5,0" Padding="2" Background="#FFDC2920"
+                                                    BorderBrush="#FFDC2920" Height="40" ToolTip="Edit Treatment" HorizontalAlignment="Left" Width="100" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Margin="0" Width="25" Height="25" Kind="Remove" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button x:Name="btnReloadTreatments" Padding="0" ToolTip="Refresh User List" VerticalAlignment="Center" Height="40" Width="40" HorizontalContentAlignment="Center" Margin="10">
+                                                <materialDesign:PackIcon Kind="Reload" Height="20" Width="20" Foreground="White" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <DataGrid x:Name="dgTreatments" Margin="0,60,0,0" AutoGenerateColumns="False"
+                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Treatments}"
+                                              SelectionMode="Single">
+                                        <DataGrid.ColumnHeaderStyle>
+                                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                                <Setter Property="FontSize" Value="18"/>
+                                                <Setter Property="Background" Value="#E8E8E8"/>
+                                            </Style>
+                                        </DataGrid.ColumnHeaderStyle>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn FontSize="18" Binding="{Binding TreatmentDesc}" Header="Description" Width="5*"/>
+                                            <DataGridTextColumn FontSize="18" Binding="{Binding TreatmentDate}" SortDirection="Descending" Header="Date" Width="2*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </materialDesign:Card>
+                            <materialDesign:Card Margin="5,5,10,10" Grid.Row="1">
+                                <Grid Margin="0">
+                                    <Grid Height="60" VerticalAlignment="Top">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="15" HorizontalAlignment="Center" VerticalAlignment="Center">Prescription</TextBlock>
+                                            <Button x:Name="btnAddPrescription" Margin="5,0" Padding="2" Height="40"
+                                                    ToolTip="Add New Treatment" HorizontalAlignment="Left" Width="80" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Width="25" Height="25" Kind="Add" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Add" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                            <Button x:Name="btnEditPrescription" Margin="5,0" Padding="2" Height="40" 
+                                                    ToolTip="Edit Treatment" HorizontalAlignment="Left" Width="80" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Margin="5" Width="20" Height="20" Kind="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Edit" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                            <Button x:Name="btnRemovePrescription" Margin="5,0" Padding="2" Background="#FFDC2920"
+                                                    BorderBrush="#FFDC2920" Height="40" ToolTip="Edit Treatment" HorizontalAlignment="Left" Width="100" TabIndex="1" >
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="1*"/>
+                                                        <ColumnDefinition Width="2*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <materialDesign:PackIcon Margin="0" Width="25" Height="25" Kind="Remove" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Text="Remove" Height="16"/>
+                                                </Grid>
+                                            </Button>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button x:Name="btnReloadPrescriptions" Padding="0" ToolTip="Refresh User List" VerticalAlignment="Center" Height="40" Width="40" HorizontalContentAlignment="Center" Margin="10">
+                                                <materialDesign:PackIcon Kind="Reload" Height="20" Width="20" Foreground="White" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                    <DataGrid x:Name="dgPrescriptions" Margin="0,60,0,0" AutoGenerateColumns="False"
+                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Prescriptions}"
+                                              SelectionMode="Single">
+                                        <DataGrid.ColumnHeaderStyle>
+                                            <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
+                                                <Setter Property="FontSize" Value="18"/>
+                                                <Setter Property="Background" Value="#E8E8E8"/>
+                                            </Style>
+                                        </DataGrid.ColumnHeaderStyle>
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn FontSize="18" Header="Name" Binding="{Binding ItemName}" Width="5*"/>
+                                            <DataGridTextColumn FontSize="18" Header="Quantity" Binding="{Binding ItemQuantity}" Width="2*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </materialDesign:Card>
+                        </Grid>
+                    </Grid>
+                </materialDesign:TransitionerSlide>
+            </materialDesign:Transitioner>
+            <materialDesign:Snackbar x:Name="MySnackbar" MessageQueue="{materialDesign:MessageQueue}" />
         </Grid>
     </materialDesign:DialogHost>
 </Window>

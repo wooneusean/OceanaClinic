@@ -1,38 +1,10 @@
 ﻿Imports System.Collections.ObjectModel
 
 Public Class Transaction
-    Inherits ObservableObject
     Implements IComparable
-    Private _transactionId As Integer
     Public Property TransactionId() As Integer
-        Get
-            Return _transactionId
-        End Get
-        Set(value As Integer)
-            _transactionId = value
-            OnPropertyChanged(NameOf(TransactionId))
-        End Set
-    End Property
-    Private _ItemId As Integer
     Public Property ItemId() As Integer
-        Get
-            Return _ItemId
-        End Get
-        Set(value As Integer)
-            _ItemId = value
-            OnPropertyChanged(NameOf(ItemId))
-        End Set
-    End Property
-    Private _name As String
     Public Property Name() As String 'Name from BillingItems table
-        Get
-            Return _name
-        End Get
-        Set(value As String)
-            _name = value
-            OnPropertyChanged(NameOf(Name))
-        End Set
-    End Property
     Private _price As Currency
     Public Property Price() As Currency 'Price from BillingItems table
         Get
@@ -44,31 +16,10 @@ Public Class Transaction
             Else
                 _price = value
             End If
-            OnPropertyChanged(NameOf(Price))
-            OnPropertyChanged(NameOf(SubTotal))
         End Set
     End Property
-    Private _quantity As Integer
     Public Property Quantity() As Integer
-        Get
-            Return _quantity
-        End Get
-        Set(value As Integer)
-            _quantity = value
-            OnPropertyChanged(NameOf(Quantity))
-            OnPropertyChanged(NameOf(SubTotal))
-        End Set
-    End Property
-    Private _itemType As BillingItem.ItemTypeEnum
     Public Property ItemType() As BillingItem.ItemTypeEnum
-        Get
-            Return _itemType
-        End Get
-        Set(value As BillingItem.ItemTypeEnum)
-            _itemType = value
-            OnPropertyChanged(NameOf(ItemType))
-        End Set
-    End Property
     Private _subTotal As Currency
     Public ReadOnly Property SubTotal() As Currency
         Get

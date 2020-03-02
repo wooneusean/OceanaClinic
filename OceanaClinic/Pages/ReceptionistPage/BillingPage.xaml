@@ -135,7 +135,7 @@
                             <ColumnDefinition Width="2*"/>
                             <ColumnDefinition Width="1*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding PatientId}" materialDesign:HintAssist.Hint="Patient ID" materialDesign:HintAssist.FloatingScale=".75" Margin="0" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="txtPatientId" Text="{Binding PatientId}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Patient ID" materialDesign:HintAssist.FloatingScale=".75" Margin="0" VerticalContentAlignment="Center"/>
                         <Button Padding="0" Margin="20,0,0,0" Grid.Column="1" Height="Auto" Click="Button_Click">
                             <Button.Content>
                                 <Grid HorizontalAlignment="Center" VerticalAlignment="Center">

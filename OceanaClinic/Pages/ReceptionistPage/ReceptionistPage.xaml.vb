@@ -3,11 +3,10 @@ Public Class ReceptionistPage
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
     Dim _patients As ObservablePatients
     Dim MainPage As Receptionist
-    Sub New(ByRef _mainPage As Receptionist)
+    Sub New(_mainPage As Receptionist)
 
         ' This call is required by the designer.
         InitializeComponent()
-
         ' Add any initialization after the InitializeComponent() call.
         _patients = Me.Resources("patients")
         MainPage = _mainPage

@@ -20,7 +20,9 @@ Class MainWindow
                     x.Show()
                     Me.Close()
                 Case 1
-                    msgQ.Enqueue("Wrong email or password!")
+                    Dim x As Doctor = New Doctor
+                    x.Show()
+                    Me.Close()
                 Case 2
                     Dim x As Receptionist = New Receptionist()
                     x.Show()

@@ -3,13 +3,6 @@ Imports System.Text.RegularExpressions
 Imports MaterialDesignThemes.Wpf
 
 Public Class BillingPage
-    ''' <summary>
-    ''' TO DO:
-    ''' 1) MAKE dgItems SHOW CERTAIN COLUMS
-    ''' 2) ADD ALL COLUMNS TO TRANSACTION CLASS
-    ''' 3) ADD A "Total Price" COLUMN = QUANTITY * PRICE
-    ''' 4) FIND A WAY TO ADD TRANSACTION -> INSERT INTO Transactions(ItemId,PatientId,Quantity)
-    ''' </summary>
     Dim msgQ As New SnackbarMessageQueue(TimeSpan.FromSeconds(3))
     Dim _transactions As ObservableTransactions
     Dim ViewModel As New BillingPageViewModel
