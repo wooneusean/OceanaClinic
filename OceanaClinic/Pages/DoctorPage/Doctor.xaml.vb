@@ -42,7 +42,7 @@ Public Class Doctor
                 ElseIf pl.Count > 1 Then
                     Dim result As Patient = Await DialogHost.Show(New MultiplePatient(pl), "RootDialog")
                     If result IsNot Nothing Then
-                        If result.PatientId <> -1 Then
+                        If result.PatientId > -1 Then
                             ViewModel.Patient = result
                             ViewModel.Treatments = gVars.dbDoctor.GetTreatments(result.PatientId)
                             GoToPage(1)
@@ -181,6 +181,29 @@ Public Class Doctor
             Dim i As Integer = gVars.dbDoctor.RemovePrescriptions(p)
         End If
         RefreshPrescription()
+    End Sub
+
+    Private Sub dgTreatments_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgTreatments.MouseDoubleClick
+        If dgTreatments.SelectedIndex > -1 Then
+            btnEditTreatment_Click(sender, Nothing)
+        End If
+    End Sub
+    Private Sub dgTreatments_PreviewKeyDown(sender As Object, e As KeyEventArgs) Handles dgTreatments.PreviewKeyDown
+        If e.Key = Key.Delete Then
+            btnRemoveTreatment_Click(sender, Nothing)
+        End If
+    End Sub
+
+    Private Sub dgPrescriptions_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles dgPrescriptions.MouseDoubleClick
+        If dgPrescriptions.SelectedIndex > -1 Then
+            btnEditPrescription_Click(sender, Nothing)
+        End If
+    End Sub
+
+    Private Sub dgPrescriptions_PreviewKeyDown(sender As Object, e As KeyEventArgs) Handles dgPrescriptions.PreviewKeyDown
+        If e.Key = Key.Delete Then
+            btnRemovePrescription_Click(sender, Nothing)
+        End If
     End Sub
 End Class
 Public Class DoctorViewModel

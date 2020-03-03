@@ -93,7 +93,7 @@ Public Class AddItemViewModel
     End Property
     Public ReadOnly Property CanSubmit() As Boolean
         Get
-            If (ItemToAddQuantity > 0) And (ItemToAddId <> -1) Then
+            If (ItemToAddQuantity > 0) And (ItemToAddId > -1) Then
                 Return True
             Else
                 Return False

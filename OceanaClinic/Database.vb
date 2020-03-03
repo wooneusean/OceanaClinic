@@ -144,7 +144,7 @@ Public Class Database
                             "Ronce Lafontaine",
                             "Jeneric Tounguetaste",
                             "Frizzy Totay",
-                            "Goblin! -",
+                            "Goblin! Gobgobgobl",
                             "Rustrap D''Pencil",
                             "Nacho Thigh-Juice",
                             "Lemmicus D''Seuss",
@@ -157,13 +157,13 @@ Public Class Database
                             "Lucifan Y.Sassafras",
                             "Simon Asterisk",
                             "Carlton TheSeeker",
-                            "Shiprecc -",
-                            "???? -",
+                            "Ship Recc",
+                            "???? ????",
                             "Pete Crapletters",
                             "7th-Hope Skelligan",
                             "Bouncy House",
                             "Snip-Snip Testafuente",
-                            "Herpsichord -",
+                            "Herpsi chord",
                             "Tri-pecker Floam",
                             "Party Machine",
                             "Oracle Vidunatru",
@@ -172,22 +172,36 @@ Public Class Database
                             "SirAmblin Flecator",
                             "Hockbew Egress",
                             "Gumbo LeTroutstain",
-                            "I1D1G53 -",
+                            "I1D 1G53",
                             "Busted-Lip Catharsises",
-                            "Steelgrippe D''Forte",
-                            "Naru Sheni"})
+                            "Steelgrippe D''Forte"})
 
             Dim items As New List(Of String)
-            items.AddRange({"Emerald Potions",
-                            "Mandrake Protection",
-                            "Moonseed Potion",
-                            "Swelling Gas",
-                            "Madame Glossy''s Silver Polish",
-                            "Bundimum",
-                            "Potion No. 86",
-                            "Manication",
-                            "Antidote to Unctuous Uncommon Potion",
-                            "Forgetfulness Potion"})
+            items.AddRange({"Blood of the Karui",
+                            "Doedre''s Elixir",
+                            "Zerphi''s Last Breath",
+                            "Lavianga''s Spirit",
+                            "Divination Distillate",
+                            "The Writhing Jar",
+                            "The Wise Oak",
+                            "Sin''s Rebirth",
+                            "Taste of Hate",
+                            "Cinderswallow Urn",
+                            "Kiara''s Determination",
+                            "Forbidden Taste",
+                            "Lion''s roar",
+                            "Soul Catcher",
+                            "Soul Ripper",
+                            "Bottled Faith",
+                            "The Overflowing Chalice",
+                            "The Sorrow of the Divine",
+                            "Rotgut",
+                            "Witchfire Brew",
+                            "Atziri''s Promise",
+                            "Dying Sun",
+                            "Rumi''s Concoction",
+                            "Vessel of Vinktar",
+                            "Coralito''s Signature"})
 
             Dim UserTableData
             Dim PatientTableData
@@ -219,7 +233,7 @@ Public Class Database
             For x = 1 To 255
                 Randomize(x)
                 TransactionTableData = String.Format("('{0}','{1}','{2}','{3}')" + If(x = 255, ";", ",") + Environment.NewLine,
-                                                     Math.Floor(CInt(13 * Rnd() + 1)), Math.Floor(CInt(52 * Rnd() + 1)), CInt(10 * Rnd()), Math.Floor(CInt(1 * Rnd())))
+                                                     Math.Floor(CInt(29 * Rnd() + 1)), Math.Floor(CInt(50 * Rnd() + 1)), CInt(10 * Rnd()), Math.Floor(CInt(1 * Rnd())))
 
                 dummyTransactionDataQuery += TransactionTableData
             Next
@@ -227,12 +241,12 @@ Public Class Database
             Dim TreatmentTableData
             For x = 1 To 255
                 Randomize(x)
-                Dim d As String = Math.Floor(CInt(29 * Rnd() + 1)).ToString + "/" +
+                Dim d As String = Math.Floor(CInt(27 * Rnd() + 1)).ToString + "/" +
                                                    Math.Floor(CInt(11 * Rnd() + 1)).ToString + "/" +
                                                    Math.Floor(CInt(20 * Rnd() + 2000)).ToString
 
                 TreatmentTableData = String.Format("('{0}', '{1}', '{2}')" + If(x = 255, ";", ",") + Environment.NewLine,
-                                                   Math.Floor(CInt(52 * Rnd() + 1)), "Treated something idk",
+                                                   Math.Floor(CInt(51 * Rnd() + 1)), "Treated something idk",
                                                    Date.Parse(d))
                 dummyTreatmentDataQuery += TreatmentTableData
             Next
@@ -240,7 +254,7 @@ Public Class Database
             Dim PrescriptionTableData
             For x = 1 To 255
                 Randomize(x)
-                Dim d As String = Math.Floor(CInt(29 * Rnd() + 1)).ToString + "/" +
+                Dim d As String = Math.Floor(CInt(27 * Rnd() + 1)).ToString + "/" +
                                                    Math.Floor(CInt(11 * Rnd() + 1)).ToString + "/" +
                                                    Math.Floor(CInt(20 * Rnd() + 2000)).ToString
 

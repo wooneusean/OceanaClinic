@@ -139,9 +139,6 @@
     <Compile Include="Pages\ReceptionistPage\AddPatient.xaml.vb">
       <DependentUpon>AddPatient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\ReceptionistPage\BillingPage.xaml.vb">
-      <DependentUpon>BillingPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\ReceptionistPage\EditItem.xaml.vb">
       <DependentUpon>EditItem.xaml</DependentUpon>
     </Compile>
@@ -150,9 +147,6 @@
     </Compile>
     <Compile Include="Pages\ReceptionistPage\Receptionist.xaml.vb">
       <DependentUpon>Receptionist.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ReceptionistPage\ReceptionistPage.xaml.vb">
-      <DependentUpon>ReceptionistPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\ObservableObject.vb" />
     <Compile Include="Classes\Patient.vb" />
@@ -214,10 +208,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ReceptionistPage\BillingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\ReceptionistPage\EditItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,10 +217,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ReceptionistPage\Receptionist.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\ReceptionistPage\ReceptionistPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
