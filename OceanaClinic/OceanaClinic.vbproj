@@ -118,8 +118,17 @@
     <Compile Include="Pages\AdminPage\UserDetails.xaml.vb">
       <DependentUpon>UserDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DoctorPage\AddTreatment.xaml.vb">
-      <DependentUpon>AddTreatment.xaml</DependentUpon>
+    <Compile Include="Pages\DoctorPage\MultiplePatient.xaml.vb">
+      <DependentUpon>MultiplePatient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DoctorPage\RemovePrescription.xaml.vb">
+      <DependentUpon>RemovePrescription.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DoctorPage\RemoveTreatment.xaml.vb">
+      <DependentUpon>RemoveTreatment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DoctorPage\TreatmentEditor.xaml.vb">
+      <DependentUpon>TreatmentEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DoctorPage\Doctor.xaml.vb">
       <DependentUpon>Doctor.xaml</DependentUpon>
@@ -158,7 +167,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DoctorPage\AddTreatment.xaml">
+    <Page Include="Pages\DoctorPage\MultiplePatient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DoctorPage\RemovePrescription.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DoctorPage\RemoveTreatment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DoctorPage\TreatmentEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

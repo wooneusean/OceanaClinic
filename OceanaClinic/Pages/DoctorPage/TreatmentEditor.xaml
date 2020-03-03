@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="TreatmentEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OceanaClinic"
+             mc:Ignorable="d"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Medium"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontSize="14"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             FontFamily="{DynamicResource MaterialDesignFont}"
+             FontSize="16" Width="600">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="{Binding Title}"/>
+            <Label>Treatment Description</Label>
+            <TextBox Text="{Binding TreatmentDesc,UpdateSourceTrigger=PropertyChanged}" Height="140" AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" TextChanged="TextBox_TextChanged"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Margin="10,10,5,0" Content="{Binding SubmitButton}" IsEnabled="{Binding CanSubmit}" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    <Button.CommandParameter>
+                        <sys:Boolean>
+                            True
+                        </sys:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+                <Button Margin="5,10,10,0" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                    <Button.CommandParameter>
+                        <sys:Boolean>
+                            False
+                        </sys:Boolean>
+                    </Button.CommandParameter>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

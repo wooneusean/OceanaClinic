@@ -35,9 +35,25 @@ Class UtilityConverter
     Public Shared Function SelectedItemsToListOfTransactions(selectedItems As IList) As List(Of Transaction)
         Dim transactions As New List(Of Transaction)
         For Each transaction As Transaction In selectedItems
-            transactions.Add(New Transaction(transaction.TransactionId, transaction.ItemId, transaction.Name, transaction.Quantity, transaction.Price.Value, transaction.ItemType))
+            transactions.Add(New Transaction(transaction.TransactionId, transaction.ItemId, transaction.Name, transaction.Quantity,
+                                             transaction.Price.Value, transaction.ItemType))
         Next
         Return transactions
+    End Function
+    Public Shared Function SelectedItemsToListOfTreatments(selectedItems As IList) As List(Of Treatment)
+        Dim treatments As New List(Of Treatment)
+        For Each treatment As Treatment In selectedItems
+            treatments.Add(New Treatment(treatment.TreatmentId, treatment.PatientId, treatment.TreatmentDesc, treatment.TreatmentDate))
+        Next
+        Return treatments
+    End Function
+    Public Shared Function SelectedItemsToListOfPrescriptions(selectedItems As IList) As List(Of Prescription)
+        Dim prescriptions As New List(Of Prescription)
+        For Each prescription As Prescription In selectedItems
+            prescriptions.Add(New Prescription(prescription.PrescriptionId, prescription.TreatmentId, prescription.TransactionId, prescription.ItemName,
+                                              prescription.ItemQuantity, prescription.ItemType))
+        Next
+        Return prescriptions
     End Function
 End Class
 Class StringToDecimalConverter

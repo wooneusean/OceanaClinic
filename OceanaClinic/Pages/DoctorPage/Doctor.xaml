@@ -27,7 +27,7 @@
                         <TextBlock VerticalAlignment="Center" Margin="16 0 0 0" FontSize="24">Doctor Page</TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Visibility="{Binding SelectedIndex, Source=RootTransitioner}" x:Name="btnBack" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Go back to &quot;Find Patient&quot; page." VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
+                        <Button Visibility="{Binding IsOnPatientPage}" x:Name="btnBack" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Go back to &quot;Find Patient&quot; page." VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" Margin="0">
                             <materialDesign:PackIcon Kind="ArrowBack" Height="30" Width="30" Foreground="White" />
                         </Button>
                         <Button x:Name="btnLogout" Padding="0" Style="{StaticResource MaterialDesignFlatMidBgButton}" ToolTip="Log out" VerticalAlignment="Center" Height="50" Width="50" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Margin="0">
@@ -36,7 +36,7 @@
                     </StackPanel>
                 </Grid>
             </materialDesign:ColorZone>
-            <materialDesign:Transitioner SelectedIndex="1" x:Name="RootTransitioner" AutoApplyTransitionOrigins="True">
+            <materialDesign:Transitioner SelectedIndex="{Binding SelectedPage}" x:Name="RootTransitioner" AutoApplyTransitionOrigins="True">
                 <materialDesign:TransitionerSlide>
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel>
@@ -140,8 +140,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <DataGrid x:Name="dgTreatments" Margin="0,60,0,0" AutoGenerateColumns="False"
-                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Treatments}"
-                                              SelectionMode="Single">
+                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Treatments}">
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                                                 <Setter Property="FontSize" Value="18"/>
@@ -201,8 +200,7 @@
                                         </StackPanel>
                                     </Grid>
                                     <DataGrid x:Name="dgPrescriptions" Margin="0,60,0,0" AutoGenerateColumns="False"
-                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Prescriptions}"
-                                              SelectionMode="Single">
+                                              CanUserAddRows="False" IsReadOnly="True" ItemsSource="{Binding Prescriptions}">
                                         <DataGrid.ColumnHeaderStyle>
                                             <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="DataGridColumnHeader">
                                                 <Setter Property="FontSize" Value="18"/>
@@ -211,6 +209,7 @@
                                         </DataGrid.ColumnHeaderStyle>
                                         <DataGrid.Columns>
                                             <DataGridTextColumn FontSize="18" Header="Name" Binding="{Binding ItemName}" Width="5*"/>
+                                            <DataGridTextColumn FontSize="18" Header="Type" Binding="{Binding ItemType}" Width="2*"/>
                                             <DataGridTextColumn FontSize="18" Header="Quantity" Binding="{Binding ItemQuantity}" Width="2*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>

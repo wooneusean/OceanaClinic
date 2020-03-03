@@ -93,7 +93,10 @@ Public Class Database
             conn.Open()
             Dim dummyUserDataQuery As String =
                 "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) 
-				VALUES('Admin','Man','123','asd','0')," + Environment.NewLine
+				VALUES
+                ('Admin','Man','123','asd','0'),
+                ('Admin','Man','123','zxc','1'),
+                ('Admin','Man','123','qwe','2')," + Environment.NewLine
 
             Dim dummyPatientDataQuery As String =
                 "INSERT INTO Patients (Firstname, Lastname, Identity, Email, Weight, Height, BloodType, Allergies)
@@ -101,7 +104,8 @@ Public Class Database
 
             Dim dummyBillingItemDataQuery As String =
                 "INSERT INTO BillingItems (Name, Type, Price)
-				VALUES ('Lab Services', 2, 100),
+				VALUES ('General Consultation', 1, 30),
+                       ('Lab Services', 2, 100),
                        ('X-Ray', 2, 50),
                        ('Comprehensive Health Check', 1, 120),
                        ('Partial Health Check', 1, 75)," + Environment.NewLine
@@ -608,11 +612,52 @@ Public Class ReceptionistDB
             Return transactions
         End Using
     End Function
+    Public Function GetTransaction(trxnId As Integer) As Transaction
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim transaction As Transaction
+            Dim getTransactionQuery As String =
+                "SELECT
+                    Transactions.TransactionId,Transactions.ItemId,BillingItems.Price,BillingItems.Name,Transactions.Quantity,BillingItems.Type
+                FROM
+                    Transactions
+                JOIN
+                    BillingItems
+                ON
+                    Transactions.ItemId = BillingItems.ItemId
+                WHERE
+                    Transactions.TransactionId = @trxnId AND Transactions.Completed = 0"
+            Dim cmd As New SQLiteCommand(getTransactionQuery, conn)
+            cmd.Parameters.AddWithValue("@trxnId", trxnId)
+            conn.Open()
+            Dim reader As SQLiteDataReader = cmd.ExecuteReader()
+            While reader.Read()
+                transaction = New Transaction(CInt(reader("TransactionId")), CInt(reader("ItemId")), reader("Name"), CInt(reader("Quantity")), CDec(reader("Price")), CInt(reader("Type")))
+            End While
+            conn.Close()
+            Return transaction
+        End Using
+    End Function
     Public Function RemoveTransactions(trxn As List(Of Transaction)) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
             Dim removeTransactionsQuery As String = "DELETE FROM Transactions WHERE TransactionId IN ("
             For Each trId As Transaction In trxn
                 removeTransactionsQuery += trId.TransactionId.ToString + If(trId.TransactionId = trxn.Last().TransactionId, ");", ",")
+            Next
+            Dim cmd As New SQLiteCommand(removeTransactionsQuery, conn)
+            conn.Open()
+            Dim i As Integer = cmd.ExecuteNonQuery
+            conn.Close()
+            Return i
+        End Using
+    End Function
+    Public Function RemoveTransactionsById(trxnIdList As List(Of Integer)) As Integer
+        If trxnIdList.Count < 1 Then
+            Return 0
+        End If
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim removeTransactionsQuery As String = "DELETE FROM Transactions WHERE TransactionId IN ("
+            For Each trxnId As Integer In trxnIdList
+                removeTransactionsQuery += trxnId & If(trxnId = trxnIdList.Last(), ");", ",")
             Next
             Dim cmd As New SQLiteCommand(removeTransactionsQuery, conn)
             conn.Open()
@@ -681,10 +726,10 @@ Public Class DoctorDB
     End Function
     Public Function FindPatient(patientName As String) As List(Of Patient)
         Using conn As New SQLiteConnection(Database.connectionString)
-            Dim findPatientQuery As String = "SELECT * FROM Patients WHERE Firstname LIKE '%@patName%' OR Lastname LIKE '%@patName%'"
+            Dim findPatientQuery As String = "SELECT * FROM Patients WHERE Firstname LIKE '%" & patientName & "%' OR Lastname LIKE '%" & patientName & "%'"
             Dim pl As New List(Of Patient)
             Dim cmd As New SQLiteCommand(findPatientQuery, conn)
-            cmd.Parameters.AddWithValue("@patName", patientName)
+            Console.WriteLine(cmd.CommandText)
             conn.Open()
             Dim reader As SQLiteDataReader = cmd.ExecuteReader
             While reader.Read
@@ -724,14 +769,19 @@ Public Class DoctorDB
             conn.Open()
             Dim i As Integer = cmd.ExecuteNonQuery
             conn.Close()
+            Dim trId As Integer = gVars.dbDoctor.GetTreatments(t.PatientId).Last().TreatmentId
+            gVars.dbDoctor.InsertPrescription(New Transaction(0, 1, "", 1, 0, 1), New Prescription(0, trId, 0, "", 0, 0), t.PatientId)
             Return i
         End Using
     End Function
-    Public Function RemoveTreatment(tId As Integer) As Integer
+    Public Function RemoveTreatments(tl As List(Of Treatment)) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
-            Dim removeTreatmentQuery As String = "DELETE FROM Treatments WHERE TreatmentId = @tId"
+            Dim removeTreatmentQuery As String = "DELETE FROM Treatments WHERE TreatmentId IN ("
+            For Each t As Treatment In tl
+                removeTreatmentQuery += t.TreatmentId & If(t.TreatmentId = tl.Last().TreatmentId, ");", ",")
+                gVars.dbDoctor.RemovePrescriptionsByTreatmentId(t.TreatmentId)
+            Next
             Dim cmd As New SQLiteCommand(removeTreatmentQuery, conn)
-            cmd.Parameters.AddWithValue("@tId", tId)
             conn.Open()
             Dim i As Integer = cmd.ExecuteNonQuery
             conn.Close()
@@ -753,7 +803,8 @@ Public Class DoctorDB
     End Function
     Public Function GetPrescriptions(treatmentId As Integer) As List(Of Prescription)
         Using conn As New SQLiteConnection(Database.connectionString)
-            Dim getPrescriptionsQuery As String = "SELECT Prescriptions.PrescriptionId,Prescriptions.TreatmentId,Transactions.TransactionId,BillingItems.Name,Transactions.Quantity
+            Dim getPrescriptionsQuery As String = "SELECT 
+                                                        Prescriptions.PrescriptionId,Prescriptions.TreatmentId,Transactions.TransactionId,Transactions.Quantity,BillingItems.Name,BillingItems.Type
                                                    FROM
                                                         Prescriptions
                                                    JOIN
@@ -772,7 +823,7 @@ Public Class DoctorDB
             conn.Open()
             Dim reader As SQLiteDataReader = cmd.ExecuteReader
             While reader.Read
-                Dim p As Prescription = New Prescription(reader("PrescriptionId"), reader("TreatmentId"), reader("TransactionId"), reader("Name"), reader("Quantity"))
+                Dim p As Prescription = New Prescription(reader("PrescriptionId"), reader("TreatmentId"), reader("TransactionId"), reader("Name"), reader("Quantity"), reader("Type"))
                 pl.Add(p)
             End While
             conn.Close()
@@ -795,28 +846,38 @@ Public Class DoctorDB
             Return i
         End Using
     End Function
-    'Public Function RemovePrescription(tId As Integer) As Integer
-    '    Using conn As New SQLiteConnection(Database.connectionString)
-    '        Dim removePrescriptionQuery As String = "DELETE FROM Treatments WHERE TreatmentId = @tId"
-    '        Dim cmd As New SQLiteCommand(removePrescriptionQuery, conn)
-    '        cmd.Parameters.AddWithValue("@tId", tId)
-    '        conn.Open()
-    '        Dim i As Integer = cmd.ExecuteNonQuery
-    '        conn.Close()
-    '        Return i
-    '    End Using
-    'End Function
-    'Public Function UpdatePrescription(t As Treatment) As Integer
-    '    Using conn As New SQLiteConnection(Database.connectionString)
-    '        Dim updatePrescriptionQuery As String = "UPDATE Treatments SET TreatmentDesc = @tDesc, TreatmentDate = @tDate WHERE TreatmentId = @tId"
-    '        Dim cmd As New SQLiteCommand(updatePrescriptionQuery, conn)
-    '        cmd.Parameters.AddWithValue("@tDesc", t.TreatmentDesc)
-    '        cmd.Parameters.AddWithValue("@tDate", Date.Now.ToString)
-    '        cmd.Parameters.AddWithValue("@tId", t.TreatmentId)
-    '        conn.Open()
-    '        Dim i As Integer = cmd.ExecuteNonQuery
-    '        conn.Close()
-    '        Return i
-    '    End Using
-    'End Function
+    Public Function RemovePrescriptions(pl As List(Of Prescription)) As Integer
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim trxnIdList As New List(Of Integer)
+            Dim removePrescriptionQuery As String = "DELETE FROM Prescriptions WHERE PrescriptionId IN ("
+            For Each p As Prescription In pl
+                removePrescriptionQuery += p.PrescriptionId & If(p.PrescriptionId = pl.Last().PrescriptionId, ");", ",")
+                trxnIdList.Add(p.TransactionId)
+            Next
+
+            gVars.dbReception.RemoveTransactionsById(trxnIdList)
+            Dim cmd As New SQLiteCommand(removePrescriptionQuery, conn)
+            conn.Open()
+            Dim i As Integer = cmd.ExecuteNonQuery
+            conn.Close()
+            Return i
+        End Using
+    End Function
+    Public Function RemovePrescriptionsByTreatmentId(trId As Integer) As Integer
+        Using conn As New SQLiteConnection(Database.connectionString)
+            Dim trxnIdList As New List(Of Integer)
+            Dim removePrescriptionQuery As String = "DELETE FROM Prescriptions WHERE TreatmentId = @trId"
+            For Each p As Prescription In gVars.dbDoctor.GetPrescriptions(trId)
+                trxnIdList.Add(p.TransactionId)
+            Next
+
+            gVars.dbReception.RemoveTransactionsById(trxnIdList)
+            Dim cmd As New SQLiteCommand(removePrescriptionQuery, conn)
+            cmd.Parameters.AddWithValue("@trId", trId)
+            conn.Open()
+            Dim i As Integer = cmd.ExecuteNonQuery
+            conn.Close()
+            Return i
+        End Using
+    End Function
 End Class
