@@ -53,8 +53,10 @@ Public Class AddItem
     End Sub
 
     Private Sub dgDlgBillingItems_SelectionChanged(sender As Object, e As SelectionChangedEventArgs) Handles dgDlgBillingItems.SelectionChanged
-        Dim bi As BillingItem = dgDlgBillingItems.SelectedValue
-        ViewModel.ItemToAddId = bi.ItemId
+        If dgDlgBillingItems.SelectedIndex > -1 Then
+            Dim bi As BillingItem = dgDlgBillingItems.SelectedValue
+            ViewModel.ItemToAddId = bi.ItemId
+        End If
     End Sub
 End Class
 Public Class AddItemViewModel
