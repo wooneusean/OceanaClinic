@@ -14,7 +14,7 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto"
              FontFamily="{DynamicResource MaterialDesignFont}"
-             FontSize="16" Width="800">
+             FontSize="16" Width="800" MaxHeight="450">
     <Grid>
         <StackPanel Margin="10">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" Text="Multiple patients found, please specify by selecting one patient from below."/>

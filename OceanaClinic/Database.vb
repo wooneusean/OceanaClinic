@@ -90,7 +90,6 @@ Public Class Database
     End Sub
     Private Sub DummyData()
         Using conn As New SQLiteConnection(connectionString)
-            conn.Open()
             Dim dummyUserDataQuery As String =
                 "INSERT INTO Users (Firstname, Lastname, Password, Email, userGroup) 
 				VALUES
@@ -270,13 +269,13 @@ Public Class Database
             Dim dummyTreatmentDataCmd As New SQLiteCommand(dummyTreatmentDataQuery, conn)
             Dim dummyPrescriptionDataCmd As New SQLiteCommand(dummyPrescriptionDataQuery, conn)
 
+            conn.Open()
             dummyUserDataCmd.ExecuteNonQuery()
             dummyPatientDataCmd.ExecuteNonQuery()
             dummyBillingItemDataCmd.ExecuteNonQuery()
             dummyTransactionDataCmd.ExecuteNonQuery()
             dummyTreatmentDataCmd.ExecuteNonQuery()
             dummyPrescriptionDataCmd.ExecuteNonQuery()
-
             conn.Close()
         End Using
     End Sub

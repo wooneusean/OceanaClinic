@@ -28,31 +28,34 @@ Public Class Doctor
                 ViewModel.Patient = p
                 ViewModel.Treatments = gVars.dbDoctor.GetTreatments(p.PatientId)
                 GoToPage(1)
-
             Else
                 msgQ.Enqueue("No patient found.")
             End If
         Else
+            If q.Length < 2 Then
+                msgQ.Enqueue("Please enter atleast 3 characters!")
+                Return
+            End If
             Dim pl As List(Of Patient) = gVars.dbDoctor.FindPatient(q)
-            If pl.Count > 0 Then
-                If pl.Count = 1 Then
-                    ViewModel.Patient = pl.First
-                    ViewModel.Treatments = gVars.dbDoctor.GetTreatments(pl.First.PatientId)
-                    GoToPage(1)
-                ElseIf pl.Count > 1 Then
-                    Dim result As Patient = Await DialogHost.Show(New MultiplePatient(pl), "RootDialog")
-                    If result IsNot Nothing Then
-                        If result.PatientId > -1 Then
-                            ViewModel.Patient = result
-                            ViewModel.Treatments = gVars.dbDoctor.GetTreatments(result.PatientId)
-                            GoToPage(1)
+                If pl.Count > 0 Then
+                    If pl.Count = 1 Then
+                        ViewModel.Patient = pl.First
+                        ViewModel.Treatments = gVars.dbDoctor.GetTreatments(pl.First.PatientId)
+                        GoToPage(1)
+                    ElseIf pl.Count > 1 Then
+                        Dim result As Patient = Await DialogHost.Show(New MultiplePatient(pl), "RootDialog")
+                        If result IsNot Nothing Then
+                            If result.PatientId > -1 Then
+                                ViewModel.Patient = result
+                                ViewModel.Treatments = gVars.dbDoctor.GetTreatments(result.PatientId)
+                                GoToPage(1)
+                            End If
                         End If
                     End If
+                Else
+                    msgQ.Enqueue("No patient found.")
                 End If
-            Else
-                msgQ.Enqueue("No patient found.")
             End If
-        End If
     End Sub
     Public Sub GoToPage(index As Integer)
         ViewModel.SelectedPage = index

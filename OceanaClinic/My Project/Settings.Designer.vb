@@ -52,17 +52,6 @@ Partial Friend NotInheritable Class MySettings
             Return defaultInstance
         End Get
     End Property
-    
-    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.ConnectionString),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\main.mdf;Inte"& _ 
-        "grated Security=True")>  _
-    Public ReadOnly Property MainConnectionString() As String
-        Get
-            Return CType(Me("MainConnectionString"),String)
-        End Get
-    End Property
 End Class
 
 Namespace My
