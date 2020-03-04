@@ -34,8 +34,8 @@
                 </DataGrid.Columns>
             </DataGrid>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Margin="10,10,5,0" Content="Yes" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="{Binding Selected}"/>
-                <Button Margin="5,10,10,0" Content="No" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="{Binding Selected}" Click="Button_Click"/>
+                <Button Margin="10,10,5,0" Content="Select" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="{Binding Selected}"/>
+                <Button Margin="5,10,10,0" Content="Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" CommandParameter="{Binding Selected}" Click="Button_Click"/>
             </StackPanel>
         </StackPanel>
     </Grid>
