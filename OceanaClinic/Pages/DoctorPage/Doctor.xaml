@@ -149,7 +149,7 @@
                                         </DataGrid.ColumnHeaderStyle>
                                         <DataGrid.Columns>
                                             <DataGridTextColumn FontSize="18" Binding="{Binding TreatmentDesc}" Header="Description" Width="5*"/>
-                                            <DataGridTextColumn FontSize="18" Binding="{Binding TreatmentDate}" SortDirection="Descending" Header="Date" Width="2*"/>
+                                            <DataGridTextColumn FontSize="18" Binding="{Binding TreatmentDate}" Header="Date" Width="2*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>

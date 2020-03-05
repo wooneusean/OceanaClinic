@@ -246,7 +246,7 @@ Public Class Database
 
                 TreatmentTableData = String.Format("('{0}', '{1}', '{2}')" + If(x = 255, ";", ",") + Environment.NewLine,
                                                    Math.Floor(CInt(51 * Rnd() + 1)), "Treated something idk",
-                                                   Date.Parse(d))
+                                                   Date.Parse(d).ToFileTime)
                 dummyTreatmentDataQuery += TreatmentTableData
             Next
 
@@ -758,14 +758,14 @@ Public Class DoctorDB
     End Function
     Public Function GetTreatments(patientId As Integer) As List(Of Treatment)
         Using conn As New SQLiteConnection(Database.connectionString)
-            Dim getTreatmentsQuery As String = "SELECT * FROM Treatments WHERE PatientId = @patId"
+            Dim getTreatmentsQuery As String = "SELECT * FROM Treatments WHERE PatientId = @patId ORDER BY TreatmentDate DESC"
             Dim tl As New List(Of Treatment)
             Dim cmd As New SQLiteCommand(getTreatmentsQuery, conn)
             cmd.Parameters.AddWithValue("@patId", patientId)
             conn.Open()
             Dim reader As SQLiteDataReader = cmd.ExecuteReader
             While reader.Read
-                Dim t As Treatment = New Treatment(reader("TreatmentId"), reader("PatientId"), reader("TreatmentDesc").ToString, reader("TreatmentDate").ToString)
+                Dim t As Treatment = New Treatment(reader("TreatmentId"), reader("PatientId"), reader("TreatmentDesc").ToString, Date.FromFileTime(reader("TreatmentDate").ToString))
                 tl.Add(t)
             End While
             conn.Close()
@@ -775,14 +775,20 @@ Public Class DoctorDB
     Public Function InsertTreatment(t As Treatment) As Integer
         Using conn As New SQLiteConnection(Database.connectionString)
             Dim insertTreatmentQuery As String = "INSERT INTO Treatments(PatientId,TreatmentDesc,TreatmentDate) VALUES (@patId,@tDesc,@tDate)"
+            Dim lastInsertRowIdQuery As String = "SELECT last_insert_rowid() as LastRowId"
             Dim cmd As New SQLiteCommand(insertTreatmentQuery, conn)
+            Dim cmdRowId As New SQLiteCommand(lastInsertRowIdQuery, conn)
             cmd.Parameters.AddWithValue("@patId", t.PatientId)
             cmd.Parameters.AddWithValue("@tDesc", t.TreatmentDesc)
-            cmd.Parameters.AddWithValue("@tDate", Date.Now.ToString)
+            cmd.Parameters.AddWithValue("@tDate", Date.Now.ToFileTime)
             conn.Open()
             Dim i As Integer = cmd.ExecuteNonQuery
+            Dim reader As SQLiteDataReader = cmdRowId.ExecuteReader
+            Dim trId As Integer
+            While reader.Read()
+                trId = reader("LastRowId")
+            End While
             conn.Close()
-            Dim trId As Integer = gVars.dbDoctor.GetTreatments(t.PatientId).Last().TreatmentId
             gVars.dbDoctor.InsertPrescription(New Transaction(0, 1, "", 1, 0, 1), New Prescription(0, trId, 0, "", 0, 0), t.PatientId)
             Return i
         End Using
@@ -806,7 +812,7 @@ Public Class DoctorDB
             Dim updateTreatmentQuery As String = "UPDATE Treatments SET TreatmentDesc = @tDesc, TreatmentDate = @tDate WHERE TreatmentId = @tId"
             Dim cmd As New SQLiteCommand(updateTreatmentQuery, conn)
             cmd.Parameters.AddWithValue("@tDesc", t.TreatmentDesc)
-            cmd.Parameters.AddWithValue("@tDate", Date.Now.ToString)
+            cmd.Parameters.AddWithValue("@tDate", Date.Now.ToFileTime)
             cmd.Parameters.AddWithValue("@tId", t.TreatmentId)
             conn.Open()
             Dim i As Integer = cmd.ExecuteNonQuery
