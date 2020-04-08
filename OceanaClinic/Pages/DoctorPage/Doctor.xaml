@@ -40,7 +40,7 @@
                 <materialDesign:TransitionerSlide>
                     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <StackPanel>
-                            <TextBox x:Name="txtSearch" Margin="0" VerticalContentAlignment="Center" MinWidth="500" FontSize="36" materialDesign:HintAssist.Hint="Enter patient name or ID"/>
+                            <TextBox x:Name="txtSearch" Margin="0" VerticalContentAlignment="Center" MinWidth="500" FontSize="36" materialDesign:HintAssist.Hint="ENTER PATIENT NAME OR ID"/>
                             <Button x:Name="btnFindPatient" Padding="0" Height="55" Margin="10" ToolTip="Find patient with provided ID or Name" HorizontalAlignment="Center" Width="200" TabIndex="1" FontSize="22">
                                 <Grid>
                                     <Grid.ColumnDefinitions>

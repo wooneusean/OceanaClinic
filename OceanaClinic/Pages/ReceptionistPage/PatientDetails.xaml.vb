@@ -8,6 +8,9 @@ Public Class PatientDetails
     Private Sub ValidateMobile()
         Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.MoField), ViewModel.MoField, "Invalid phone number format!", "PhoneNumber"))
     End Sub
+    Private Sub ValidateEmail()
+        Task.Run(Sub() ViewModel.Validation(NameOf(ViewModel.EmField), ViewModel.EmField, "Invalid email format!", "Email"))
+    End Sub
     Sub New(ByRef inPatient As Patient)
         ' This call is required by the designer.
         InitializeComponent()
@@ -18,7 +21,7 @@ Public Class PatientDetails
         DataContext = ViewModel
     End Sub
     Private Sub txtFields_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtFirstname.TextChanged, txtLastname.TextChanged, txtAddress.TextChanged,
-        txtAllergies.TextChanged, txtEmail.TextChanged, txtHeight.TextChanged, txtWeight.TextChanged
+        txtAllergies.TextChanged, txtHeight.TextChanged, txtWeight.TextChanged
         ViewModel.OnPropertyChanged("AllFieldsFilled")
     End Sub
 
@@ -27,6 +30,9 @@ Public Class PatientDetails
     End Sub
     Private Sub txtMobile_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtMobile.TextChanged
         ValidateMobile()
+    End Sub
+    Private Sub txtEmail_TextChanged(sender As Object, e As TextChangedEventArgs) Handles txtEmail.TextChanged
+        ValidateEmail()
     End Sub
     Private Sub OnlyNumeric_PreviewTextInput(sender As Object, e As TextCompositionEventArgs)
         Dim regex As Regex = New Regex("\D")
@@ -154,10 +160,10 @@ Class PatientDetailsViewModel
 
         Select Case type
             Case "Identity"
-                If (String.IsNullOrWhiteSpace(IdField)) Then
+                If (String.IsNullOrWhiteSpace(propValue)) Then
                     errorList.Add("IC Number\Passport Number cannot be empty!")
                 Else
-                    Dim p As Patient = gVars.dbReception.GetPatientByIdentity(IdField)
+                    Dim p As Patient = gVars.dbReception.GetPatientByIdentity(propValue)
                     If (p IsNot Nothing) Then
                         If Not (p.Identity.Equals(_currentIdentity)) Then
                             errorList.Add("User with this IC Number\Passport Number already exists!")
@@ -165,8 +171,13 @@ Class PatientDetailsViewModel
                     End If
                 End If
             Case "PhoneNumber"
-                Dim regex As Regex = New Regex("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$") 'https://regexr.com/3c53v phone number regex
-                If Not regex.IsMatch(propValue) Then
+                Dim phoneRegex As Regex = New Regex("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$") 'https://regexr.com/3c53v phone number regex
+                If Not phoneRegex.IsMatch(propValue) Then
+                    errorList.Add(errContent)
+                End If
+            Case "Email"
+                Dim emailRegex As Regex = New Regex("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+                If Not emailRegex.IsMatch(propValue) Then
                     errorList.Add(errContent)
                 End If
             Case Else

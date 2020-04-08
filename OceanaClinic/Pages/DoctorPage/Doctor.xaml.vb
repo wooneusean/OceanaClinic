@@ -145,7 +145,7 @@ Public Class Doctor
             Return
         End If
         Dim p As Prescription = dgPrescriptions.SelectedValue
-        Dim trxn As Transaction = gVars.dbReception.GetTransaction(p.TransactionId)
+        Dim trxn As Transaction = gVars.dbReception.GetTransactionRaw(p.TransactionId)
         Dim result As Boolean = Await DialogHost.Show(New EditItem(trxn), "RootDialog")
         If result = True Then
             If gVars.dbReception.UpdateTransaction(trxn) > 0 Then
@@ -206,6 +206,12 @@ Public Class Doctor
     Private Sub dgPrescriptions_PreviewKeyDown(sender As Object, e As KeyEventArgs) Handles dgPrescriptions.PreviewKeyDown
         If e.Key = Key.Delete Then
             btnRemovePrescription_Click(sender, Nothing)
+        End If
+    End Sub
+
+    Private Sub txtSearch_KeyDown(sender As Object, e As KeyEventArgs) Handles txtSearch.KeyDown
+        If e.Key = Key.Enter Then
+            btnFindPatient_Click(sender, Nothing)
         End If
     End Sub
 End Class

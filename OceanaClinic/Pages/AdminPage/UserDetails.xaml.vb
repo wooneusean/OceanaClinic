@@ -1,4 +1,6 @@
-﻿Public Class UserDetails
+﻿Imports System.Text.RegularExpressions
+
+Public Class UserDetails
     Dim ViewModel As New UserDetailsViewModel
     Sub New(ByRef _user As User)
 
@@ -82,12 +84,16 @@ Public Class UserDetailsViewModel
             errorList.Clear()
         End If
 
+        Dim emailRegex As Regex = New Regex("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
         Select Case type
             Case "Email"
-                If (String.IsNullOrWhiteSpace(EmField)) Then
+                If (String.IsNullOrWhiteSpace(propValue)) Then
                     errorList.Add("Email cannot be empty!")
+                ElseIf Not emailRegex.IsMatch(propValue) Then
+                    errorList.Add("Email is not in correct format!")
                 Else
-                    Dim u As User = gVars.dbAdmin.GetUserByEmail(EmField)
+                    Dim u As User = gVars.dbAdmin.GetUserByEmail(propValue)
                     If (u IsNot Nothing) Then
                         If Not (u.Email.Equals(_currentEmail)) Then
                             errorList.Add("User with this email already exists!")
